@@ -1,0 +1,14 @@
+{
+  "name": "reroutehers-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ReRouteHer — Iteration 1 interactive click-through prototype (E1-E4)",
+  "type": "module",
+  "scripts": {
+    "build": "node assemble-app.mjs",
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

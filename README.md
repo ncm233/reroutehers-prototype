@@ -21,6 +21,8 @@ Highlights:
 assemble-app.mjs   # Node build script — generates site/index.html from the templates + tokens below
 _merged.css        # Shared design tokens / component styles (colors, type, glass cards, stepper, chips, …)
 site/index.html    # The built, deployable static site (this is what Netlify serves)
+server.mjs         # Zero-dependency Node HTTP server that serves site/ (used by the Docker image)
+Dockerfile         # Multi-stage: builds site/index.html from source, then runs server.mjs
 ```
 
 ## Build
@@ -31,7 +33,19 @@ No dependencies beyond Node.js (the script only uses the `fs` built-in):
 node assemble-app.mjs
 ```
 
-Regenerates `site/index.html`. Deploy `site/` as-is to any static host.
+Regenerates `site/index.html`. Deploy `site/` as-is to any static host, or run it dynamically with `node server.mjs` / Docker (below).
+
+## Run with Docker
+
+The image rebuilds `site/index.html` from source at *image build time* (not from a pre-committed static file) and serves it through a small running Node server rather than a static file host — so `docker build` always reflects the current `assemble-app.mjs` + `_merged.css`.
+
+```bash
+docker build -t reroutehers-prototype .
+docker run --rm -p 3000:3000 reroutehers-prototype
+# → http://localhost:3000
+```
+
+Override the port with `-e PORT=8080 -p 8080:8080`.
 
 ## Stack
 
