@@ -132,6 +132,36 @@ a:hover {
   background: var(--grad-hero);
 }
 
+/* Full-Height Hero Visual with Gradient Edge Mask */
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.8deg); }
+}
+.hero-visual-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 56%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+.hero-butterfly-img {
+  height: 100%;
+  max-height: 560px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 45px rgba(90, 105, 175, 0.16));
+  animation: heroFloat 8s var(--ease-smooth) infinite;
+  mask-image: radial-gradient(ellipse 72% 78% at 50% 50%, black 45%, rgba(0, 0, 0, 0.8) 65%, transparent 96%);
+  -webkit-mask-image: radial-gradient(ellipse 72% 78% at 50% 50%, black 45%, rgba(0, 0, 0, 0.8) 65%, transparent 96%);
+}
+
 .grain {
   position: absolute;
   inset: 0;
