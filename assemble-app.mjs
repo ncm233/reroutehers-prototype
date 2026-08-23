@@ -3,7 +3,31 @@ import fs from 'node:fs';
 const css = fs.readFileSync('_merged.css', 'utf8');
 const BRAND = 'ReRouteHer';
 
-const bfly = (id) => `<svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="${id}" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#${id})"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#${id})" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+const bfly = (id) => `<svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;overflow:visible;">
+  <defs>
+    <linearGradient id="${id}_p" x1="4" y1="12" x2="24" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F9E2EC"/>
+      <stop offset="100%" stop-color="#E5ADC2"/>
+    </linearGradient>
+    <linearGradient id="${id}_v" x1="18" y1="6" x2="42" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#EEE6F8"/>
+      <stop offset="100%" stop-color="#C5B6DF"/>
+    </linearGradient>
+    <linearGradient id="${id}_b" x1="16" y1="18" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#BAC7E8"/>
+      <stop offset="100%" stop-color="#8DA0D0"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Wing -->
+  <path d="M22 24 C18 14 10 10 5 17 C1 22 2 30 9 33 C15 36 20 31 22 24 Z" fill="url(#${id}_p)" opacity="0.92"/>
+  <!-- Top Right Lavender Plane -->
+  <path d="M22 24 C26 12 36 8 43 14 C47 18 45 27 38 31 C32 34 25 28 22 24 Z" fill="url(#${id}_v)" opacity="0.75"/>
+  <!-- Bottom Right Periwinkle Wing -->
+  <path d="M22 24 C28 20 40 26 42 34 C43 39 37 42 30 40 C23 37 22 29 22 24 Z" fill="url(#${id}_b)" opacity="0.82" style="mix-blend-mode:multiply;"/>
+  <!-- Sweeping Trajectory Filaments -->
+  <path d="M3 36 C12 26 18 15 22 6 C26 18 35 27 45 23" stroke="#9E8FC4" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.75"/>
+  <path d="M6 18 C17 22 24 28 34 40" stroke="#DFA6BC" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.7"/>
+</svg>`;
 const logo = (id) => `<div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')">${bfly(id)}<div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">${BRAND}</div></div>`;
 
 function stepper(current, labels, dests) {
@@ -47,8 +71,8 @@ const landing = `
 <div style="min-height:1150px;background:#FBF8FA;">
   <div class="hero" style="padding-bottom:70px;">
     <div class="grain"></div>
-    <div class="blur-orb js-parallax" data-speed="0.15" style="width:420px;height:420px;left:-120px;bottom:-140px;background:#F0A8C2;opacity:.55;"></div>
-    <div class="blur-orb js-parallax" data-speed="0.25" style="width:380px;height:380px;right:-100px;top:-120px;background:#5A67AE;opacity:.5;"></div>
+    <div class="blur-orb js-parallax" data-speed="0.15" style="width:420px;height:420px;left:-120px;bottom:-140px;background:#F6DCE6;opacity:.45;"></div>
+    <div class="blur-orb js-parallax" data-speed="0.25" style="width:380px;height:380px;right:-100px;top:-120px;background:#BAC7EB;opacity:.4;"></div>
     <div class="star" style="top:60px;left:38%;"></div><div class="star" style="top:140px;left:62%;"></div>
     <div class="star" style="top:220px;left:80%;width:2px;height:2px;"></div><div class="star" style="top:90px;left:52%;width:2px;height:2px;"></div>
     <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;">
@@ -57,7 +81,7 @@ const landing = `
     <div style="position:relative;display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;padding:44px 60px 0;align-items:center;">
       <div>
         ${mask('See what you still<br/>have to offer', 'js-title js-hero-title')}
-        <div class="js-sub" style="font-size:16.5px;line-height:1.6;color:rgba(30,34,67,.74);margin-top:18px;max-width:460px;">Coming back to work after a career break can feel like starting from zero. It isn&rsquo;t. We help you turn what you&rsquo;ve been doing &mdash; and what you did before &mdash; into an actionable roadmap.</div>
+        <div class="js-sub" style="font-size:16.5px;line-height:1.6;color:rgba(38,43,74,.75);margin-top:18px;max-width:460px;">Coming back to work after a career break can feel like starting from zero. It isn&rsquo;t. We help you turn what you&rsquo;ve been doing &mdash; and what you did before &mdash; into an actionable roadmap.</div>
         <div class="js-sub" style="display:flex;gap:14px;margin-top:26px;">
           <button type="button" class="pill-btn primary btn-reset" id="get-started-btn" onclick="beginIntake()">
             <span>Get started</span>
@@ -65,15 +89,43 @@ const landing = `
           </button>
         </div>
       </div>
-      <div class="js-img" style="position:relative;height:340px;display:flex;align-items:center;justify-content:center;">
-        <div class="blur-orb js-parallax" data-speed="0.35" style="width:260px;height:260px;left:14%;top:20%;background:#F2A9C6;opacity:.65;"></div>
-        <div class="blur-orb js-parallax" data-speed="0.2" style="width:230px;height:230px;right:8%;bottom:10%;background:#4E5AA0;opacity:.6;"></div>
-        <svg width="210" height="210" viewBox="0 0 48 48" fill="none" style="position:relative;filter:drop-shadow(0 20px 40px rgba(40,30,80,.28));">
-          <defs><linearGradient id="bflyHero" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FBDCE6"/><stop offset="0.5" stop-color="#D8C6DF"/><stop offset="1" stop-color="#4E5AA0"/></linearGradient></defs>
-          <path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bflyHero)"/>
-          <path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bflyHero)" opacity="0.88"/>
-          <line x1="24" y1="10" x2="24" y2="34" stroke="#2C3568" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
+      <div class="js-img" style="position:relative;min-height:360px;display:flex;align-items:center;justify-content:center;">
+        <div class="blur-orb js-parallax" data-speed="0.35" style="width:280px;height:280px;left:10%;top:15%;background:#F8DCE7;opacity:.55;"></div>
+        <div class="blur-orb js-parallax" data-speed="0.2" style="width:260px;height:260px;right:4%;bottom:5%;background:#B6C5EA;opacity:.5;"></div>
+        <div class="hero-abstract-container">
+          <svg width="380" height="340" viewBox="0 0 400 360" fill="none" style="overflow:visible;filter:drop-shadow(0 20px 40px rgba(90,105,170,0.16));pointer-events:none;">
+            <defs>
+              <linearGradient id="heroWingP" x1="40" y1="80" x2="200" y2="300" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FDF2F7" stop-opacity="0.96"/>
+                <stop offset="50%" stop-color="#F5D2E1" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#E6ADC3" stop-opacity="0.85"/>
+              </linearGradient>
+              <linearGradient id="heroWingV" x1="200" y1="40" x2="380" y2="240" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#F2ECF9" stop-opacity="0.95"/>
+                <stop offset="60%" stop-color="#D7CCE9" stop-opacity="0.82"/>
+                <stop offset="100%" stop-color="#BEAFDC" stop-opacity="0.75"/>
+              </linearGradient>
+              <linearGradient id="heroWingB" x1="180" y1="170" x2="370" y2="340" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#C8D4F2" stop-opacity="0.92"/>
+                <stop offset="50%" stop-color="#A2B6E0" stop-opacity="0.86"/>
+                <stop offset="100%" stop-color="#8397CA" stop-opacity="0.8"/>
+              </linearGradient>
+            </defs>
+            <!-- Left Organic Petal Wing -->
+            <path d="M200 195 C170 105 105 65 50 120 C10 160 20 235 80 270 C135 300 180 260 200 195 Z" fill="url(#heroWingP)"/>
+            <!-- Upper Diagonal Lavender Plane -->
+            <path d="M200 195 C240 95 325 60 375 105 C410 140 395 215 335 250 C285 275 225 235 200 195 Z" fill="url(#heroWingV)" style="mix-blend-mode:multiply;"/>
+            <!-- Lower Right Periwinkle Wing -->
+            <path d="M200 195 C260 165 360 210 380 280 C390 320 335 345 275 330 C210 310 200 240 200 195 Z" fill="url(#heroWingB)" style="mix-blend-mode:multiply;"/>
+            <!-- Translucent Inner Intersection -->
+            <path d="M200 195 C145 155 135 95 180 65 C220 40 270 75 265 135 C260 185 225 195 200 195 Z" fill="#F8E5EF" opacity="0.6" style="mix-blend-mode:multiply;"/>
+            <!-- Sweeping Contour Filaments -->
+            <path d="M15 285 C95 205 165 110 200 30 C235 135 320 210 395 185" stroke="#9C8CBF" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.75"/>
+            <path d="M45 135 C140 175 205 220 305 325" stroke="#E2A6BE" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+            <path d="M115 305 C175 255 220 185 280 80" stroke="#A4B4DB" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <path d="M165 235 C225 205 285 165 360 135" stroke="#B2A3D0" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>

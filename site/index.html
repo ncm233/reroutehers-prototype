@@ -10,275 +10,901 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
-  :root{
-    --ink:#1E2243; --ink-soft:rgba(30,34,67,.68); --ink-faint:rgba(30,34,67,.44);
-    --pink-500:#E85D8A; --pink-600:#D04573; --pink-100:#FDF0F4;
-    --violet-400:#A99FD0; --violet-600:#7A6FB8; --blue-600:#46539E;
-    --mint-100:#DEF3E7; --mint-600:#226D4D; --mint-700:#185339;
-    --amber-50:#FFF9F0; --amber-100:#FEF0DA; --amber-600:#C07018; --amber-700:#96540D;
-    --grad-hero:linear-gradient(135deg,#FBDCE6 0%,#F0C7DA 20%,#CEC3E2 45%,#9FAAD6 68%,#5661A6 100%);
-    --grad-btn:linear-gradient(120deg,#EE86AC 0%,#B98FC9 50%,#6E7BC0 100%);
-    --grad-btn-hover:linear-gradient(120deg,#F095B6 0%,#C49CD2 50%,#7C89CC 100%);
-    --grad-soft:linear-gradient(160deg,#FDF2F6 0%,#F5EEF7 40%,#EDF1FA 100%);
-    --grad-card:linear-gradient(145deg,rgba(255,255,255,.82) 0%,rgba(255,255,255,.52) 100%);
-    --grad-glow:linear-gradient(135deg,rgba(238,134,172,.25),rgba(110,123,192,.25));
-    --shadow-soft:0 16px 36px -14px rgba(46,42,94,.16), 0 0 1px 1px rgba(255,255,255,.6) inset;
-    --shadow-lift:0 24px 50px -18px rgba(46,42,94,.28), 0 0 1px 1px rgba(255,255,255,.8) inset;
-    --shadow-card:0 12px 28px -10px rgba(35,42,82,.08), 0 1px 2px rgba(35,42,82,.04);
-    --shadow-card-hover:0 20px 40px -12px rgba(35,42,82,.14), 0 2px 6px rgba(35,42,82,.06);
-    --ease-spring:cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-smooth:cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--grad-soft);-webkit-font-smoothing:antialiased;}
-  .disp{font-family:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;}
-  a{color:var(--blue-600);text-decoration:none;transition:color .2s;} a:hover{color:var(--pink-500);}
-  
-  /* Modern Frosted Glass Card */
-  .glass{
-    position:relative;
-    background:var(--grad-card);
-    backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-    border-radius:24px;
-    border:1px solid rgba(255,255,255,.75);
-    box-shadow:var(--shadow-soft);
-    transition:transform .3s var(--ease-spring), box-shadow .3s var(--ease-spring), border-color .3s;
-  }
-  .glass.interactive:hover{
-    transform:translateY(-2px);
-    box-shadow:var(--shadow-lift);
-    border-color:rgba(255,255,255,.95);
-  }
-  .glass::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    border-radius:inherit;
-    padding:1.2px;
-    background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.2) 30%,rgba(255,255,255,0) 55%,rgba(255,255,255,.25) 80%,rgba(255,255,255,.9) 100%);
-    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
-    -webkit-mask-composite:xor;
-    mask-composite:exclude;
-    pointer-events:none;
-  }
+:root {
+  --ink: #1E2243;
+  --ink-soft: rgba(30, 34, 67, .68);
+  --ink-faint: rgba(30, 34, 67, .44);
+  --pink-500: #E85D8A;
+  --pink-600: #D04573;
+  --pink-100: #FDF0F4;
+  --violet-400: #A99FD0;
+  --violet-600: #7A6FB8;
+  --blue-600: #46539E;
+  --mint-100: #DEF3E7;
+  --mint-600: #226D4D;
+  --mint-700: #185339;
+  --amber-50: #FFF9F0;
+  --amber-100: #FEF0DA;
+  --amber-600: #C07018;
+  --amber-700: #96540D;
+  --grad-hero: linear-gradient(135deg, #FBDCE6 0%, #F0C7DA 20%, #CEC3E2 45%, #9FAAD6 68%, #5661A6 100%);
+  --grad-btn: linear-gradient(120deg, #EE86AC 0%, #B98FC9 50%, #6E7BC0 100%);
+  --grad-btn-hover: linear-gradient(120deg, #F095B6 0%, #C49CD2 50%, #7C89CC 100%);
+  --grad-soft: linear-gradient(160deg, #FDF2F6 0%, #F5EEF7 40%, #EDF1FA 100%);
+  --grad-card: linear-gradient(145deg, rgba(255, 255, 255, .82) 0%, rgba(255, 255, 255, .52) 100%);
+  --grad-glow: linear-gradient(135deg, rgba(238, 134, 172, .25), rgba(110, 123, 192, .25));
+  --shadow-soft: 0 16px 36px -14px rgba(46, 42, 94, .16), 0 0 1px 1px rgba(255, 255, 255, .6) inset;
+  --shadow-lift: 0 24px 50px -18px rgba(46, 42, 94, .28), 0 0 1px 1px rgba(255, 255, 255, .8) inset;
+  --shadow-card: 0 12px 28px -10px rgba(35, 42, 82, .08), 0 1px 2px rgba(35, 42, 82, .04);
+  --shadow-card-hover: 0 20px 40px -12px rgba(35, 42, 82, .14), 0 2px 6px rgba(35, 42, 82, .06);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  .pill-btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    padding:16px 32px;border-radius:999px;font-weight:700;font-size:15.5px;
-    border:none;cursor:pointer;font-family:inherit;
-    transition:transform .24s var(--ease-spring), box-shadow .24s var(--ease-spring), background .24s;
-  }
-  .pill-btn.primary{
-    background:var(--grad-btn);color:#fff;
-    box-shadow:0 14px 28px -10px rgba(180,90,150,.55);
-  }
-  .pill-btn.primary:hover{
-    background:var(--grad-btn-hover);
-    transform:translateY(-2px);
-    box-shadow:0 18px 34px -10px rgba(180,90,150,.68);
-  }
-  .pill-btn.secondary{
-    background:rgba(255,255,255,.75);color:var(--ink);
-    border:1.5px solid rgba(90,90,140,.2);
-    box-shadow:0 6px 16px -6px rgba(35,42,82,.08);
-  }
-  .pill-btn.secondary:hover{
-    background:#fff;border-color:rgba(90,90,140,.35);
-    transform:translateY(-1px);
-  }
+* {
+  box-sizing: border-box;
+}
 
-  .hero{position:relative;overflow:hidden;background:var(--grad-hero);}
-  .grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.7) 0.6px, transparent 0.6px);background-size:3.4px 3.4px;opacity:.3;mix-blend-mode:overlay;pointer-events:none;}
-  .star{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:.8;}
-  .blur-orb{position:absolute;border-radius:50%;filter:blur(46px);}
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--grad-soft);
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* Tags and Badges */
-  .chip{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;
-    background:rgba(255,255,255,.7);border:1.3px solid rgba(90,90,140,.16);
-    color:var(--ink);box-shadow:0 2px 6px rgba(35,42,82,.03);
-    transition:all .2s var(--ease-spring);
-  }
-  .chip:hover{background:rgba(255,255,255,.95);transform:translateY(-1px);border-color:rgba(90,90,140,.28);}
-  .chip.on,.chip.mint{
-    background:var(--mint-100);color:var(--mint-700);
-    border-color:rgba(46,115,85,.32);
-    box-shadow:0 3px 10px -3px rgba(46,115,85,.2);
-  }
-  .chip.amber{
-    background:var(--amber-100);color:var(--amber-700);
-    border-color:rgba(192,112,24,.3);
-  }
+.disp {
+  font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
 
-  /* Stepper */
-  .step-c{
-    width:36px;height:36px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700;font-size:13.5px;flex:none;
-    transition:all .3s var(--ease-spring);
-  }
-  .step-c.complete{
-    background:var(--grad-btn);color:#fff;cursor:pointer;
-    box-shadow:0 4px 12px -4px rgba(180,90,150,.4);
-  }
-  .step-c.complete:hover{transform:scale(1.1);box-shadow:0 6px 16px -4px rgba(180,90,150,.55);}
-  .step-c.active{
-    background:var(--grad-btn);color:#fff;
-    box-shadow:0 0 0 5px rgba(180,90,150,.18), 0 6px 16px -4px rgba(180,90,150,.45);
-  }
-  .step-c.future{background:rgba(255,255,255,.6);border:2px solid rgba(35,42,82,.18);color:var(--ink-faint);}
-  .step-line{height:3px;border-radius:2px;flex:1;}
-  .step-line.complete{background:var(--grad-btn);}
-  .step-line.future{background:rgba(35,42,82,.12);}
-  .field-label{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:9px;}
+a {
+  color: var(--blue-600);
+  text-decoration: none;
+  transition: color .2s;
+}
 
-  /* Lieflat style row items */
-  .row-item{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:13px 16px;border-radius:14px;background:rgba(255,255,255,.6);
-    border:1px solid rgba(90,90,140,.1);margin-bottom:9px;
-    transition:all .22s var(--ease-spring);
-  }
-  .row-item:hover{
-    background:rgba(255,255,255,.9);
-    transform:translateX(4px);
-    border-color:rgba(232,93,138,.35);
-    box-shadow:0 4px 14px -4px rgba(46,42,94,.08);
-  }
-  .row-item.have-skill{
-    background:rgba(255,255,255,.6);
-  }
-  .row-item.have-skill:hover{
-    border-color:rgba(46,115,85,.35);
-  }
-  
-  .tag{
-    font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.02em;white-space:nowrap;
-  }
-  .tag.essential{background:var(--amber-100);color:var(--amber-700);border:1px solid rgba(192,112,24,.25);}
-  .tag.uplift{background:#E6EBFC;color:var(--blue-600);border:1px solid rgba(70,83,158,.22);}
-  .tag.have{background:var(--mint-100);color:var(--mint-700);border:1px solid rgba(46,115,85,.25);}
+a:hover {
+  color: var(--pink-500);
+}
+
+/* Modern Frosted Glass Card */
+.glass {
+  position: relative;
+  background: var(--grad-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, .75);
+  box-shadow: var(--shadow-soft);
+  transition: transform .3s var(--ease-spring), box-shadow .3s var(--ease-spring), border-color .3s;
+}
+
+.glass.interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(255, 255, 255, .95);
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .2) 30%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, .25) 80%, rgba(255, 255, 255, .9) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15.5px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .24s var(--ease-spring), box-shadow .24s var(--ease-spring), background .24s;
+}
+
+.pill-btn.primary {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 14px 28px -10px rgba(180, 90, 150, .55);
+}
+
+.pill-btn.primary:hover {
+  background: var(--grad-btn-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px -10px rgba(180, 90, 150, .68);
+}
+
+.pill-btn.secondary {
+  background: rgba(255, 255, 255, .75);
+  color: var(--ink);
+  border: 1.5px solid rgba(90, 90, 140, .2);
+  box-shadow: 0 6px 16px -6px rgba(35, 42, 82, .08);
+}
+
+.pill-btn.secondary:hover {
+  background: #fff;
+  border-color: rgba(90, 90, 140, .35);
+  transform: translateY(-1px);
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--grad-hero);
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .7) 0.6px, transparent 0.6px);
+  background-size: 3.4px 3.4px;
+  opacity: .3;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: .8;
+}
+
+.blur-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+}
+
+/* Tags and Badges */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, .7);
+  border: 1.3px solid rgba(90, 90, 140, .16);
+  color: var(--ink);
+  box-shadow: 0 2px 6px rgba(35, 42, 82, .03);
+  transition: all .2s var(--ease-spring);
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, .95);
+  transform: translateY(-1px);
+  border-color: rgba(90, 90, 140, .28);
+}
+
+.chip.on,
+.chip.mint {
+  background: var(--mint-100);
+  color: var(--mint-700);
+  border-color: rgba(46, 115, 85, .32);
+  box-shadow: 0 3px 10px -3px rgba(46, 115, 85, .2);
+}
+
+.chip.amber {
+  background: var(--amber-100);
+  color: var(--amber-700);
+  border-color: rgba(192, 112, 24, .3);
+}
+
+/* Stepper */
+.step-c {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13.5px;
+  flex: none;
+  transition: all .3s var(--ease-spring);
+}
+
+.step-c.complete {
+  background: var(--grad-btn);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px -4px rgba(180, 90, 150, .4);
+}
+
+.step-c.complete:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px -4px rgba(180, 90, 150, .55);
+}
+
+.step-c.active {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 0 0 5px rgba(180, 90, 150, .18), 0 6px 16px -4px rgba(180, 90, 150, .45);
+}
+
+.step-c.future {
+  background: rgba(255, 255, 255, .6);
+  border: 2px solid rgba(35, 42, 82, .18);
+  color: var(--ink-faint);
+}
+
+.step-line {
+  height: 3px;
+  border-radius: 2px;
+  flex: 1;
+}
+
+.step-line.complete {
+  background: var(--grad-btn);
+}
+
+.step-line.future {
+  background: rgba(35, 42, 82, .12);
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 9px;
+}
+
+/* Lieflat style row items */
+.row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .6);
+  border: 1px solid rgba(90, 90, 140, .1);
+  margin-bottom: 9px;
+  transition: all .22s var(--ease-spring);
+}
+
+.row-item:hover {
+  background: rgba(255, 255, 255, .9);
+  transform: translateX(4px);
+  border-color: rgba(232, 93, 138, .35);
+  box-shadow: 0 4px 14px -4px rgba(46, 42, 94, .08);
+}
+
+.row-item.have-skill {
+  background: rgba(255, 255, 255, .6);
+}
+
+.row-item.have-skill:hover {
+  border-color: rgba(46, 115, 85, .35);
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.tag.essential {
+  background: var(--amber-100);
+  color: var(--amber-700);
+  border: 1px solid rgba(192, 112, 24, .25);
+}
+
+.tag.uplift {
+  background: #E6EBFC;
+  color: var(--blue-600);
+  border: 1px solid rgba(70, 83, 158, .22);
+}
+
+.tag.have {
+  background: var(--mint-100);
+  color: var(--mint-700);
+  border: 1px solid rgba(46, 115, 85, .25);
+}
 
 
 /* ---- Screen5-LearnPlan.dc.html ---- */
 
-  :root{
-    --ink:#232A52; --ink-soft:rgba(35,42,82,.64); --ink-faint:rgba(35,42,82,.4);
-    --pink-500:#E85D8A; --violet-400:#A99FD0; --blue-600:#4A57A0;
-    --grad-btn:linear-gradient(120deg,#EE86AC 0%,#B98FC9 50%,#6E7BC0 100%);
-    --grad-soft:linear-gradient(160deg,#FDF1F5 0%,#F6EEF6 45%,#EDF0F8 100%);
-    --shadow-soft:0 14px 34px -16px rgba(46,42,94,.24);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--grad-soft);}
-  .disp{font-family:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;}
-  .glass{position:relative;background:rgba(255,255,255,.56);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:26px;box-shadow:var(--shadow-soft);}
-  .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.3px;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.15) 28%,rgba(255,255,255,0) 52%,rgba(255,255,255,.15) 76%,rgba(255,255,255,.8) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
-  .pill-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:700;font-size:14.5px;border:none;cursor:pointer;font-family:inherit;}
-  .pill-btn.primary{background:var(--grad-btn);color:#fff;box-shadow:0 12px 26px -10px rgba(180,90,150,.55);}
-  .pill-btn.secondary{background:rgba(255,255,255,.7);color:var(--ink);border:1.5px solid rgba(90,90,140,.22);}
-  .step-c{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13.5px;flex:none;}
-  .step-c.complete{background:var(--grad-btn);color:#fff;cursor:pointer;}
-  .step-c.active{background:var(--grad-btn);color:#fff;box-shadow:0 0 0 5px rgba(180,90,150,.16);}
-  .step-c.future{background:transparent;border:2px solid rgba(35,42,82,.2);color:var(--ink-faint);}
-  .step-line{height:3px;border-radius:2px;flex:1;}
-  .step-line.complete{background:var(--grad-btn);}
-  .step-line.future{background:rgba(35,42,82,.14);}
-  .learn-row{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-radius:18px;background:rgba(255,255,255,.5);margin-bottom:14px;}
+:root {
+  --ink: #232A52;
+  --ink-soft: rgba(35, 42, 82, .64);
+  --ink-faint: rgba(35, 42, 82, .4);
+  --pink-500: #E85D8A;
+  --violet-400: #A99FD0;
+  --blue-600: #4A57A0;
+  --grad-btn: linear-gradient(120deg, #EE86AC 0%, #B98FC9 50%, #6E7BC0 100%);
+  --grad-soft: linear-gradient(160deg, #FDF1F5 0%, #F6EEF6 45%, #EDF0F8 100%);
+  --shadow-soft: 0 14px 34px -16px rgba(46, 42, 94, .24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--grad-soft);
+}
+
+.disp {
+  font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
+
+.glass {
+  position: relative;
+  background: rgba(255, 255, 255, .56);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 26px;
+  box-shadow: var(--shadow-soft);
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.3px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .15) 28%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, .15) 76%, rgba(255, 255, 255, .8) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14.5px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pill-btn.primary {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 12px 26px -10px rgba(180, 90, 150, .55);
+}
+
+.pill-btn.secondary {
+  background: rgba(255, 255, 255, .7);
+  color: var(--ink);
+  border: 1.5px solid rgba(90, 90, 140, .22);
+}
+
+.step-c {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13.5px;
+  flex: none;
+}
+
+.step-c.complete {
+  background: var(--grad-btn);
+  color: #fff;
+  cursor: pointer;
+}
+
+.step-c.active {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 0 0 5px rgba(180, 90, 150, .16);
+}
+
+.step-c.future {
+  background: transparent;
+  border: 2px solid rgba(35, 42, 82, .2);
+  color: var(--ink-faint);
+}
+
+.step-line {
+  height: 3px;
+  border-radius: 2px;
+  flex: 1;
+}
+
+.step-line.complete {
+  background: var(--grad-btn);
+}
+
+.step-line.future {
+  background: rgba(35, 42, 82, .14);
+}
+
+.learn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .5);
+  margin-bottom: 14px;
+}
 
 /* ---- Screen6-Roadmap.dc.html ---- */
 
-  :root{
-    --ink:#232A52; --ink-soft:rgba(35,42,82,.64); --ink-faint:rgba(35,42,82,.4);
-    --pink-500:#E85D8A; --violet-400:#A99FD0; --blue-600:#4A57A0;
-    --mint-100:#DEF3E7; --mint-600:#2E7355; --amber-100:#FBEBD3; --amber-700:#9C6A28;
-    --grad-btn:linear-gradient(120deg,#EE86AC 0%,#B98FC9 50%,#6E7BC0 100%);
-    --grad-soft:linear-gradient(160deg,#FDF1F5 0%,#F6EEF6 45%,#EDF0F8 100%);
-    --shadow-soft:0 14px 34px -16px rgba(46,42,94,.24);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--grad-soft);}
-  .disp{font-family:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;}
-  .glass{position:relative;background:rgba(255,255,255,.56);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:26px;box-shadow:var(--shadow-soft);}
-  .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.3px;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.15) 28%,rgba(255,255,255,0) 52%,rgba(255,255,255,.15) 76%,rgba(255,255,255,.8) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
-  .avatar{width:38px;height:38px;border-radius:50%;background:var(--grad-btn);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;}
-  .pill{font-size:11px;font-weight:800;padding:5px 12px;border-radius:999px;letter-spacing:.03em;}
-  .pill.done{background:var(--mint-100);color:var(--mint-600);}
-  .pill.next{background:#E3E8FA;color:var(--blue-600);}
-  .pill.soon{background:rgba(35,42,82,.08);color:var(--ink-faint);}
-  .mile-row{display:flex;align-items:center;gap:16px;padding:18px 22px;border-radius:18px;background:rgba(255,255,255,.5);margin-bottom:12px;}
-  .mile-dot{width:30px;height:30px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;}
+:root {
+  --ink: #232A52;
+  --ink-soft: rgba(35, 42, 82, .64);
+  --ink-faint: rgba(35, 42, 82, .4);
+  --pink-500: #E85D8A;
+  --violet-400: #A99FD0;
+  --blue-600: #4A57A0;
+  --mint-100: #DEF3E7;
+  --mint-600: #2E7355;
+  --amber-100: #FBEBD3;
+  --amber-700: #9C6A28;
+  --grad-btn: linear-gradient(120deg, #EE86AC 0%, #B98FC9 50%, #6E7BC0 100%);
+  --grad-soft: linear-gradient(160deg, #FDF1F5 0%, #F6EEF6 45%, #EDF0F8 100%);
+  --shadow-soft: 0 14px 34px -16px rgba(46, 42, 94, .24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--grad-soft);
+}
+
+.disp {
+  font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
+
+.glass {
+  position: relative;
+  background: rgba(255, 255, 255, .56);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 26px;
+  box-shadow: var(--shadow-soft);
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.3px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .15) 28%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, .15) 76%, rgba(255, 255, 255, .8) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--grad-btn);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.pill {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: .03em;
+}
+
+.pill.done {
+  background: var(--mint-100);
+  color: var(--mint-600);
+}
+
+.pill.next {
+  background: #E3E8FA;
+  color: var(--blue-600);
+}
+
+.pill.soon {
+  background: rgba(35, 42, 82, .08);
+  color: var(--ink-faint);
+}
+
+.mile-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .5);
+  margin-bottom: 12px;
+}
+
+.mile-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ---- Screen7-Interview.dc.html ---- */
 
-  :root{
-    --ink:#232A52; --ink-soft:rgba(35,42,82,.64); --ink-faint:rgba(35,42,82,.4);
-    --pink-500:#E85D8A; --violet-400:#A99FD0; --blue-600:#4A57A0; --amber-100:#FBEBD3; --amber-700:#9C6A28;
-    --grad-btn:linear-gradient(120deg,#EE86AC 0%,#B98FC9 50%,#6E7BC0 100%);
-    --grad-soft:linear-gradient(160deg,#FDF1F5 0%,#F6EEF6 45%,#EDF0F8 100%);
-    --shadow-soft:0 14px 34px -16px rgba(46,42,94,.24);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--grad-soft);}
-  .disp{font-family:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;}
-  .glass{position:relative;background:rgba(255,255,255,.56);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:26px;box-shadow:var(--shadow-soft);}
-  .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.3px;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.15) 28%,rgba(255,255,255,0) 52%,rgba(255,255,255,.15) 76%,rgba(255,255,255,.8) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
-  .step-c{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;flex:none;}
-  .step-c.complete{background:var(--grad-btn);color:#fff;}
-  .step-c.active{background:var(--grad-btn);color:#fff;box-shadow:0 0 0 5px rgba(180,90,150,.16);}
-  .step-line{height:3px;border-radius:2px;flex:1;}
-  .step-line.complete{background:var(--grad-btn);}
-  .bubble{padding:14px 18px;border-radius:18px;font-size:14px;line-height:1.5;max-width:70%;}
-  .bubble.them{background:rgba(255,255,255,.62);border-bottom-left-radius:6px;}
-  .bubble.me{background:var(--grad-btn);color:#fff;border-bottom-right-radius:6px;margin-left:auto;}
+:root {
+  --ink: #232A52;
+  --ink-soft: rgba(35, 42, 82, .64);
+  --ink-faint: rgba(35, 42, 82, .4);
+  --pink-500: #E85D8A;
+  --violet-400: #A99FD0;
+  --blue-600: #4A57A0;
+  --amber-100: #FBEBD3;
+  --amber-700: #9C6A28;
+  --grad-btn: linear-gradient(120deg, #EE86AC 0%, #B98FC9 50%, #6E7BC0 100%);
+  --grad-soft: linear-gradient(160deg, #FDF1F5 0%, #F6EEF6 45%, #EDF0F8 100%);
+  --shadow-soft: 0 14px 34px -16px rgba(46, 42, 94, .24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--grad-soft);
+}
+
+.disp {
+  font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
+
+.glass {
+  position: relative;
+  background: rgba(255, 255, 255, .56);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 26px;
+  box-shadow: var(--shadow-soft);
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.3px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .15) 28%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, .15) 76%, rgba(255, 255, 255, .8) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.step-c {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12.5px;
+  flex: none;
+}
+
+.step-c.complete {
+  background: var(--grad-btn);
+  color: #fff;
+}
+
+.step-c.active {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 0 0 5px rgba(180, 90, 150, .16);
+}
+
+.step-line {
+  height: 3px;
+  border-radius: 2px;
+  flex: 1;
+}
+
+.step-line.complete {
+  background: var(--grad-btn);
+}
+
+.bubble {
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 70%;
+}
+
+.bubble.them {
+  background: rgba(255, 255, 255, .62);
+  border-bottom-left-radius: 6px;
+}
+
+.bubble.me {
+  background: var(--grad-btn);
+  color: #fff;
+  border-bottom-right-radius: 6px;
+  margin-left: auto;
+}
 
 /* ---- Screen8-GuestCompletion.dc.html ---- */
 
-  :root{
-    --ink:#232A52; --ink-soft:rgba(35,42,82,.64); --ink-faint:rgba(35,42,82,.4);
-    --pink-500:#E85D8A; --violet-400:#A99FD0; --blue-600:#4A57A0;
-    --grad-hero:linear-gradient(135deg,#FBDCE6 0%,#F0C7DA 20%,#CEC3E2 45%,#9FAAD6 68%,#5661A6 100%);
-    --grad-btn:linear-gradient(120deg,#EE86AC 0%,#B98FC9 50%,#6E7BC0 100%);
-    --shadow-lift:0 26px 60px -20px rgba(46,42,94,.42);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;color:var(--ink);background:#FBF8FA;}
-  .disp{font-family:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;}
-  .glass{position:relative;background:rgba(255,255,255,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:26px;}
-  .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.3px;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.15) 28%,rgba(255,255,255,0) 52%,rgba(255,255,255,.15) 76%,rgba(255,255,255,.8) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
-  .pill-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:17px 34px;border-radius:999px;font-weight:700;font-size:16px;border:none;cursor:pointer;font-family:inherit;}
-  .pill-btn.primary{background:var(--grad-btn);color:#fff;box-shadow:0 16px 34px -10px rgba(180,90,150,.6);}
-  .grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.7) 0.6px, transparent 0.6px);background-size:3.4px 3.4px;opacity:.28;mix-blend-mode:overlay;pointer-events:none;}
-  .blur-orb{position:absolute;border-radius:50%;filter:blur(50px);}
-  .recap-item{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.55);}
+:root {
+  --ink: #232A52;
+  --ink-soft: rgba(35, 42, 82, .64);
+  --ink-faint: rgba(35, 42, 82, .4);
+  --pink-500: #E85D8A;
+  --violet-400: #A99FD0;
+  --blue-600: #4A57A0;
+  --grad-hero: linear-gradient(135deg, #FBDCE6 0%, #F0C7DA 20%, #CEC3E2 45%, #9FAAD6 68%, #5661A6 100%);
+  --grad-btn: linear-gradient(120deg, #EE86AC 0%, #B98FC9 50%, #6E7BC0 100%);
+  --shadow-lift: 0 26px 60px -20px rgba(46, 42, 94, .42);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  background: #FBF8FA;
+}
+
+.disp {
+  font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
+
+.glass {
+  position: relative;
+  background: rgba(255, 255, 255, .6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 26px;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.3px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .15) 28%, rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, .15) 76%, rgba(255, 255, 255, .8) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 17px 34px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pill-btn.primary {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 16px 34px -10px rgba(180, 90, 150, .6);
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .7) 0.6px, transparent 0.6px);
+  background-size: 3.4px 3.4px;
+  opacity: .28;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.blur-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
+.recap-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .55);
+}
 
 /* ---- Modal-Auth.dc.html ---- */
 
-  :root{
-    --ink:#232A52; --ink-soft:rgba(35,42,82,.64); --ink-faint:rgba(35,42,82,.4);
-    --pink-500:#E85D8A; --violet-400:#A99FD0; --blue-600:#4A57A0;
-    --grad-hero:linear-gradient(135deg,#FBDCE6 0%,#F0C7DA 20%,#CEC3E2 45%,#9FAAD6 68%,#5661A6 100%);
-    --grad-btn:linear-gradient(120deg,#EE86AC 0%,#B98FC9 50%,#6E7BC0 100%);
-    --shadow-lift:0 30px 70px -22px rgba(30,26,70,.5);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;color:var(--ink);}
-  .disp{font-family:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;}
-  .backdrop{position:relative;min-height:760px;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-  .grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.7) 0.6px, transparent 0.6px);background-size:3.4px 3.4px;opacity:.22;mix-blend-mode:overlay;pointer-events:none;}
-  .veil{position:absolute;inset:0;background:rgba(20,18,48,.28);backdrop-filter:blur(3px);}
-  .modal{position:relative;width:420px;background:rgba(255,255,255,.86);backdrop-filter:blur(22px);border-radius:28px;box-shadow:var(--shadow-lift);padding:34px;}
-  .modal::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(255,255,255,.2) 30%,rgba(255,255,255,0) 55%,rgba(255,255,255,.2) 78%,rgba(255,255,255,.9) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
-  .tabs{display:flex;background:rgba(35,42,82,.06);border-radius:999px;padding:4px;margin-bottom:24px;}
-  .tab{flex:1;text-align:center;padding:10px 0;border-radius:999px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--ink-faint);}
-  .tab.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px -4px rgba(46,42,94,.25);}
-  .field{width:100%;border-radius:14px;border:1.5px solid rgba(90,90,140,.2);background:rgba(255,255,255,.75);padding:13px 16px;font-family:inherit;font-size:14px;color:var(--ink);margin-bottom:12px;}
-  .pill-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 0;width:100%;border-radius:999px;font-weight:700;font-size:15px;border:none;cursor:pointer;font-family:inherit;}
-  .pill-btn.primary{background:var(--grad-btn);color:#fff;box-shadow:0 12px 26px -10px rgba(180,90,150,.55);}
-  .pill-btn.ghost{background:transparent;color:var(--ink-soft);border:1.5px solid rgba(90,90,140,.2);}
+:root {
+  --ink: #232A52;
+  --ink-soft: rgba(35, 42, 82, .64);
+  --ink-faint: rgba(35, 42, 82, .4);
+  --pink-500: #E85D8A;
+  --violet-400: #A99FD0;
+  --blue-600: #4A57A0;
+  --grad-hero: linear-gradient(135deg, #FBDCE6 0%, #F0C7DA 20%, #CEC3E2 45%, #9FAAD6 68%, #5661A6 100%);
+  --grad-btn: linear-gradient(120deg, #EE86AC 0%, #B98FC9 50%, #6E7BC0 100%);
+  --shadow-lift: 0 30px 70px -22px rgba(30, 26, 70, .5);
+}
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+}
+
+.disp {
+  font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
+
+.backdrop {
+  position: relative;
+  min-height: 760px;
+  background: var(--grad-hero);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .7) 0.6px, transparent 0.6px);
+  background-size: 3.4px 3.4px;
+  opacity: .22;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 48, .28);
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  position: relative;
+  width: 420px;
+  background: rgba(255, 255, 255, .86);
+  backdrop-filter: blur(22px);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lift);
+  padding: 34px;
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, .2) 30%, rgba(255, 255, 255, 0) 55%, rgba(255, 255, 255, .2) 78%, rgba(255, 255, 255, .9) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.tabs {
+  display: flex;
+  background: rgba(35, 42, 82, .06);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  color: var(--ink-faint);
+}
+
+.tab.on {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 4px 12px -4px rgba(46, 42, 94, .25);
+}
+
+.field {
+  width: 100%;
+  border-radius: 14px;
+  border: 1.5px solid rgba(90, 90, 140, .2);
+  background: rgba(255, 255, 255, .75);
+  padding: 13px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 0;
+  width: 100%;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pill-btn.primary {
+  background: var(--grad-btn);
+  color: #fff;
+  box-shadow: 0 12px 26px -10px rgba(180, 90, 150, .55);
+}
+
+.pill-btn.ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1.5px solid rgba(90, 90, 140, .2);
+}
 html,body{margin:0;}
 :root{ --ease-out: cubic-bezier(0.16, 1, 0.3, 1); }
 .view{display:none;}
@@ -414,7 +1040,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
     <div class="star" style="top:60px;left:38%;"></div><div class="star" style="top:140px;left:62%;"></div>
     <div class="star" style="top:220px;left:80%;width:2px;height:2px;"></div><div class="star" style="top:90px;left:52%;width:2px;height:2px;"></div>
     <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;">
-      <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="bflyL" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bflyL)"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bflyL)" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div>
+      <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;">
+  <defs>
+    <linearGradient id="bflyL_p" x1="4" y1="12" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBDCE6"/>
+      <stop offset="100%" stop-color="#E85D8A"/>
+    </linearGradient>
+    <linearGradient id="bflyL_b" x1="18" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A99FD0"/>
+      <stop offset="60%" stop-color="#7A6FB8"/>
+      <stop offset="100%" stop-color="#46539E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Pink Translucent Wing -->
+  <path d="M22 24 C19 14 11 10 5 16 C1 20 2 28 8 32 C14 36 19 32 22 24 Z" fill="url(#bflyL_p)" opacity="0.92"/>
+  <!-- Right Periwinkle Blue Diagonal Wing -->
+  <path d="M22 24 C27 13 37 11 42 17 C46 22 43 31 36 36 C29 40 23 32 22 24 Z" fill="url(#bflyL_b)" opacity="0.85" style="mix-blend-mode:multiply;"/>
+  <!-- Minimalist Editorial Contour Lines -->
+  <path d="M3 35 C11 26 18 16 22 7 C26 18 34 26 43 24" stroke="#7A6FB8" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M7 19 C16 23 22 27 30 38" stroke="#E85D8A" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <circle cx="22" cy="23.5" r="1.4" fill="#1E2243"/>
+</svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div>
     </div>
     <div style="position:relative;display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;padding:44px 60px 0;align-items:center;">
       <div>
@@ -427,15 +1073,16 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
           </button>
         </div>
       </div>
-      <div class="js-img" style="position:relative;height:340px;display:flex;align-items:center;justify-content:center;">
-        <div class="blur-orb js-parallax" data-speed="0.35" style="width:260px;height:260px;left:14%;top:20%;background:#F2A9C6;opacity:.65;"></div>
-        <div class="blur-orb js-parallax" data-speed="0.2" style="width:230px;height:230px;right:8%;bottom:10%;background:#4E5AA0;opacity:.6;"></div>
-        <svg width="210" height="210" viewBox="0 0 48 48" fill="none" style="position:relative;filter:drop-shadow(0 20px 40px rgba(40,30,80,.28));">
-          <defs><linearGradient id="bflyHero" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FBDCE6"/><stop offset="0.5" stop-color="#D8C6DF"/><stop offset="1" stop-color="#4E5AA0"/></linearGradient></defs>
-          <path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bflyHero)"/>
-          <path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bflyHero)" opacity="0.88"/>
-          <line x1="24" y1="10" x2="24" y2="34" stroke="#2C3568" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
+      <div class="js-img" style="position:relative;min-height:360px;display:flex;align-items:center;justify-content:center;">
+        <div class="blur-orb js-parallax" data-speed="0.35" style="width:280px;height:280px;left:10%;top:15%;background:#F2A9C6;opacity:.7;"></div>
+        <div class="blur-orb js-parallax" data-speed="0.2" style="width:260px;height:260px;right:4%;bottom:5%;background:#4E5AA0;opacity:.65;"></div>
+        <div class="hero-abstract-container">
+          <img src="hero-floating-butterflies.png" alt="ReRouteHer Abstract Editorial Wings" style="width:100%;max-width:380px;height:auto;filter:drop-shadow(0 20px 40px rgba(46,34,94,.25));pointer-events:none;" />
+          <div class="hero-editorial-badge">
+            <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#E85D8A;box-shadow:0 0 8px #E85D8A;"></span>
+            <span>Echoes of Flight &middot; Editorial</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -485,7 +1132,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </div></div>
 <div class="view" id="view-story-a">
 <div style="min-height:900px;background:var(--grad-soft);">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="bfly2a" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bfly2a)"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bfly2a)" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;">
+  <defs>
+    <linearGradient id="bfly2a_p" x1="4" y1="12" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBDCE6"/>
+      <stop offset="100%" stop-color="#E85D8A"/>
+    </linearGradient>
+    <linearGradient id="bfly2a_b" x1="18" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A99FD0"/>
+      <stop offset="60%" stop-color="#7A6FB8"/>
+      <stop offset="100%" stop-color="#46539E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Pink Translucent Wing -->
+  <path d="M22 24 C19 14 11 10 5 16 C1 20 2 28 8 32 C14 36 19 32 22 24 Z" fill="url(#bfly2a_p)" opacity="0.92"/>
+  <!-- Right Periwinkle Blue Diagonal Wing -->
+  <path d="M22 24 C27 13 37 11 42 17 C46 22 43 31 36 36 C29 40 23 32 22 24 Z" fill="url(#bfly2a_b)" opacity="0.85" style="mix-blend-mode:multiply;"/>
+  <!-- Minimalist Editorial Contour Lines -->
+  <path d="M3 35 C11 26 18 16 22 7 C26 18 34 26 43 24" stroke="#7A6FB8" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M7 19 C16 23 22 27 30 38" stroke="#E85D8A" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <circle cx="22" cy="23.5" r="1.4" fill="#1E2243"/>
+</svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
   <div style="max-width:680px;margin:0 auto;padding:0 24px;">
     <div class="js-stepper" style="display:flex;align-items:center;gap:0;margin-bottom:8px;"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c active">1</div><div style="font-size:11px;font-weight:700;color:var(--ink);">Story</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">2</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Snapshot</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">3</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Gap</div></div></div><div style="margin-bottom:22px;"></div>
     <div class="js-stepper" style="display:flex;align-items:center;gap:6px;margin-bottom:10px;"><div class="substep-dot active"></div><div class="substep-dot"></div><div class="substep-dot"></div><div style="font-size:11.5px;font-weight:700;color:var(--ink-faint);margin-left:8px;">1 of 3 &middot; Background</div></div>
@@ -542,7 +1209,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </div></div>
 <div class="view" id="view-story-b">
 <div style="min-height:1000px;background:var(--grad-soft);">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="bfly2b" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bfly2b)"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bfly2b)" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;">
+  <defs>
+    <linearGradient id="bfly2b_p" x1="4" y1="12" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBDCE6"/>
+      <stop offset="100%" stop-color="#E85D8A"/>
+    </linearGradient>
+    <linearGradient id="bfly2b_b" x1="18" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A99FD0"/>
+      <stop offset="60%" stop-color="#7A6FB8"/>
+      <stop offset="100%" stop-color="#46539E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Pink Translucent Wing -->
+  <path d="M22 24 C19 14 11 10 5 16 C1 20 2 28 8 32 C14 36 19 32 22 24 Z" fill="url(#bfly2b_p)" opacity="0.92"/>
+  <!-- Right Periwinkle Blue Diagonal Wing -->
+  <path d="M22 24 C27 13 37 11 42 17 C46 22 43 31 36 36 C29 40 23 32 22 24 Z" fill="url(#bfly2b_b)" opacity="0.85" style="mix-blend-mode:multiply;"/>
+  <!-- Minimalist Editorial Contour Lines -->
+  <path d="M3 35 C11 26 18 16 22 7 C26 18 34 26 43 24" stroke="#7A6FB8" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M7 19 C16 23 22 27 30 38" stroke="#E85D8A" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <circle cx="22" cy="23.5" r="1.4" fill="#1E2243"/>
+</svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
   <div style="max-width:680px;margin:0 auto;padding:0 24px;">
     <div class="js-stepper" style="display:flex;align-items:center;gap:0;margin-bottom:8px;"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c active">1</div><div style="font-size:11px;font-weight:700;color:var(--ink);">Story</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">2</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Snapshot</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">3</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Gap</div></div></div><div style="margin-bottom:22px;"></div>
     <div class="js-stepper" style="display:flex;align-items:center;gap:6px;margin-bottom:10px;"><div class="substep-dot done"></div><div class="substep-dot active"></div><div class="substep-dot"></div><div style="font-size:11.5px;font-weight:700;color:var(--ink-faint);margin-left:8px;">2 of 3 &middot; Your break</div></div>
@@ -606,7 +1293,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </div></div>
 <div class="view" id="view-story-c">
 <div style="min-height:1080px;background:var(--grad-soft);">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="bfly2c" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bfly2c)"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bfly2c)" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;">
+  <defs>
+    <linearGradient id="bfly2c_p" x1="4" y1="12" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBDCE6"/>
+      <stop offset="100%" stop-color="#E85D8A"/>
+    </linearGradient>
+    <linearGradient id="bfly2c_b" x1="18" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A99FD0"/>
+      <stop offset="60%" stop-color="#7A6FB8"/>
+      <stop offset="100%" stop-color="#46539E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Pink Translucent Wing -->
+  <path d="M22 24 C19 14 11 10 5 16 C1 20 2 28 8 32 C14 36 19 32 22 24 Z" fill="url(#bfly2c_p)" opacity="0.92"/>
+  <!-- Right Periwinkle Blue Diagonal Wing -->
+  <path d="M22 24 C27 13 37 11 42 17 C46 22 43 31 36 36 C29 40 23 32 22 24 Z" fill="url(#bfly2c_b)" opacity="0.85" style="mix-blend-mode:multiply;"/>
+  <!-- Minimalist Editorial Contour Lines -->
+  <path d="M3 35 C11 26 18 16 22 7 C26 18 34 26 43 24" stroke="#7A6FB8" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M7 19 C16 23 22 27 30 38" stroke="#E85D8A" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <circle cx="22" cy="23.5" r="1.4" fill="#1E2243"/>
+</svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
   <div style="max-width:680px;margin:0 auto;padding:0 24px;">
     <div class="js-stepper" style="display:flex;align-items:center;gap:0;margin-bottom:8px;"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c active">1</div><div style="font-size:11px;font-weight:700;color:var(--ink);">Story</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">2</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Snapshot</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">3</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Gap</div></div></div><div style="margin-bottom:22px;"></div>
     <div class="js-stepper" style="display:flex;align-items:center;gap:6px;margin-bottom:10px;"><div class="substep-dot done"></div><div class="substep-dot done"></div><div class="substep-dot active"></div><div style="font-size:11.5px;font-weight:700;color:var(--ink-faint);margin-left:8px;">3 of 3 &middot; What you need now</div></div>
@@ -679,7 +1386,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </div></div>
 <div class="view" id="view-snapshot">
 <div style="min-height:960px;background:var(--grad-soft);">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="bfly3" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bfly3)"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bfly3)" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;">
+  <defs>
+    <linearGradient id="bfly3_p" x1="4" y1="12" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBDCE6"/>
+      <stop offset="100%" stop-color="#E85D8A"/>
+    </linearGradient>
+    <linearGradient id="bfly3_b" x1="18" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A99FD0"/>
+      <stop offset="60%" stop-color="#7A6FB8"/>
+      <stop offset="100%" stop-color="#46539E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Pink Translucent Wing -->
+  <path d="M22 24 C19 14 11 10 5 16 C1 20 2 28 8 32 C14 36 19 32 22 24 Z" fill="url(#bfly3_p)" opacity="0.92"/>
+  <!-- Right Periwinkle Blue Diagonal Wing -->
+  <path d="M22 24 C27 13 37 11 42 17 C46 22 43 31 36 36 C29 40 23 32 22 24 Z" fill="url(#bfly3_b)" opacity="0.85" style="mix-blend-mode:multiply;"/>
+  <!-- Minimalist Editorial Contour Lines -->
+  <path d="M3 35 C11 26 18 16 22 7 C26 18 34 26 43 24" stroke="#7A6FB8" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M7 19 C16 23 22 27 30 38" stroke="#E85D8A" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <circle cx="22" cy="23.5" r="1.4" fill="#1E2243"/>
+</svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
   <div style="max-width:860px;margin:0 auto;padding:0 24px;">
     <div class="js-stepper" style="display:flex;align-items:center;gap:0;margin-bottom:8px;"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><button type="button" class="step-c complete" onclick="showView('story-a')" title="Jump back to Story">&#10003;</button><div style="font-size:11px;font-weight:700;color:var(--ink);">Story</div></div><div class="step-line complete"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c active">2</div><div style="font-size:11px;font-weight:700;color:var(--ink);">Snapshot</div></div><div class="step-line future"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c future">3</div><div style="font-size:11px;font-weight:600;color:var(--ink-faint);">Gap</div></div></div><div style="font-size:11px;color:var(--ink-faint);margin-bottom:22px;display:flex;align-items:center;gap:5px;"><span>&#8618;</span> Click a completed step to jump back &mdash; your inputs are automatically saved.</div>
     <div class="reveal-mask"><div class="reveal-inner js-title">Your skill snapshot</div></div>
@@ -758,7 +1485,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </div></div>
 <div class="view" id="view-gap">
 <div style="min-height:980px;background:var(--grad-soft);">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="bfly4" x1="4" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#EE86AC"/><stop offset="1" stop-color="#6E7BC0"/></linearGradient></defs><path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bfly4)"/><path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bfly4)" opacity="0.8"/><line x1="24" y1="10" x2="24" y2="34" stroke="#232A52" stroke-width="1.3" stroke-linecap="round"/></svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;"><div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" style="flex:none;">
+  <defs>
+    <linearGradient id="bfly4_p" x1="4" y1="12" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBDCE6"/>
+      <stop offset="100%" stop-color="#E85D8A"/>
+    </linearGradient>
+    <linearGradient id="bfly4_b" x1="18" y1="8" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A99FD0"/>
+      <stop offset="60%" stop-color="#7A6FB8"/>
+      <stop offset="100%" stop-color="#46539E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Blossom Pink Translucent Wing -->
+  <path d="M22 24 C19 14 11 10 5 16 C1 20 2 28 8 32 C14 36 19 32 22 24 Z" fill="url(#bfly4_p)" opacity="0.92"/>
+  <!-- Right Periwinkle Blue Diagonal Wing -->
+  <path d="M22 24 C27 13 37 11 42 17 C46 22 43 31 36 36 C29 40 23 32 22 24 Z" fill="url(#bfly4_b)" opacity="0.85" style="mix-blend-mode:multiply;"/>
+  <!-- Minimalist Editorial Contour Lines -->
+  <path d="M3 35 C11 26 18 16 22 7 C26 18 34 26 43 24" stroke="#7A6FB8" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M7 19 C16 23 22 27 30 38" stroke="#E85D8A" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.65"/>
+  <circle cx="22" cy="23.5" r="1.4" fill="#1E2243"/>
+</svg><div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">ReRouteHer</div></div></div>
   <div style="max-width:880px;margin:0 auto;padding:0 24px;">
     <div class="js-stepper" style="display:flex;align-items:center;gap:0;margin-bottom:8px;"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><button type="button" class="step-c complete" onclick="showView('story-a')" title="Jump back to Story">&#10003;</button><div style="font-size:11px;font-weight:700;color:var(--ink);">Story</div></div><div class="step-line complete"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><button type="button" class="step-c complete" onclick="showView('snapshot')" title="Jump back to Snapshot">&#10003;</button><div style="font-size:11px;font-weight:700;color:var(--ink);">Snapshot</div></div><div class="step-line complete"></div><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><div class="step-c active">3</div><div style="font-size:11px;font-weight:700;color:var(--ink);">Gap</div></div></div><div style="font-size:11px;color:var(--ink-faint);margin-bottom:22px;display:flex;align-items:center;gap:5px;"><span>&#8618;</span> Click a completed step to jump back &mdash; your inputs are automatically saved.</div>
     
