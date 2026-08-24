@@ -1,8 +1,7 @@
-// ReRouteHer — Master Figma UI & Design System Generator
-// Generates the ENTIRE repository: All 11 Screens, Design System, Tokens, and Role Variants.
+// ReRouteHer — Simplified MVP Figma UI & Design System Generator
+// Strictly matches the MVP User Flow (Mandatory CV Upload, 2-Question Break NLP Text Input, Snapshot, and Target Roles)
 
 (async function main() {
-  // 1. Font loader with graceful fallbacks
   async function loadSafeFont(family, style) {
     try {
       await figma.loadFontAsync({ family, style });
@@ -19,13 +18,11 @@
   }
 
   const fontSans = await loadSafeFont("Plus Jakarta Sans", "Regular");
-  const fontSansMed = await loadSafeFont("Plus Jakarta Sans", "Medium");
   const fontSansSemi = await loadSafeFont("Plus Jakarta Sans", "SemiBold");
   const fontSansBold = await loadSafeFont("Plus Jakarta Sans", "Bold");
   const fontDispBold = await loadSafeFont("Bricolage Grotesque", "Bold");
   const fontDispExtra = await loadSafeFont("Bricolage Grotesque", "ExtraBold");
 
-  // 2. Color Palette & Gradients
   const hex = (h) => {
     const c = h.replace("#", "");
     return {
@@ -53,9 +50,7 @@
     amberText: hex("#96540D"),
     amberDot: hex("#C07018"),
     bgSoft: hex("#F8F5FA"),
-    cardBg: hex("#FFFFFF"),
     borderSoft: hex("#E2DFEE"),
-    borderFaint: hex("#EEEBF6"),
     white: { r: 1, g: 1, b: 1 }
   };
 
@@ -69,27 +64,13 @@
     ]
   };
 
-  const heroBgGradient = {
-    type: "GRADIENT_LINEAR",
-    gradientTransform: [[0.7, 0.7, 0], [-0.7, 0.7, 0]],
-    gradientStops: [
-      { position: 0, color: hex("#FBDCE6") },
-      { position: 0.25, color: hex("#F0C7DA") },
-      { position: 0.5, color: hex("#CEC3E2") },
-      { position: 0.75, color: hex("#9FAAD6") },
-      { position: 1, color: hex("#5661A6") }
-    ]
-  };
-
-  // 3. UI Helper Builders
-  function createText(chars, font, size, color, align = "LEFT", autoResize = "WIDTH_AND_HEIGHT") {
+  function createText(chars, font, size, color, align = "LEFT") {
     const t = figma.createText();
     t.fontName = font;
     t.fontSize = size;
     t.characters = chars;
     t.fills = [{ type: "SOLID", color }];
     t.textAlignHorizontal = align;
-    t.textAutoResize = autoResize;
     return t;
   }
 
@@ -123,7 +104,6 @@
     f.counterAxisSizingMode = "AUTO";
     f.paddingLeft = 14; f.paddingRight = 14; f.paddingTop = 8; f.paddingBottom = 8;
     f.cornerRadius = 999;
-    f.itemSpacing = 6;
     f.counterAxisAlignItems = "CENTER";
 
     let textColor = C.ink;
@@ -131,62 +111,38 @@
     let strokeColor = C.borderSoft;
 
     if (type === "mint") {
-      textColor = C.mintText;
-      bgColor = C.mintBg;
-      strokeColor = { r: 0.2, g: 0.6, b: 0.4 };
+      textColor = C.mintText; bgColor = C.mintBg; strokeColor = { r: 0.2, g: 0.6, b: 0.4 };
     } else if (type === "active" || type === "pink") {
-      textColor = C.ink;
-      bgColor = C.pinkLight;
-      strokeColor = C.pinkDark;
+      textColor = C.ink; bgColor = C.pinkLight; strokeColor = C.pinkDark;
     } else if (type === "blue") {
-      textColor = C.blueDark;
-      bgColor = C.blueLight;
-      strokeColor = C.blue;
+      textColor = C.blueDark; bgColor = C.blueLight; strokeColor = C.blue;
     } else if (type === "amber") {
-      textColor = C.amberText;
-      bgColor = C.amberBg;
-      strokeColor = C.amberDot;
+      textColor = C.amberText; bgColor = C.amberBg; strokeColor = C.amberDot;
     }
 
     f.fills = [{ type: "SOLID", color: bgColor, opacity: type === "default" ? 0.85 : 1 }];
     f.strokes = [{ type: "SOLID", color: strokeColor, opacity: 0.4 }];
     f.strokeWeight = 1;
-
-    const t = createText(text, fontSansSemi, 12.5, textColor);
-    f.appendChild(t);
+    f.appendChild(createText(text, fontSansSemi, 12.5, textColor));
     return f;
   }
 
-  function createPrimaryButton(text, hasIcon = true, size = "md") {
+  function createPrimaryButton(text, hasIcon = true) {
     const btn = figma.createFrame();
     btn.layoutMode = "HORIZONTAL";
     btn.primaryAxisSizingMode = "AUTO";
     btn.counterAxisSizingMode = "AUTO";
-    const py = size === "lg" ? 18 : 14;
-    const px = size === "lg" ? 36 : 28;
-    btn.paddingLeft = px; btn.paddingRight = px; btn.paddingTop = py; btn.paddingBottom = py;
+    btn.paddingLeft = 28; btn.paddingRight = 28; btn.paddingTop = 14; btn.paddingBottom = 14;
     btn.cornerRadius = 999;
     btn.itemSpacing = 8;
     btn.counterAxisAlignItems = "CENTER";
     btn.fills = [brandGradient];
-    btn.effects = [{
-      type: "DROP_SHADOW",
-      color: { r: 0.75, g: 0.35, b: 0.6, a: 0.4 },
-      offset: { x: 0, y: 10 },
-      radius: 20,
-      spread: -4,
-      visible: true,
-      blendMode: "NORMAL"
-    }];
-
-    btn.appendChild(createText(text, fontSansBold, size === "lg" ? 16 : 14.5, C.white));
-    if (hasIcon) {
-      btn.appendChild(createText("→", fontSansBold, 16, C.white));
-    }
+    btn.appendChild(createText(text, fontSansBold, 14.5, C.white));
+    if (hasIcon) btn.appendChild(createText("→", fontSansBold, 16, C.white));
     return btn;
   }
 
-  function createHeader(activeStep = 1, activeSub = null) {
+  function createHeader(activeStep = 1) {
     const bar = figma.createFrame();
     bar.layoutMode = "HORIZONTAL";
     bar.primaryAxisSizingMode = "FIXED";
@@ -197,7 +153,6 @@
     bar.counterAxisAlignItems = "CENTER";
     bar.fills = [];
 
-    // Logo
     const logoGroup = figma.createFrame();
     logoGroup.layoutMode = "HORIZONTAL";
     logoGroup.itemSpacing = 10;
@@ -205,23 +160,20 @@
     logoGroup.fills = [];
     
     const iconBadge = figma.createFrame();
-    iconBadge.resize(32, 32);
+    iconBadge.resize(30, 30);
     iconBadge.cornerRadius = 999;
     iconBadge.fills = [brandGradient];
     logoGroup.appendChild(iconBadge);
-
-    const logoText = createText("ReRouteHer", fontDispExtra, 19, C.ink);
-    logoGroup.appendChild(logoText);
+    logoGroup.appendChild(createText("ReRouteHer", fontDispExtra, 18, C.ink));
     bar.appendChild(logoGroup);
 
-    // Stepper
     const stepper = figma.createFrame();
     stepper.layoutMode = "HORIZONTAL";
-    stepper.itemSpacing = 14;
+    stepper.itemSpacing = 12;
     stepper.counterAxisAlignItems = "CENTER";
     stepper.fills = [];
 
-    const steps = ["1. Story", "2. Snapshot", "3. Gap"];
+    const steps = ["1. Upload CV", "2. Career Break", "3. Snapshot", "4. Gap"];
     steps.forEach((name, i) => {
       const stepIdx = i + 1;
       const isDone = stepIdx < activeStep;
@@ -248,9 +200,9 @@
         node.appendChild(createText(name.split(". ")[1], fontSansSemi, 12, C.inkFaint));
       }
       stepper.appendChild(node);
-      if (i < 2) {
+      if (i < 3) {
         const line = figma.createLine();
-        line.resize(22, 0);
+        line.resize(20, 0);
         line.strokes = [{ type: "SOLID", color: isDone ? C.pinkDark : C.borderSoft }];
         line.strokeWeight = 2;
         stepper.appendChild(line);
@@ -260,8 +212,6 @@
     bar.appendChild(stepper);
     return bar;
   }
-
-  // ================= 4. ALL 11 INDIVIDUAL SCREEN BUILDERS =================
 
   // 1. E1 LANDING
   function buildE1Landing() {
@@ -289,16 +239,15 @@
     left.fills = [];
 
     left.appendChild(createText("See what you still\nhave to offer", fontDispExtra, 46, C.ink));
-    const sub = createText("Coming back to work after a career break can feel like starting from zero. It isn't. We help turn what you've been doing into an actionable plan.", fontSans, 15.5, C.inkSoft);
+    const sub = createText("Coming back to work after a career break can feel like starting from zero. It isn't. We turn your resume and life experience into an actionable skill readiness plan.", fontSans, 15.5, C.inkSoft);
     sub.resize(520, 66);
-    sub.textAutoResize = "NONE";
     left.appendChild(sub);
-    left.appendChild(createPrimaryButton("Get started", true, "lg"));
+    left.appendChild(createPrimaryButton("Get started", true));
     hero.appendChild(left);
 
     const heroCard = createGlassCard(480, 32, 24);
     heroCard.itemSpacing = 16;
-    heroCard.appendChild(createChip("✦ 3 Steps · Zero Signup Friction", "pink"));
+    heroCard.appendChild(createChip("✦ 2 Simple Inputs · AI-Powered Fit", "pink"));
     heroCard.appendChild(createText("A career break counts as experience", fontDispBold, 22, C.ink));
     heroCard.appendChild(createText("Caring for family built real skills: budgeting, scheduling, multi-stakeholder coordination. We map them straight to real O*NET workforce competencies.", fontSans, 14, C.inkSoft));
     hero.appendChild(heroCard);
@@ -311,9 +260,9 @@
     featureRow.fills = [];
 
     [
-      { t: "1. Tell your story", d: "Share your professional background and caregiving activities." },
-      { t: "2. See your snapshot", d: "We reframe your experience into standardized O*NET skills." },
-      { t: "3. Know your next move", d: "See transparent weighted fit and your top 3 prioritized gaps." }
+      { t: "1. Upload your CV", d: "Extract your core career competencies directly from your resume." },
+      { t: "2. Describe your break", d: "Tell us in your own words what filled your time — AI reframes it to O*NET." },
+      { t: "3. See fit & top gaps", d: "Get your transparent readiness score and top 3 focus areas." }
     ].forEach(f => {
       const c = createGlassCard("AUTO", 22, 18);
       c.layoutGrow = 1;
@@ -323,14 +272,13 @@
       featureRow.appendChild(c);
     });
     page.appendChild(featureRow);
-
     return page;
   }
 
-  // 2. E2A STORY: BACKGROUND
-  function buildE2aStory() {
+  // 2. E2A UPLOAD CV (MANDATORY, NO SKIP, NO MANUAL DROPDOWN)
+  function buildE2aUploadCV() {
     const page = figma.createFrame();
-    page.name = "02 · E2a Story Intake (Background)";
+    page.name = "02 · E2a Upload CV (Mandatory)";
     page.resize(1280, 880);
     page.fills = [{ type: "SOLID", color: C.bgSoft }];
     page.layoutMode = "VERTICAL";
@@ -341,62 +289,46 @@
 
     const card = createGlassCard(720, 36, 24);
     card.layoutAlign = "CENTER";
-    card.itemSpacing = 20;
+    card.itemSpacing = 22;
 
-    card.appendChild(createChip("Step 1 of 3 · Professional History", "blue"));
-    card.appendChild(createText("What did you do before?", fontDispExtra, 26, C.ink));
-    card.appendChild(createText("One thing at a time — this step alone is enough to build your starting skill snapshot.", fontSans, 14, C.inkSoft));
+    card.appendChild(createChip("Step 1 of 2 · Resume Ingestion", "blue"));
+    card.appendChild(createText("Upload your CV", fontDispExtra, 26, C.ink));
+    card.appendChild(createText("We analyze your previous experience to extract your core professional skills automatically.", fontSans, 14, C.inkSoft));
 
-    // Upload Dropzone
+    // Dropzone
     const drop = figma.createFrame();
     drop.layoutMode = "VERTICAL";
     drop.layoutAlign = "STRETCH";
     drop.counterAxisAlignItems = "CENTER";
-    drop.paddingTop = 28; drop.paddingBottom = 28;
+    drop.paddingTop = 32; drop.paddingBottom = 32;
     drop.cornerRadius = 16;
-    drop.fills = [{ type: "SOLID", color: C.white, opacity: 0.6 }];
-    drop.strokes = [{ type: "SOLID", color: C.pinkDark, opacity: 0.5 }];
+    drop.fills = [{ type: "SOLID", color: C.white, opacity: 0.65 }];
+    drop.strokes = [{ type: "SOLID", color: C.pinkDark, opacity: 0.6 }];
     drop.strokeWeight = 1.5;
-    drop.itemSpacing = 6;
-    drop.appendChild(createText("📄 Upload your CV (PDF or DOCX)", fontSansBold, 14.5, C.ink));
-    drop.appendChild(createText("Drag and drop here, or click to browse · Up to 10MB", fontSans, 12, C.inkFaint));
+    drop.itemSpacing = 8;
+    drop.appendChild(createText("📄 Upload your CV (PDF or DOCX) *", fontSansBold, 15, C.ink));
+    drop.appendChild(createText("Drag and drop here, or click to browse · Supports up to 10MB", fontSans, 12.5, C.inkFaint));
     card.appendChild(drop);
 
-    // Manual input fields
-    const formGrid = figma.createFrame();
-    formGrid.layoutMode = "HORIZONTAL";
-    formGrid.layoutAlign = "STRETCH";
-    formGrid.itemSpacing = 14;
-    formGrid.fills = [];
-
-    const input1 = figma.createFrame();
-    input1.layoutMode = "VERTICAL";
-    input1.layoutGrow = 1;
-    input1.paddingLeft = 16; input1.paddingRight = 16; input1.paddingTop = 14; input1.paddingBottom = 14;
-    input1.cornerRadius = 12;
-    input1.fills = [{ type: "SOLID", color: C.white }];
-    input1.strokes = [{ type: "SOLID", color: C.borderSoft }];
-    input1.appendChild(createText("Senior UX Designer", fontSansSemi, 13.5, C.ink));
-    formGrid.appendChild(input1);
-
-    const input2 = figma.createFrame();
-    input2.layoutMode = "VERTICAL";
-    input2.layoutGrow = 1;
-    input2.paddingLeft = 16; input2.paddingRight = 16; input2.paddingTop = 14; input2.paddingBottom = 14;
-    input2.cornerRadius = 12;
-    input2.fills = [{ type: "SOLID", color: C.white }];
-    input2.strokes = [{ type: "SOLID", color: C.borderSoft }];
-    input2.appendChild(createText("Design & Creative ▼", fontSansSemi, 13.5, C.ink));
-    formGrid.appendChild(input2);
-    card.appendChild(formGrid);
+    // Selected state representation
+    const selState = figma.createFrame();
+    selState.layoutMode = "HORIZONTAL";
+    selState.primaryAxisAlignItems = "SPACE_BETWEEN";
+    selState.counterAxisAlignItems = "CENTER";
+    selState.layoutAlign = "STRETCH";
+    selState.paddingLeft = 16; selState.paddingRight = 16; selState.paddingTop = 12; selState.paddingBottom = 12;
+    selState.cornerRadius = 12;
+    selState.fills = [{ type: "SOLID", color: C.white }];
+    selState.strokes = [{ type: "SOLID", color: { r: 0.2, g: 0.6, b: 0.4 } }];
+    selState.appendChild(createText("✓ Sarah_Chen_Resume_2026.pdf (1.8 MB · Verified)", fontSansBold, 13, C.mintText));
+    selState.appendChild(createChip("Replace File", "default"));
+    card.appendChild(selState);
 
     const bRow = figma.createFrame();
     bRow.layoutMode = "HORIZONTAL";
-    bRow.primaryAxisAlignItems = "SPACE_BETWEEN";
-    bRow.counterAxisAlignItems = "CENTER";
+    bRow.primaryAxisAlignItems = "CENTER";
     bRow.layoutAlign = "STRETCH";
     bRow.fills = [];
-    bRow.appendChild(createText("Skip — I'll add this later", fontSansSemi, 13, C.inkFaint));
     bRow.appendChild(createPrimaryButton("Continue to Career Break", true));
     card.appendChild(bRow);
 
@@ -404,81 +336,79 @@
     return page;
   }
 
-  // 3. E2B STORY: CAREER BREAK & TIMELINE
-  function buildE2bBreak() {
+  // 3. E2B CAREER BREAK (ONLY 2 QUESTIONS: DURATION + FREE TEXT)
+  function buildE2bCareerBreak() {
     const page = figma.createFrame();
-    page.name = "03 · E2b Story Intake (Career Break)";
+    page.name = "03 · E2b Career Break (2 Questions · NLP Text)";
     page.resize(1280, 880);
     page.fills = [{ type: "SOLID", color: C.bgSoft }];
     page.layoutMode = "VERTICAL";
     page.paddingLeft = 80; page.paddingRight = 80; page.paddingTop = 36; page.paddingBottom = 40;
     page.itemSpacing = 24;
 
-    page.appendChild(createHeader(1));
+    page.appendChild(createHeader(2));
 
     const card = createGlassCard(740, 36, 24);
     card.layoutAlign = "CENTER";
-    card.itemSpacing = 22;
+    card.itemSpacing = 24;
 
-    card.appendChild(createChip("Step 2 of 3 · Your Break Activities", "mint"));
+    card.appendChild(createChip("Step 2 of 2 · Break Questionnaire", "mint"));
     card.appendChild(createText("Tell us about your career break", fontDispExtra, 26, C.ink));
-    card.appendChild(createText("Your time out counts as real experience — here is where we capture and reframe it.", fontSans, 14, C.inkSoft));
+    card.appendChild(createText("Your time out counts as real experience — just two simple questions for our AI model.", fontSans, 14, C.inkSoft));
 
-    // Slider Representation
-    const sliderBox = figma.createFrame();
-    sliderBox.layoutMode = "HORIZONTAL";
-    sliderBox.layoutAlign = "STRETCH";
-    sliderBox.primaryAxisAlignItems = "SPACE_BETWEEN";
-    sliderBox.counterAxisAlignItems = "CENTER";
-    sliderBox.paddingLeft = 18; sliderBox.paddingRight = 18; sliderBox.paddingTop = 12; sliderBox.paddingBottom = 12;
-    sliderBox.cornerRadius = 14;
-    sliderBox.fills = [{ type: "SOLID", color: C.white, opacity: 0.7 }];
-    sliderBox.strokes = [{ type: "SOLID", color: C.borderSoft }];
-    sliderBox.appendChild(createText("Career Break Duration: ~3 Years", fontSansBold, 13.5, C.ink));
-    sliderBox.appendChild(createChip("3.0 Years Out", "active"));
-    card.appendChild(sliderBox);
+    // Question 1: Duration Slider
+    const q1Box = figma.createFrame();
+    q1Box.layoutMode = "VERTICAL";
+    q1Box.layoutAlign = "STRETCH";
+    q1Box.itemSpacing = 8;
+    q1Box.fills = [];
+    q1Box.appendChild(createText("1. Roughly how long was your career break?", fontSansBold, 14, C.ink));
+    
+    const sliderBar = figma.createFrame();
+    sliderBar.layoutMode = "HORIZONTAL";
+    sliderBar.primaryAxisAlignItems = "SPACE_BETWEEN";
+    sliderBar.counterAxisAlignItems = "CENTER";
+    sliderBar.layoutAlign = "STRETCH";
+    sliderBar.paddingLeft = 16; sliderBar.paddingRight = 16; sliderBar.paddingTop = 12; sliderBar.paddingBottom = 12;
+    sliderBar.cornerRadius = 12;
+    sliderBar.fills = [{ type: "SOLID", color: C.white, opacity: 0.8 }];
+    sliderBar.strokes = [{ type: "SOLID", color: C.borderSoft }];
+    sliderBar.appendChild(createText("Duration: 3.0 Years Out", fontSansBold, 13.5, C.ink));
+    sliderBar.appendChild(createChip("3 Years", "mint"));
+    q1Box.appendChild(sliderBar);
+    card.appendChild(q1Box);
 
-    // Life Timeline Age Bands
-    const ageBandsRow = figma.createFrame();
-    ageBandsRow.layoutMode = "HORIZONTAL";
-    ageBandsRow.layoutAlign = "STRETCH";
-    ageBandsRow.itemSpacing = 8;
-    ageBandsRow.fills = [];
+    // Question 2: Free Text Input
+    const q2Box = figma.createFrame();
+    q2Box.layoutMode = "VERTICAL";
+    q2Box.layoutAlign = "STRETCH";
+    q2Box.itemSpacing = 8;
+    q2Box.fills = [];
+    q2Box.appendChild(createText("2. What did you do during this time? *", fontSansBold, 14, C.ink));
+    
+    const textBox = figma.createFrame();
+    textBox.layoutMode = "VERTICAL";
+    textBox.layoutAlign = "STRETCH";
+    textBox.paddingLeft = 16; textBox.paddingRight = 16; textBox.paddingTop = 14; textBox.paddingBottom = 14;
+    textBox.cornerRadius = 14;
+    textBox.fills = [{ type: "SOLID", color: C.white }];
+    textBox.strokes = [{ type: "SOLID", color: C.borderSoft }];
+    textBox.appendChild(createText("Cared for 2 children full-time, managed family household budget and logistics schedules, organized community school fundraisers, and completed self-paced digital design courses.", fontSans, 13.5, C.ink));
+    q2Box.appendChild(textBox);
 
-    ["Under 25", "25–30 (Selected · 3 items)", "31–35", "36–40", "41+"].forEach((b, i) => {
-      const isSel = i === 1;
-      const ab = figma.createFrame();
-      ab.layoutMode = "VERTICAL";
-      ab.layoutGrow = 1;
-      ab.paddingTop = 10; ab.paddingBottom = 10;
-      ab.counterAxisAlignItems = "CENTER";
-      ab.cornerRadius = 12;
-      ab.fills = [{ type: "SOLID", color: isSel ? C.pinkLight : C.white }];
-      ab.strokes = [{ type: "SOLID", color: isSel ? C.pinkDark : C.borderSoft }];
-      ab.appendChild(createText(b, fontSansBold, 11.5, isSel ? C.pinkDark : C.inkSoft));
-      ageBandsRow.appendChild(ab);
-    });
-    card.appendChild(ageBandsRow);
-
-    // Activity Chips
-    const actGrid = figma.createFrame();
-    actGrid.layoutMode = "HORIZONTAL";
-    actGrid.layoutWrap = "WRAP";
-    actGrid.itemSpacing = 10;
-    actGrid.layoutAlign = "STRETCH";
-    actGrid.fills = [];
-
-    [
-      { n: "Cared for children", on: true },
-      { n: "Ran the household", on: true },
-      { n: "Managed family budget", on: true },
-      { n: "Volunteered in community", on: false },
-      { n: "Side project / freelancing", on: false },
-      { n: "Self-study & online courses", on: true }
-    ].forEach(t => {
-      actGrid.appendChild(createChip(t.n, t.on ? "active" : "default"));
-    });
-    card.appendChild(actGrid);
+    // Suggestions Row
+    const sugRow = figma.createFrame();
+    sugRow.layoutMode = "HORIZONTAL";
+    sugRow.itemSpacing = 8;
+    sugRow.counterAxisAlignItems = "CENTER";
+    sugRow.fills = [];
+    sugRow.appendChild(createText("Quick tags:", fontSansBold, 11, C.inkFaint));
+    sugRow.appendChild(createChip("+ Childcare", "default"));
+    sugRow.appendChild(createChip("+ Budgeting", "default"));
+    sugRow.appendChild(createChip("+ Volunteering", "default"));
+    sugRow.appendChild(createChip("+ Self-study", "default"));
+    q2Box.appendChild(sugRow);
+    card.appendChild(q2Box);
 
     const bRow = figma.createFrame();
     bRow.layoutMode = "HORIZONTAL";
@@ -486,78 +416,7 @@
     bRow.counterAxisAlignItems = "CENTER";
     bRow.layoutAlign = "STRETCH";
     bRow.fills = [];
-    bRow.appendChild(createText("← Back to Background", fontSansSemi, 13, C.inkFaint));
-    bRow.appendChild(createPrimaryButton("Continue to Work Needs", true));
-    card.appendChild(bRow);
-
-    page.appendChild(card);
-    return page;
-  }
-
-  // 4. E2C STORY: WHAT YOU NEED NOW (ACCORDION)
-  function buildE2cNeeds() {
-    const page = figma.createFrame();
-    page.name = "04 · E2c Story Intake (Work Needs)";
-    page.resize(1280, 880);
-    page.fills = [{ type: "SOLID", color: C.bgSoft }];
-    page.layoutMode = "VERTICAL";
-    page.paddingLeft = 80; page.paddingRight = 80; page.paddingTop = 36; page.paddingBottom = 40;
-    page.itemSpacing = 24;
-
-    page.appendChild(createHeader(1));
-
-    const card = createGlassCard(740, 36, 24);
-    card.layoutAlign = "CENTER";
-    card.itemSpacing = 18;
-
-    card.appendChild(createChip("Step 3 of 3 · Flexibility & Arrangement", "blue"));
-    card.appendChild(createText("What are you looking for now?", fontDispExtra, 26, C.ink));
-    card.appendChild(createText("Pick anything that fits — this shapes which target roles we highlight for you.", fontSans, 14, C.inkSoft));
-
-    // Accordion categories
-    const categories = [
-      { name: "Work arrangement (2 selected)", tags: ["Remote / work from home ✓", "Flexible hours ✓", "Part-time to start", "Hybrid"] },
-      { name: "Time & schedule (1 selected)", tags: ["School-hours only ✓", "Term-time only", "Flexible / self-paced"] },
-      { name: "Family & daily needs (1 selected)", tags: ["School pickup flexibility ✓", "Sick-day flexibility", "Quiet home workspace"] }
-    ];
-
-    categories.forEach(cat => {
-      const acc = figma.createFrame();
-      acc.layoutMode = "VERTICAL";
-      acc.layoutAlign = "STRETCH";
-      acc.paddingLeft = 16; acc.paddingRight = 16; acc.paddingTop = 12; acc.paddingBottom = 12;
-      acc.cornerRadius = 14;
-      acc.itemSpacing = 10;
-      acc.fills = [{ type: "SOLID", color: C.white, opacity: 0.75 }];
-      acc.strokes = [{ type: "SOLID", color: C.borderSoft }];
-
-      const accHead = figma.createFrame();
-      accHead.layoutMode = "HORIZONTAL";
-      accHead.primaryAxisAlignItems = "SPACE_BETWEEN";
-      accHead.layoutAlign = "STRETCH";
-      accHead.fills = [];
-      accHead.appendChild(createText("▾ " + cat.name, fontSansBold, 13.5, C.ink));
-      acc.appendChild(accHead);
-
-      const tagRow = figma.createFrame();
-      tagRow.layoutMode = "HORIZONTAL";
-      tagRow.layoutWrap = "WRAP";
-      tagRow.itemSpacing = 8;
-      tagRow.fills = [];
-      cat.tags.forEach(tg => {
-        tagRow.appendChild(createChip(tg, tg.includes("✓") ? "active" : "default"));
-      });
-      acc.appendChild(tagRow);
-      card.appendChild(acc);
-    });
-
-    const bRow = figma.createFrame();
-    bRow.layoutMode = "HORIZONTAL";
-    bRow.primaryAxisAlignItems = "SPACE_BETWEEN";
-    bRow.counterAxisAlignItems = "CENTER";
-    bRow.layoutAlign = "STRETCH";
-    bRow.fills = [];
-    bRow.appendChild(createText("← Back to Break", fontSansSemi, 13, C.inkFaint));
+    bRow.appendChild(createText("← Back to CV", fontSansSemi, 13, C.inkFaint));
     bRow.appendChild(createPrimaryButton("See my skill snapshot", true));
     card.appendChild(bRow);
 
@@ -565,17 +424,17 @@
     return page;
   }
 
-  // 5. E3 SKILL SNAPSHOT (READ-ONLY BASELINE)
+  // 4. E3 SKILL SNAPSHOT (READ-ONLY BASELINE)
   function buildE3Snapshot() {
     const page = figma.createFrame();
-    page.name = "05 · E3 Skill Snapshot (History Baseline)";
+    page.name = "04 · E3 Skill Snapshot (Read-Only Baseline)";
     page.resize(1280, 900);
     page.fills = [{ type: "SOLID", color: C.bgSoft }];
     page.layoutMode = "VERTICAL";
     page.paddingLeft = 80; page.paddingRight = 80; page.paddingTop = 36; page.paddingBottom = 40;
     page.itemSpacing = 22;
 
-    page.appendChild(createHeader(2));
+    page.appendChild(createHeader(3));
 
     const content = figma.createFrame();
     content.layoutMode = "VERTICAL";
@@ -588,10 +447,10 @@
     titleBox.itemSpacing = 4;
     titleBox.fills = [];
     titleBox.appendChild(createText("Your skill snapshot", fontDispExtra, 28, C.ink));
-    titleBox.appendChild(createText("Here is the summary of where you are coming from — your career history & reframed break skills.", fontSans, 14.5, C.inkSoft));
+    titleBox.appendChild(createText("Here is the summary of where you are coming from — extracted from your CV & reframed from your break.", fontSans, 14.5, C.inkSoft));
     content.appendChild(titleBox);
 
-    // READ-ONLY BASELINE CARD
+    // Baseline Card
     const bCard = createGlassCard("AUTO", 26, 20);
     bCard.layoutAlign = "STRETCH";
     bCard.itemSpacing = 12;
@@ -610,7 +469,7 @@
     bCard.appendChild(createText("This snapshot captures your starting baseline. On this page, we reflect your foundation. Next, you will choose where you want to aim.", fontSans, 13.5, C.inkSoft));
     content.appendChild(bCard);
 
-    // TWO-COLUMN INVENTORY
+    // Two Columns
     const twoCol = figma.createFrame();
     twoCol.layoutMode = "HORIZONTAL";
     twoCol.layoutAlign = "STRETCH";
@@ -620,7 +479,7 @@
     const col1 = createGlassCard("AUTO", 22, 18);
     col1.layoutGrow = 1;
     col1.itemSpacing = 12;
-    col1.appendChild(createText("💼 Skills you already have (Career History)", fontSansBold, 14, C.ink));
+    col1.appendChild(createText("💼 Skills from your CV", fontSansBold, 14, C.ink));
     const cb1 = figma.createFrame(); cb1.layoutMode = "HORIZONTAL"; cb1.layoutWrap = "WRAP"; cb1.itemSpacing = 8; cb1.fills = [];
     ["User Research & Synthesis", "Interactive Prototyping", "Design Systems Tokens", "Usability Testing", "Stakeholder Alignment"].forEach(s => {
       cb1.appendChild(createChip(s, "default"));
@@ -640,13 +499,12 @@
     twoCol.appendChild(col2);
     content.appendChild(twoCol);
 
-    // Crosswalk banner
     const banner = createGlassCard("AUTO", 16, 16);
     banner.layoutAlign = "STRETCH";
     banner.fills = [{ type: "SOLID", color: C.pinkLight, opacity: 0.95 }];
     banner.itemSpacing = 6;
-    banner.appendChild(createText("⚡ Caregiving & Running a Home → Time Management · Budgeting · Coordination", fontSansBold, 13, C.ink));
-    banner.appendChild(createText("Everyday life activities systematically translated into standard O*NET workforce competency taxonomies.", fontSans, 12, C.inkSoft));
+    banner.appendChild(createText("⚡ NLP Parsing → Active Listening · Time Management · Budgeting · Coordination", fontSansBold, 13, C.ink));
+    banner.appendChild(createText("Your free-form career break text was analyzed and mapped to standard O*NET workforce competency taxonomies.", fontSans, 12, C.inkSoft));
     content.appendChild(banner);
 
     const botCTA = figma.createFrame();
@@ -663,85 +521,17 @@
     return page;
   }
 
-  // 6. E4 TARGET ROLE GAP: SENIOR UX/UI DESIGNER (DEFAULT CLOSEST MATCH)
+  // 5. E4 ROLE GAP: UX/UI (78% -> 94%)
   function buildE4UxUi() {
-    return buildRoleGapFrame(
-      "06 · E4 Target Role: UX/UI Design (Closest Match)",
-      "Senior UX/UI Designer (Remote)",
-      0,
-      78, 94, 16, 7, 10,
-      "Because you have foundational core competencies (User Research, Prototyping, Design Systems), you start at 78% ready. Foundational essentials carry heavier weighting in hiring than emerging tool gaps.",
-      ["User Research & Synthesis", "Interactive Prototyping", "Design Systems Tokens", "Information Architecture", "Usability Testing", "Active Listening (Break)", "Time Prioritization (Break)"],
-      [
-        { name: "1. AI Design Tools (Figma AI, Midjourney)", tag: "+9% if learned", note: "Generative asset ideation & rapid exploration workflows", type: "amber" },
-        { name: "2. Scalable Design Systems (Tokens)", tag: "+7% if learned", note: "Advanced enterprise variables & multi-brand scaling", type: "amber" },
-        { name: "3. Prompt Engineering for UX Workflows", tag: "+5% if learned", note: "Automated micro-copy testing & synthetic user simulation", type: "blue" }
-      ]
-    );
-  }
-
-  // 7. E4 TARGET ROLE GAP: DIGITAL MARKETING
-  function buildE4Marketing() {
-    return buildRoleGapFrame(
-      "07 · E4 Target Role: Digital Marketing",
-      "Digital Marketing Specialist (Flexible)",
-      1,
-      72, 91, 19, 7, 10,
-      "Your transferable storytelling, content creation, and project management provide a 72% baseline fit. Closing tactical analytics and modern search gaps unlocks 91% readiness.",
-      ["Content Strategy & Copywriting", "Social Media Channel Management", "Campaign Planning & Storytelling", "Brand Voice & Positioning", "Stakeholder Communication", "Budget Allocation (Break)", "Community Coordination (Break)"],
-      [
-        { name: "1. Modern AI-Driven SEO & Visibility", tag: "+8% if learned", note: "LLM citation readiness & intent-based semantic ranking", type: "amber" },
-        { name: "2. Multi-Touch Funnel Analytics (GA4)", tag: "+6% if learned", note: "Full-funnel attribution models & conversion tracking", type: "amber" },
-        { name: "3. AI Ad Creative & Copy Automation", tag: "+5% if learned", note: "Multivariate ad experimentation & asset scaling", type: "blue" }
-      ]
-    );
-  }
-
-  // 8. E4 TARGET ROLE GAP: CUSTOMER SUPPORT
-  function buildE4Support() {
-    return buildRoleGapFrame(
-      "08 · E4 Target Role: Customer Support",
-      "Customer Support Lead (Remote)",
-      2,
-      85, 97, 12, 8, 10,
-      "Strong empathy, clear documentation, and conflict de-escalation give you an 85% starting readiness. Adopting modern helpdesk AI tools pushes you to near-complete 97% readiness.",
-      ["Empathetic Client Communication", "Conflict Resolution & De-escalation", "Multi-channel Ticket Prioritization", "Knowledge Base Authoring & FAQs", "Customer Onboarding", "Patience & Listening (Break)", "Crisis Calm Leadership (Break)", "Schedule Organization (Break)"],
-      [
-        { name: "1. Omnichannel Helpdesk (Zendesk/Intercom)", tag: "+7% if learned", note: "Automated ticket routing, macros & SLA monitoring", type: "amber" },
-        { name: "2. AI Copilot Reply & Smart Triage", tag: "+6% if learned", note: "Leveraging assistive AI drafts to double response velocity", type: "amber" },
-        { name: "3. CRM Health Scores & Churn Risk", tag: "+4% if learned", note: "HubSpot customer telemetry & lifecycle retention", type: "blue" }
-      ]
-    );
-  }
-
-  // 9. E4 TARGET ROLE GAP: BOOKKEEPING & FINANCE
-  function buildE4Bookkeeping() {
-    return buildRoleGapFrame(
-      "09 · E4 Target Role: Bookkeeping & Finance",
-      "Bookkeeper & Financial Assistant (Flexible)",
-      3,
-      64, 91, 27, 6, 10,
-      "Your budget tracking and spreadsheet diligence provide a 64% core foundation. Mastering standard cloud accounting platforms yields a fast +27% readiness jump to 91%.",
-      ["Spreadsheet Modeling (Excel/Sheets)", "Expense Categorization & Audit Trails", "Invoice Verification & Scheduling", "Attention to Detail & Auditing", "Household Budget Management (Break)", "Vendor Negotiation (Break)"],
-      [
-        { name: "1. Cloud Accounting (Xero / QuickBooks)", tag: "+12% if learned", note: "Bank feeds reconciliation, chart of accounts & ledger audits", type: "amber" },
-        { name: "2. AI Copilot for Financial Sheets", tag: "+9% if learned", note: "Automated formula generation, OCR receipts & anomaly detection", type: "amber" },
-        { name: "3. Digital Tax Compliance & E-Filing", tag: "+6% if learned", note: "Year-end compliance reporting & digital filing routines", type: "blue" }
-      ]
-    );
-  }
-
-  // Generic Role Gap Frame Builder
-  function buildRoleGapFrame(frameName, roleTitle, activeRoleIdx, currentPct, targetPct, upliftTotal, matchedCount, totalSkills, formulaExpl, haveSkills, top3Gaps) {
     const page = figma.createFrame();
-    page.name = frameName;
+    page.name = "05 · E4 Target Role: Senior UX/UI (78% → 94%)";
     page.resize(1280, 940);
     page.fills = [{ type: "SOLID", color: C.bgSoft }];
     page.layoutMode = "VERTICAL";
     page.paddingLeft = 80; page.paddingRight = 80; page.paddingTop = 36; page.paddingBottom = 40;
     page.itemSpacing = 20;
 
-    page.appendChild(createHeader(3));
+    page.appendChild(createHeader(4));
 
     const content = figma.createFrame();
     content.layoutMode = "VERTICAL";
@@ -749,7 +539,6 @@
     content.itemSpacing = 16;
     content.fills = [];
 
-    // Aiming Reframe Header
     const titleBox = figma.createFrame();
     titleBox.layoutMode = "VERTICAL";
     titleBox.itemSpacing = 4;
@@ -758,23 +547,17 @@
     titleBox.appendChild(createText("Pick the role you're aiming for. We started with your closest match — switch to any role you want to aim for.", fontSans, 14.5, C.inkSoft));
     content.appendChild(titleBox);
 
-    // Role selector pills
     const pillsRow = figma.createFrame();
     pillsRow.layoutMode = "HORIZONTAL";
     pillsRow.itemSpacing = 10;
     pillsRow.fills = [];
-    const rolesList = [
-      "🎨 Senior UX/UI Design (Closest match)",
-      "📈 Digital Marketing",
-      "💬 Customer Support",
-      "📊 Bookkeeping & Finance"
-    ];
-    rolesList.forEach((r, idx) => {
-      pillsRow.appendChild(createChip(r, idx === activeRoleIdx ? "active" : "default"));
-    });
+    pillsRow.appendChild(createChip("🎨 Senior UX/UI Design (Closest match)", "active"));
+    pillsRow.appendChild(createChip("📈 Digital Marketing", "default"));
+    pillsRow.appendChild(createChip("💬 Customer Support", "default"));
+    pillsRow.appendChild(createChip("📊 Bookkeeping & Finance", "default"));
     content.appendChild(pillsRow);
 
-    // READINESS ANALYSIS CARD
+    // Readiness Card
     const readCard = createGlassCard("AUTO", 24, 20);
     readCard.layoutAlign = "STRETCH";
     readCard.itemSpacing = 16;
@@ -786,7 +569,7 @@
     cardHead.counterAxisAlignItems = "CENTER";
     cardHead.fills = [];
     cardHead.appendChild(createText("TARGET READINESS ANALYSIS", fontSansBold, 11.5, C.inkFaint));
-    cardHead.appendChild(createChip(roleTitle, "blue"));
+    cardHead.appendChild(createChip("Senior UX/UI Designer (Remote)", "blue"));
     readCard.appendChild(cardHead);
 
     const scoreRow = figma.createFrame();
@@ -796,7 +579,6 @@
     scoreRow.counterAxisAlignItems = "CENTER";
     scoreRow.fills = [];
 
-    // Left: Arc Gauge Representation
     const gaugeFrame = figma.createFrame();
     gaugeFrame.resize(220, 140);
     gaugeFrame.cornerRadius = 16;
@@ -806,20 +588,18 @@
     gaugeFrame.primaryAxisAlignItems = "CENTER";
     gaugeFrame.counterAxisAlignItems = "CENTER";
     gaugeFrame.itemSpacing = 4;
-
-    gaugeFrame.appendChild(createText(currentPct + "%", fontDispExtra, 44, C.ink));
+    gaugeFrame.appendChild(createText("78%", fontDispExtra, 44, C.ink));
     gaugeFrame.appendChild(createText("READY TODAY", fontSansBold, 10, C.inkFaint));
-    gaugeFrame.appendChild(createChip(currentPct + "% today → " + targetPct + "% target", "active"));
+    gaugeFrame.appendChild(createChip("78% today → 94% target", "active"));
     scoreRow.appendChild(gaugeFrame);
 
-    // Right: 3 Metric Breakdown Boxes
     const rightMetrics = figma.createFrame();
     rightMetrics.layoutMode = "VERTICAL";
     rightMetrics.layoutGrow = 1;
     rightMetrics.itemSpacing = 10;
     rightMetrics.fills = [];
 
-    // Metric 1: Count & 10-Dot Meter
+    // M1: 10-dot meter
     const m1 = figma.createFrame();
     m1.layoutMode = "HORIZONTAL";
     m1.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -828,23 +608,23 @@
     m1.paddingLeft = 16; m1.paddingRight = 16; m1.paddingTop = 10; m1.paddingBottom = 10;
     m1.cornerRadius = 12;
     m1.fills = [{ type: "SOLID", color: C.white, opacity: 0.65 }];
-    m1.appendChild(createText("You already have " + matchedCount + " of " + totalSkills + " key skills for this role.", fontSansBold, 13, C.ink));
+    m1.appendChild(createText("You already have 7 of 10 key skills for this role.", fontSansBold, 13, C.ink));
     
     const dotMeter = figma.createFrame();
     dotMeter.layoutMode = "HORIZONTAL";
     dotMeter.itemSpacing = 5;
     dotMeter.fills = [];
-    for (let i = 0; i < totalSkills; i++) {
+    for (let i = 0; i < 10; i++) {
       const dot = figma.createFrame();
       dot.resize(10, 10);
       dot.cornerRadius = 999;
-      dot.fills = [{ type: "SOLID", color: i < matchedCount ? C.mintDot : C.pinkDark }];
+      dot.fills = [{ type: "SOLID", color: i < 7 ? C.mintDot : C.pinkDark }];
       dotMeter.appendChild(dot);
     }
     m1.appendChild(dotMeter);
     rightMetrics.appendChild(m1);
 
-    // Metric 2: Transparent Formula Callout
+    // M2: Formula explanation
     const m2 = figma.createFrame();
     m2.layoutMode = "VERTICAL";
     m2.layoutAlign = "STRETCH";
@@ -852,11 +632,11 @@
     m2.cornerRadius = 12;
     m2.itemSpacing = 4;
     m2.fills = [{ type: "SOLID", color: C.pinkLight, opacity: 0.75 }];
-    m2.appendChild(createText("WHY " + currentPct + "%? IMPORTANCE-WEIGHTED FORMULA", fontSansBold, 10.5, C.pinkDark));
-    m2.appendChild(createText(formulaExpl, fontSans, 12, C.inkSoft));
+    m2.appendChild(createText("WHY 78%? IMPORTANCE-WEIGHTED FORMULA", fontSansBold, 10.5, C.pinkDark));
+    m2.appendChild(createText("Score is weighted by market importance: having foundational essentials (User Research, Prototyping) gives you 78% baseline fit.", fontSans, 12, C.inkSoft));
     rightMetrics.appendChild(m2);
 
-    // Metric 3: Projected Target
+    // M3: Projected target
     const m3 = figma.createFrame();
     m3.layoutMode = "HORIZONTAL";
     m3.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -865,15 +645,15 @@
     m3.paddingLeft = 16; m3.paddingRight = 16; m3.paddingTop = 10; m3.paddingBottom = 10;
     m3.cornerRadius = 12;
     m3.fills = [{ type: "SOLID", color: C.white, opacity: 0.65 }];
-    m3.appendChild(createText(currentPct + "% today → " + targetPct + "% after closing your top 3 focus areas", fontSansBold, 13, C.ink));
-    m3.appendChild(createChip("+" + upliftTotal + "% Total Uplift", "blue"));
+    m3.appendChild(createText("78% today → 94% after closing your top 3 focus areas", fontSansBold, 13, C.ink));
+    m3.appendChild(createChip("+16% Total Uplift", "blue"));
     rightMetrics.appendChild(m3);
 
     scoreRow.appendChild(rightMetrics);
     readCard.appendChild(scoreRow);
     content.appendChild(readCard);
 
-    // TWO-COLUMN GAP BREAKDOWN
+    // Breakdown
     const breakdown = figma.createFrame();
     breakdown.layoutMode = "HORIZONTAL";
     breakdown.layoutAlign = "STRETCH";
@@ -883,8 +663,8 @@
     const haveBox = createGlassCard("AUTO", 20, 18);
     haveBox.layoutGrow = 1;
     haveBox.itemSpacing = 10;
-    haveBox.appendChild(createText("✓ Skills you already bring (" + matchedCount + " matched)", fontSansBold, 13.5, C.ink));
-    haveSkills.forEach(s => {
+    haveBox.appendChild(createText("✓ Skills you already bring (7 matched)", fontSansBold, 13.5, C.ink));
+    ["User Research & Synthesis", "Interactive Prototyping", "Design Systems Tokens", "Information Architecture", "Usability Testing", "Active Listening (Break)", "Time Prioritization (Break)"].forEach(s => {
       const row = figma.createFrame();
       row.layoutMode = "HORIZONTAL";
       row.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -901,7 +681,13 @@
     buildBox.itemSpacing = 10;
     buildBox.appendChild(createText("★ Your top 3 to start with (Capped to avoid overwhelm)", fontSansBold, 13.5, C.ink));
 
-    top3Gaps.forEach(b => {
+    const top3 = [
+      { name: "1. AI Design Tools (Figma AI, Midjourney)", tag: "+9% if learned", note: "Generative asset ideation & rapid exploration workflows", type: "amber" },
+      { name: "2. Scalable Design Systems (Tokens)", tag: "+7% if learned", note: "Advanced enterprise variables & multi-brand scaling", type: "amber" },
+      { name: "3. Prompt Engineering for UX Workflows", tag: "+5% if learned", note: "Automated micro-copy testing & synthetic user simulation", type: "blue" }
+    ];
+
+    top3.forEach(b => {
       const r = figma.createFrame();
       r.layoutMode = "VERTICAL";
       r.layoutAlign = "STRETCH";
@@ -931,172 +717,20 @@
     return page;
   }
 
-  // 10. E5 ITERATION 2 ROADMAP PREVIEW
-  function buildE5RoadmapPreview() {
-    const page = figma.createFrame();
-    page.name = "10 · E5 Roadmap & Learning Plan (Iteration 2 Preview)";
-    page.resize(1280, 880);
-    page.fills = [{ type: "SOLID", color: C.bgSoft }];
-    page.layoutMode = "VERTICAL";
-    page.paddingLeft = 80; page.paddingRight = 80; page.paddingTop = 36; page.paddingBottom = 40;
-    page.itemSpacing = 24;
+  // BUILD FRAMES
+  const f1 = buildE1Landing();
+  const f2 = buildE2aUploadCV();
+  const f3 = buildE2bCareerBreak();
+  const f4 = buildE3Snapshot();
+  const f5 = buildE4UxUi();
 
-    page.appendChild(createHeader(3));
-
-    const card = createGlassCard(820, 36, 24);
-    card.layoutAlign = "CENTER";
-    card.itemSpacing = 20;
-
-    card.appendChild(createChip("Iteration 2 · Personalized Learning Roadmap", "blue"));
-    card.appendChild(createText("Your 6-Week Re-entry Action Plan", fontDispExtra, 26, C.ink));
-    card.appendChild(createText("Bite-sized weekly micro-sprints tailored to fit around your family schedule.", fontSans, 14, C.inkSoft));
-
-    const milestones = [
-      { wk: "Week 1–2", title: "AI Design Tools Mastery (Figma AI & Midjourney)", stat: "+9% Readiness Uplift", status: "Sprint 1 Ready" },
-      { wk: "Week 3–4", title: "Advanced Enterprise Design System Tokens", stat: "+7% Readiness Uplift", status: "Sprint 2" },
-      { wk: "Week 5–6", title: "UX Workflow Prompt Engineering & Real Case Study", stat: "+5% Readiness Uplift", status: "Sprint 3" }
-    ];
-
-    milestones.forEach((m, idx) => {
-      const mBox = figma.createFrame();
-      mBox.layoutMode = "HORIZONTAL";
-      mBox.primaryAxisAlignItems = "SPACE_BETWEEN";
-      mBox.counterAxisAlignItems = "CENTER";
-      mBox.layoutAlign = "STRETCH";
-      mBox.paddingLeft = 20; mBox.paddingRight = 20; mBox.paddingTop = 16; mBox.paddingBottom = 16;
-      mBox.cornerRadius = 14;
-      mBox.fills = [{ type: "SOLID", color: C.white, opacity: 0.8 }];
-      mBox.strokes = [{ type: "SOLID", color: C.borderSoft }];
-
-      const leftSide = figma.createFrame();
-      leftSide.layoutMode = "VERTICAL";
-      leftSide.itemSpacing = 4;
-      leftSide.fills = [];
-      leftSide.appendChild(createText(m.wk + " · " + m.status, fontSansBold, 11, C.pinkDark));
-      leftSide.appendChild(createText(m.title, fontSansBold, 14, C.ink));
-      mBox.appendChild(leftSide);
-
-      mBox.appendChild(createChip(m.stat, "mint"));
-      card.appendChild(mBox);
-    });
-
-    const bRow = figma.createFrame();
-    bRow.layoutMode = "HORIZONTAL";
-    bRow.primaryAxisAlignItems = "SPACE_BETWEEN";
-    bRow.counterAxisAlignItems = "CENTER";
-    bRow.layoutAlign = "STRETCH";
-    bRow.fills = [];
-    bRow.appendChild(createText("Projected Completion: 94% Market Fit", fontSansBold, 13.5, C.mintText));
-    bRow.appendChild(createPrimaryButton("Export My Learning Plan", true));
-    card.appendChild(bRow);
-
-    page.appendChild(card);
-    return page;
-  }
-
-  // 11. DESIGN SYSTEM & TOKEN PALETTE BOARD
-  function buildDesignTokensBoard() {
-    const page = figma.createFrame();
-    page.name = "00 · ReRouteHer Design Tokens & Components";
-    page.resize(1280, 880);
-    page.fills = [{ type: "SOLID", color: C.white }];
-    page.layoutMode = "VERTICAL";
-    page.paddingLeft = 60; page.paddingRight = 60; page.paddingTop = 40; page.paddingBottom = 40;
-    page.itemSpacing = 28;
-
-    page.appendChild(createText("ReRouteHer — Design System & UI Kit", fontDispExtra, 32, C.ink));
-    page.appendChild(createText("Core Design Tokens, Semantic Colors, Typography Scale, and Atomic Components.", fontSans, 14, C.inkSoft));
-
-    // Colors Row
-    const colorSec = figma.createFrame();
-    colorSec.layoutMode = "VERTICAL";
-    colorSec.itemSpacing = 12;
-    colorSec.fills = [];
-    colorSec.appendChild(createText("COLOR PALETTE & TOKENS", fontSansBold, 12, C.inkFaint));
-
-    const swatches = figma.createFrame();
-    swatches.layoutMode = "HORIZONTAL";
-    swatches.itemSpacing = 14;
-    swatches.fills = [];
-
-    const colorsList = [
-      { name: "Brand Pink", hex: "#EE86AC", c: C.pink },
-      { name: "Brand Lavender", hex: "#B98FC9", c: C.lavender },
-      { name: "Brand Blue", hex: "#6E7BC0", c: C.blue },
-      { name: "Ink Primary", hex: "#1E2243", c: C.ink },
-      { name: "Mint Reframed", hex: "#DEF3E7", c: C.mintBg },
-      { name: "Amber Essential", hex: "#FEF0DA", c: C.amberBg }
-    ];
-
-    colorsList.forEach(cl => {
-      const sw = figma.createFrame();
-      sw.resize(160, 90);
-      sw.cornerRadius = 12;
-      sw.fills = [{ type: "SOLID", color: cl.c }];
-      sw.strokes = [{ type: "SOLID", color: C.borderSoft }];
-      sw.paddingLeft = 12; sw.paddingBottom = 12;
-      sw.layoutMode = "VERTICAL";
-      sw.primaryAxisAlignItems = "MAX";
-      sw.appendChild(createText(cl.name, fontSansBold, 11, cl.hex === "#1E2243" ? C.white : C.ink));
-      sw.appendChild(createText(cl.hex, fontSans, 10, cl.hex === "#1E2243" ? C.borderSoft : C.inkSoft));
-      swatches.appendChild(sw);
-    });
-    colorSec.appendChild(swatches);
-    page.appendChild(colorSec);
-
-    // Component Samples Row
-    const compSec = figma.createFrame();
-    compSec.layoutMode = "VERTICAL";
-    compSec.itemSpacing = 14;
-    compSec.fills = [];
-    compSec.appendChild(createText("ATOMIC UI COMPONENTS", fontSansBold, 12, C.inkFaint));
-
-    const compRow = figma.createFrame();
-    compRow.layoutMode = "HORIZONTAL";
-    compRow.itemSpacing = 20;
-    compRow.counterAxisAlignItems = "CENTER";
-    compRow.fills = [];
-
-    compRow.appendChild(createPrimaryButton("Primary Action", true));
-    compRow.appendChild(createChip("Default Chip", "default"));
-    compRow.appendChild(createChip("Mint O*NET Chip", "mint"));
-    compRow.appendChild(createChip("Active Pink Chip", "active"));
-    compRow.appendChild(createChip("+9% Uplift Tag", "amber"));
-    compRow.appendChild(createChip("Blue Info Tag", "blue"));
-    compSec.appendChild(compRow);
-    page.appendChild(compSec);
-
-    return page;
-  }
-
-  // ================= 5. MASTER EXECUTION & CANVAS LAYOUT =================
-  const s00 = buildDesignTokensBoard();
-  const s01 = buildE1Landing();
-  const s02 = buildE2aStory();
-  const s03 = buildE2bBreak();
-  const s04 = buildE2cNeeds();
-  const s05 = buildE3Snapshot();
-  const s06 = buildE4UxUi();
-  const s07 = buildE4Marketing();
-  const s08 = buildE4Support();
-  const s09 = buildE4Bookkeeping();
-  const s10 = buildE5RoadmapPreview();
-
-  const allFrames = [s00, s01, s02, s03, s04, s05, s06, s07, s08, s09, s10];
-
-  // Grid layout on canvas: 3 columns x 4 rows with 100px gaps
-  const cols = 3;
-  const colWidth = 1380;
-  const rowHeight = 980;
-
-  allFrames.forEach((frame, idx) => {
-    const c = idx % cols;
-    const r = Math.floor(idx / cols);
-    frame.x = c * colWidth;
-    frame.y = r * rowHeight;
+  const frames = [f1, f2, f3, f4, f5];
+  frames.forEach((f, i) => {
+    f.x = (i % 3) * 1380;
+    f.y = Math.floor(i / 3) * 1020;
   });
 
-  figma.viewport.scrollAndZoomIntoView(allFrames);
-  figma.notify("🚀 ReRouteHer Master Project (11 Full Screens + Design Tokens) generated in Figma!");
+  figma.viewport.scrollAndZoomIntoView(frames);
+  figma.notify("✨ ReRouteHer Simplified MVP Flow (CV + 2-Question Break + Snapshot + Gap) generated in Figma!");
   figma.closePlugin();
 })();

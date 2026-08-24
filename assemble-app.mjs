@@ -16,14 +16,12 @@ const bfly = (id) => `<svg width="30" height="30" viewBox="0 0 48 48" fill="none
       <stop offset="100%" stop-color="#889AD0"/>
     </linearGradient>
   </defs>
-  <!-- Forewings -->
   <path d="M24 14 C17 3, 5 6, 4 17 C3 25, 14 27, 24 21 C34 27, 45 25, 44 17 C43 6, 31 3, 24 14 Z" fill="url(#${id}_fore)"/>
-  <!-- Hindwings with delicate contour tails -->
   <path d="M24 21 C17 26, 7 30, 8 38 C9 43, 17 44, 21 37 C23 33, 24 29, 24 21 C24 29, 25 33, 27 37 C31 44, 39 43, 40 38 C41 30, 31 26, 24 21 Z" fill="url(#${id}_hind)" opacity="0.9"/>
-  <!-- Antennae & Body -->
   <path d="M22 13 C20 8 16 5 13 4 M26 13 C28 8 32 5 35 4" stroke="#3A4678" stroke-width="1.2" stroke-linecap="round"/>
   <line x1="24" y1="12" x2="24" y2="34" stroke="#252D56" stroke-width="1.4" stroke-linecap="round"/>
 </svg>`;
+
 const logo = (id) => `<div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="showView('landing')">${bfly(id)}<div class="disp js-nologo" style="font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);">${BRAND}</div></div>`;
 
 function stepper(current, labels, dests) {
@@ -48,19 +46,10 @@ function stepper(current, labels, dests) {
   return out;
 }
 
-function subStepper(current, total, label) {
-  let dots = '';
-  for (let i = 1; i <= total; i++) {
-    const cls = i < current ? 'substep-dot done' : (i === current ? 'substep-dot active' : 'substep-dot');
-    dots += `<div class="${cls}"></div>`;
-  }
-  return `<div class="js-stepper" style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">${dots}<div style="font-size:11.5px;font-weight:700;color:var(--ink-faint);margin-left:8px;">${current} of ${total} &middot; ${label}</div></div>`;
-}
-
 const mask = (html, cls = 'js-title') => `<div class="reveal-mask"><div class="reveal-inner ${cls}">${html}</div></div>`;
 
-const STEP_LABELS = ['Story', 'Snapshot', 'Gap'];
-const STEP_DESTS = ['story-a', 'snapshot', 'gap'];
+const STEP_LABELS = ['Upload CV', 'Career Break', 'Skill Snapshot', 'Target Role & Gap'];
+const STEP_DESTS = ['story-a', 'story-b', 'snapshot', 'gap'];
 
 // ============ LANDING (E1) ============
 const landing = `
@@ -72,18 +61,13 @@ const landing = `
     <div class="star" style="top:60px;left:38%;"></div><div class="star" style="top:140px;left:62%;"></div>
     <div class="star" style="top:220px;left:80%;width:2px;height:2px;"></div><div class="star" style="top:90px;left:52%;width:2px;height:2px;"></div>
 
-    <!-- Full-height hero butterfly visual with smooth gradient edge fade -->
-    <div class="hero-visual-wrapper">
-      <img src="hero-dreamy-butterfly.png" alt="ReRouteHer Ethereal Butterfly Art" class="hero-butterfly-img" />
-    </div>
-
     <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;z-index:2;">
       ${logo('bflyL')}
     </div>
     <div style="position:relative;display:grid;grid-template-columns:1.08fr 0.92fr;gap:40px;padding:44px 60px 0;align-items:center;z-index:2;min-height:400px;">
       <div>
         ${mask('See what you still<br/>have to offer', 'js-title js-hero-title')}
-        <div class="js-sub" style="font-size:16.5px;line-height:1.6;color:rgba(38,43,74,.75);margin-top:18px;max-width:460px;">Coming back to work after a career break can feel like starting from zero. It isn&rsquo;t. We help you turn what you&rsquo;ve been doing &mdash; and what you did before &mdash; into an actionable roadmap.</div>
+        <div class="js-sub" style="font-size:16.5px;line-height:1.6;color:rgba(38,43,74,.75);margin-top:18px;max-width:460px;">Coming back to work after a career break can feel like starting from zero. It isn&rsquo;t. We turn your resume and life experience into an actionable skill readiness plan.</div>
         <div class="js-sub" style="display:flex;gap:14px;margin-top:26px;">
           <button type="button" class="pill-btn primary btn-reset" id="get-started-btn" onclick="beginIntake()">
             <span>Get started</span>
@@ -91,31 +75,39 @@ const landing = `
           </button>
         </div>
       </div>
-      <div class="js-img" style="position:relative;min-height:380px;">
+      <div class="js-img" style="position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;">
+        <div class="blur-orb js-parallax" data-speed="0.35" style="width:260px;height:260px;left:14%;top:20%;background:#F2A9C6;opacity:.55;"></div>
+        <div class="blur-orb js-parallax" data-speed="0.2" style="width:230px;height:230px;right:8%;bottom:10%;background:#4E5AA0;opacity:.5;"></div>
+        <svg width="220" height="220" viewBox="0 0 48 48" fill="none" style="position:relative;filter:drop-shadow(0 20px 40px rgba(40,30,80,.28));">
+          <defs><linearGradient id="bflyHero" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FBDCE6"/><stop offset="0.5" stop-color="#D8C6DF"/><stop offset="1" stop-color="#4E5AA0"/></linearGradient></defs>
+          <path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bflyHero)"/>
+          <path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bflyHero)" opacity="0.88"/>
+          <line x1="24" y1="10" x2="24" y2="34" stroke="#2C3568" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
       </div>
     </div>
   </div>
 
   <div class="scroll-section" style="max-width:1000px;margin:0 auto;padding:70px 60px 10px;">
-    ${mask('Three steps. No signup.', 'js-scroll-title')}
-    <div class="js-scroll-sub" style="font-size:14.5px;color:var(--ink-soft);margin-top:8px;max-width:520px;">A career break is treated as active skill-building here, not an empty gap to explain away.</div>
+    ${mask('Two simple inputs. Zero guesswork.', 'js-scroll-title')}
+    <div class="js-scroll-sub" style="font-size:14.5px;color:var(--ink-soft);margin-top:8px;max-width:520px;">Upload your CV, describe your career break, and our AI maps your real-world skills to market demand.</div>
     <div class="journey-stepper" style="display:flex;gap:0;margin-top:44px;">
       <div class="journey-step js-scroll-card">
         <div class="journey-num">1</div>
         <div class="journey-track"></div>
-        <div class="disp" style="font-weight:700;font-size:16px;margin-top:14px;">Tell your story</div>
-        <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">Share your background and break activities.</div>
+        <div class="disp" style="font-weight:700;font-size:16px;margin-top:14px;">Upload your CV</div>
+        <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">Extract your core career competencies directly.</div>
       </div>
       <div class="journey-step js-scroll-card">
         <div class="journey-num">2</div>
         <div class="journey-track"></div>
-        <div class="disp" style="font-weight:700;font-size:16px;margin-top:14px;">See your snapshot</div>
-        <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">We reframe your life experience into O*NET skills.</div>
+        <div class="disp" style="font-weight:700;font-size:16px;margin-top:14px;">Describe your break</div>
+        <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">Tell us what you did &mdash; AI reframes it to O*NET.</div>
       </div>
       <div class="journey-step js-scroll-card">
         <div class="journey-num">3</div>
-        <div class="disp" style="font-weight:700;font-size:16px;margin-top:14px;">Aim &amp; close gaps</div>
-        <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">See transparent readiness and top 3 priorities.</div>
+        <div class="disp" style="font-weight:700;font-size:16px;margin-top:14px;">See fit &amp; top gaps</div>
+        <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">Get your transparent readiness score &amp; focus areas.</div>
       </div>
     </div>
   </div>
@@ -140,18 +132,17 @@ const landing = `
   <div style="height:70px;"></div>
 </div>`;
 
-// ============ E2 sub-step 2a — Background ============
+// ============ STEP 1: UPLOAD CV (E2a) — MANDATORY, NO SKIP, NO MANUAL OPTION ============
 const storyA = `
 <div style="min-height:900px;background:var(--grad-soft);">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;">${logo('bfly2a')}</div>
   <div style="max-width:680px;margin:0 auto;padding:0 24px;">
     ${stepper(1, STEP_LABELS, STEP_DESTS)}
-    ${subStepper(1, 3, 'Background')}
-    ${mask('What did you do before?')}
-    <div class="js-sub" style="font-size:14px;color:var(--ink-soft);margin-top:6px;">One thing at a time &mdash; this step alone is enough to build your skill snapshot.</div>
+    ${mask('Upload your CV')}
+    <div class="js-sub" style="font-size:14.5px;color:var(--ink-soft);margin-top:6px;">We analyze your previous experience to extract your core professional skills automatically.</div>
 
-    <div class="glass js-card" style="padding:28px;margin-top:26px;">
-      <div class="field-label">Upload your CV</div>
+    <div class="glass js-card" style="padding:32px 28px;margin-top:24px;">
+      <div class="field-label" style="font-size:14px;">Select your CV file <span style="color:var(--pink-500);">*</span></div>
       <div id="cv-dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload your CV, PDF or DOCX, up to 10 megabytes"
            onclick="document.getElementById('cv-input').click()"
            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('cv-input').click();}"
@@ -159,169 +150,109 @@ const storyA = `
            ondragleave="this.classList.remove('drag');"
            ondrop="event.preventDefault();this.classList.remove('drag');handleCvFile(event.dataTransfer.files[0]);">
         <input type="file" id="cv-input" accept=".pdf,.doc,.docx" style="display:none;" onchange="handleCvFile(this.files[0]); this.value='';"/>
+        
         <div id="cv-empty-state">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C84AD" stroke-width="1.7" style="margin:0 auto 8px;display:block;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 17v2a2 2 0 002 2h10a2 2 0 002-2v-2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div style="font-size:13px;font-weight:600;color:var(--ink);">Drag your CV here, or click to browse</div>
-          <div style="font-size:11.5px;color:var(--ink-faint);margin-top:4px;">PDF or DOCX, up to 10MB &middot; Parsed securely on-device</div>
-        </div>
-        <div id="cv-file-state" style="display:none;align-items:center;justify-content:space-between;gap:10px;">
-          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-            <div style="width:36px;height:36px;border-radius:10px;background:var(--mint-100);display:flex;align-items:center;justify-content:center;color:var(--mint-700);flex:none;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-            </div>
-            <div style="min-width:0;"><div id="cv-filename" style="font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;"></div><div id="cv-filesize" style="font-size:11px;color:var(--ink-faint);"></div></div>
+          <div style="width:52px;height:52px;border-radius:16px;background:rgba(232,93,138,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--pink-500);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15l3-3 3 3"/></svg>
           </div>
-          <button type="button" class="btn-reset" onclick="event.stopPropagation();removeCvFile();" style="font-size:12px;font-weight:700;color:var(--pink-500);cursor:pointer;padding:6px 12px;border-radius:999px;background:rgba(232,93,138,.1);">Remove</button>
+          <div style="font-size:14px;font-weight:700;color:var(--ink);">Drag and drop your CV here, or click to browse</div>
+          <div style="font-size:12px;color:var(--ink-faint);margin-top:4px;">Supports PDF or DOCX (up to 10MB) &middot; Parsed securely</div>
+        </div>
+
+        <div id="cv-file-state" style="display:none;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.9);padding:14px 18px;border-radius:14px;border:1.5px solid rgba(46,115,85,.3);">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--mint-100);display:flex;align-items:center;justify-content:center;color:var(--mint-700);flex:none;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            </div>
+            <div style="min-width:0;text-align:left;">
+              <div id="cv-filename" style="font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px;"></div>
+              <div id="cv-filesize" style="font-size:11.5px;color:var(--mint-700);font-weight:600;"></div>
+            </div>
+          </div>
+          <button type="button" class="btn-reset" onclick="event.stopPropagation();removeCvFile();" style="font-size:12px;font-weight:700;color:var(--pink-500);cursor:pointer;padding:6px 14px;border-radius:999px;background:rgba(232,93,138,.1);">Remove</button>
         </div>
       </div>
       <div id="cv-error" class="field-error" style="display:none;"></div>
 
-      <div style="height:22px;"></div>
-      <div class="field-label">Or enter your previous role manually</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <input id="job-title-input" placeholder="e.g. UX Designer or Project Lead" onchange="saveIntake()" style="border-radius:12px;border:1.5px solid rgba(90,90,140,.22);background:rgba(255,255,255,.8);padding:13px 15px;font-family:inherit;font-size:13.5px;color:var(--ink);"/>
-        <select id="industry-input" onchange="saveIntake()" style="border-radius:12px;border:1.5px solid rgba(90,90,140,.22);background:rgba(255,255,255,.8);padding:13px 15px;font-family:inherit;font-size:13.5px;color:var(--ink);">
-          <option value="">Industry (optional)</option>
-          <option>Design &amp; Creative</option><option>Tech / Digital</option><option>Marketing &amp; Media</option>
-          <option>Admin / Office Operations</option><option>Healthcare &amp; Caregiving</option><option>Education</option>
-          <option>Finance / Bookkeeping</option><option>Retail &amp; Customer Support</option><option>Other</option>
-        </select>
+      <!-- Quick Demo Sample Loader -->
+      <div style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.5);padding:12px 16px;border-radius:12px;border:1px dashed rgba(90,90,140,.2);">
+        <div style="font-size:12.5px;color:var(--ink-soft);">Want to try without a file right now?</div>
+        <button type="button" class="btn-reset" onclick="loadSampleCv()" style="font-size:12.5px;font-weight:700;color:var(--blue-600);cursor:pointer;padding:4px 10px;border-radius:8px;background:rgba(70,83,158,.1);">
+          ⚡ Load Sample CV (Sarah &middot; UX Lead)
+        </button>
       </div>
     </div>
 
     <div class="js-card" style="text-align:center;margin-top:26px;padding-bottom:60px;">
-      <button type="button" class="pill-btn primary btn-reset" style="display:flex;width:100%;max-width:320px;margin:0 auto;" onclick="showView('story-b')">
-        <span>Continue</span>
+      <button type="button" id="cv-continue-btn" class="pill-btn primary btn-reset" style="display:flex;width:100%;max-width:320px;margin:0 auto;" onclick="validateAndContinueStoryA()">
+        <span>Continue to Career Break</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <a href="javascript:void(0)" onclick="showView('story-b')" style="display:inline-block;margin-top:16px;font-size:13px;font-weight:600;color:var(--ink-faint);">Skip &mdash; I&rsquo;ll add this later</a>
     </div>
   </div>
 </div>`;
 
-// ============ E2 sub-step 2b — Your break ============
-const AGE_BANDS = ['Under 25', '25\u201330', '31\u201335', '36\u201340', '41+'];
-const ACTIVITY_TAGS = ['Cared for children', 'Ran the household', 'Managed budget', 'Volunteered', 'Side project', 'Self-study & courses'];
-
-function timelineHTML() {
-  let segs = '';
-  AGE_BANDS.forEach((band, i) => {
-    segs += `
-    <div class="tl-seg" id="tl-seg-${i}" onclick="toggleTimelineSeg(${i})">
-      <div class="tl-dot"></div>
-      <div class="tl-label">${band}</div>
-      <div class="tl-badge" id="tl-badge-${i}" style="display:none;">0</div>
-    </div>`;
-  });
-  return `
-  <div class="field-label">Life timeline &mdash; select the age ranges that fit, then pick what filled them</div>
-  <div class="tl-track">${segs}</div>
-  <div id="tl-picker" class="tl-picker" style="display:none;">
-    <div id="tl-picker-title" style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;"></div>
-    <div id="tl-picker-tags" style="display:flex;flex-wrap:wrap;gap:9px;"></div>
-  </div>`;
-}
-
+// ============ STEP 2: CAREER BREAK QUESTIONNAIRE (E2b) — ONLY 2 QUESTIONS (DURATION + FREE TEXT INPUT) ============
 const storyB = `
-<div style="min-height:1000px;background:var(--grad-soft);">
+<div style="min-height:980px;background:var(--grad-soft);">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;">${logo('bfly2b')}</div>
-  <div style="max-width:680px;margin:0 auto;padding:0 24px;">
-    ${stepper(1, STEP_LABELS, STEP_DESTS)}
-    ${subStepper(2, 3, 'Your break')}
+  <div style="max-width:700px;margin:0 auto;padding:0 24px;">
+    ${stepper(2, STEP_LABELS, STEP_DESTS)}
     ${mask('Tell us about your career break')}
-    <div class="js-sub" style="font-size:14px;color:var(--ink-soft);margin-top:6px;">Your time out counts as real experience &mdash; here&rsquo;s where we capture it.</div>
-    <div class="js-sub" style="font-size:11.5px;color:var(--ink-faint);margin-top:4px;">&#128190; Auto-saved on this device as you go</div>
+    <div class="js-sub" style="font-size:14.5px;color:var(--ink-soft);margin-top:6px;">Your time out counts as real experience &mdash; just two simple questions for our AI model.</div>
 
-    <div class="glass js-card" style="padding:28px;margin-top:14px;">
-      <div class="field-label">Roughly how long were you out?</div>
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:26px;">
-        <input id="break-years" type="range" min="0" max="15" step="0.5" value="3"
-          oninput="document.getElementById('break-years-label').textContent = this.value + ' years';"
-          onchange="saveIntake()" class="slider" style="flex:1;"/>
-        <div id="break-years-label" style="font-size:14px;font-weight:700;color:var(--ink);min-width:64px;text-align:right;">3 years</div>
-      </div>
-      ${timelineHTML()}
-    </div>
-
-    <div class="js-card" style="text-align:center;margin-top:26px;padding-bottom:60px;">
-      <button type="button" class="pill-btn primary btn-reset" style="display:flex;width:100%;max-width:320px;margin:0 auto;" onclick="showView('story-c')">
-        <span>Continue</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-      <div style="display:flex;justify-content:center;gap:20px;margin-top:16px;">
-        <a href="javascript:void(0)" onclick="showView('story-a')" style="font-size:13px;font-weight:600;color:var(--ink-faint);">Back</a>
-        <a href="javascript:void(0)" onclick="showView('story-c')" style="font-size:13px;font-weight:600;color:var(--ink-faint);">Skip</a>
-      </div>
-    </div>
-  </div>
-</div>`;
-
-// ============ E2 sub-step 2c — What you need now ============
-const NEED_CATEGORIES = {
-  'Work arrangement': ['Remote / work from home', 'Hybrid', 'On-site', 'Freelance / contract', 'Part-time to start', 'Full-time', 'Flexible hours'],
-  'Time & schedule': ['School-hours only', 'Early mornings', 'Evenings after bedtime', 'Weekends only', 'Term-time only', 'Flexible / self-paced', 'Full weekday availability'],
-  'Location & commute': ['Close to home', 'Willing to commute <30 min', 'Public transport accessible', 'Own transport available', 'No commute (remote only)', 'Open to relocation'],
-  'Family & daily needs': ['Childcare during work hours', 'School pickup / drop-off flexibility', 'Sick-day flexibility', 'Quiet home workspace', 'Shared caregiving support', 'Predictable schedule', 'No overnight travel'],
-};
-
-function needsAccordionHTML() {
-  let out = '';
-  let ci = 0;
-  for (const cat in NEED_CATEGORIES) {
-    const tags = NEED_CATEGORIES[cat];
-    let chips = tags.map((t, ti) => `<div class="chip need-chip" id="need-${ci}-${ti}" onclick="toggleNeed(${ci},${ti},'${cat.replace(/'/g, "\\'")}','${t.replace(/'/g, "\\'")}')">${t}</div>`).join('');
-    out += `
-    <div class="accordion-cat">
-      <div class="accordion-head" onclick="toggleAccordion(${ci})">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="disp" style="font-weight:700;font-size:14.5px;">${cat}</div>
-          <div class="accordion-count" id="accordion-count-${ci}" style="display:none;">0</div>
+    <div class="glass js-card" style="padding:30px;margin-top:22px;display:flex;flex-direction:column;gap:26px;">
+      <!-- Question 1: Duration -->
+      <div>
+        <div class="field-label" style="font-size:14.5px;margin-bottom:6px;">1. Roughly how long was your career break?</div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;">Select the total duration of your time away from formal employment.</div>
+        <div style="display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.6);padding:14px 20px;border-radius:14px;border:1px solid rgba(90,90,140,.12);">
+          <input id="break-years" type="range" min="0.5" max="15" step="0.5" value="3"
+            oninput="document.getElementById('break-years-label').textContent = this.value + ' years';"
+            onchange="saveIntake()" class="slider" style="flex:1;"/>
+          <div id="break-years-label" style="font-size:15px;font-weight:800;color:var(--ink);min-width:74px;text-align:right;background:var(--mint-100);color:var(--mint-700);padding:5px 12px;border-radius:999px;">3 years</div>
         </div>
-        <svg id="accordion-chevron-${ci}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C84AD" stroke-width="2.2" style="transition:transform 260ms var(--ease-out);"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <div class="accordion-body" id="accordion-body-${ci}">
-        <div style="display:flex;flex-wrap:wrap;gap:9px;padding:4px 0 16px;">${chips}</div>
+
+      <!-- Question 2: Free Text Input (What did you do?) -->
+      <div>
+        <div class="field-label" style="font-size:14.5px;margin-bottom:6px;">2. What did you do during this time? <span style="color:var(--pink-500);">*</span></div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-bottom:12px;">Describe in your own words (e.g. caregiving, household management, budget oversight, volunteering, self-study, side projects).</div>
+        
+        <textarea id="break-text-input" rows="5" oninput="saveIntake()" placeholder="e.g. Cared for 2 children full-time, managed household budget and family schedules, organized school fundraisers, and self-studied digital design tools..." style="width:100%;border-radius:14px;border:1.5px solid rgba(90,90,140,.22);background:rgba(255,255,255,.85);padding:14px 16px;font-family:inherit;font-size:14px;line-height:1.55;color:var(--ink);box-sizing:border-box;resize:vertical;outline:none;"></textarea>
+
+        <!-- Quick suggestion tags to assist text entry -->
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div style="font-size:11.5px;font-weight:700;color:var(--ink-faint);">Click to add examples:</div>
+          <button type="button" class="btn-reset chip" onclick="appendBreakText('Cared for children & managed family logistics')" style="font-size:11.5px;padding:6px 12px;cursor:pointer;">+ Childcare</button>
+          <button type="button" class="btn-reset chip" onclick="appendBreakText('Managed household budgeting & expenses')" style="font-size:11.5px;padding:6px 12px;cursor:pointer;">+ Budgeting</button>
+          <button type="button" class="btn-reset chip" onclick="appendBreakText('Organized community volunteer projects')" style="font-size:11.5px;padding:6px 12px;cursor:pointer;">+ Volunteering</button>
+          <button type="button" class="btn-reset chip" onclick="appendBreakText('Self-study & online design courses')" style="font-size:11.5px;padding:6px 12px;cursor:pointer;">+ Self-study</button>
+        </div>
+        <div id="break-text-error" class="field-error" style="display:none;margin-top:10px;"></div>
       </div>
-    </div>`;
-    ci++;
-  }
-  return out;
-}
-
-const storyC = `
-<div style="min-height:1080px;background:var(--grad-soft);">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;">${logo('bfly2c')}</div>
-  <div style="max-width:680px;margin:0 auto;padding:0 24px;">
-    ${stepper(1, STEP_LABELS, STEP_DESTS)}
-    ${subStepper(3, 3, 'What you need now')}
-    ${mask('What are you looking for now?')}
-    <div class="js-sub" style="font-size:14px;color:var(--ink-soft);margin-top:6px;">Pick anything that fits &mdash; this shapes which roles we highlight.</div>
-
-    <div class="glass js-card" style="padding:10px 24px 6px;margin-top:14px;">
-      ${needsAccordionHTML()}
     </div>
 
-    <div class="js-card" style="text-align:center;margin-top:26px;padding-bottom:60px;">
-      <button type="button" class="pill-btn primary btn-reset" style="display:flex;width:100%;max-width:320px;margin:0 auto;" onclick="showView('snapshot')">
+    <div class="js-card" style="display:flex;align-items:center;justify-content:space-between;margin-top:28px;padding-bottom:60px;gap:16px;">
+      <button type="button" class="btn-reset" onclick="showView('story-a')" style="font-size:13.5px;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:6px;cursor:pointer;">
+        <span>&larr;</span> Back to CV
+      </button>
+      <button type="button" class="pill-btn primary btn-reset" onclick="validateAndContinueStoryB()">
         <span>See my skill snapshot</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <div style="display:flex;justify-content:center;gap:20px;margin-top:16px;">
-        <a href="javascript:void(0)" onclick="showView('story-b')" style="font-size:13px;font-weight:600;color:var(--ink-faint);">Back</a>
-        <a href="javascript:void(0)" onclick="showView('snapshot')" style="font-size:13px;font-weight:600;color:var(--ink-faint);">Skip</a>
-      </div>
     </div>
   </div>
 </div>`;
 
-// ============ E3 · Skill Snapshot (Page 1: History / Read-Only) ============
+// ============ STEP 3: SKILL SNAPSHOT (E3 · READ-ONLY HISTORY BASELINE) ============
 const snapshot = `
 <div style="min-height:960px;background:var(--grad-soft);">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;">${logo('bfly3')}</div>
   <div style="max-width:860px;margin:0 auto;padding:0 24px;">
-    ${stepper(2, STEP_LABELS, STEP_DESTS)}
+    ${stepper(3, STEP_LABELS, STEP_DESTS)}
     ${mask('Your skill snapshot')}
-    <div class="js-sub" style="font-size:15px;color:var(--ink-soft);margin-top:6px;">Here&rsquo;s the summary of where you&rsquo;re coming from &mdash; your professional history and reframed break skills.</div>
+    <div class="js-sub" style="font-size:15px;color:var(--ink-soft);margin-top:6px;">Here&rsquo;s the summary of where you&rsquo;re coming from &mdash; extracted from your CV and reframed from your career break.</div>
 
     <!-- Read-Only Descriptive History Baseline Card -->
     <div class="glass js-card" id="occupation-card" style="padding:28px 32px;margin-top:26px;position:relative;overflow:hidden;">
@@ -355,9 +286,9 @@ const snapshot = `
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
           <div class="field-label" style="margin-bottom:0;display:flex;align-items:center;gap:7px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue-600)" stroke-width="2.2"><path d="M20 7h-4V4a1 1 0 00-1-1H9a1 1 0 00-1 1v3H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1zM10 5h4v2h-4V5z"/></svg>
-            Skills you already have
+            Skills from your CV
           </div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink-faint);">Professional Career</div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink-faint);">Extracted automatically</div>
         </div>
         <div id="skills-have-col" style="display:flex;flex-wrap:wrap;gap:9px;"></div>
       </div>
@@ -366,7 +297,7 @@ const snapshot = `
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
           <div class="field-label" style="margin-bottom:0;display:flex;align-items:center;gap:7px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint-600)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            From your break (reframed)
+            From your break (Reframed)
           </div>
           <div style="font-size:11px;font-weight:700;color:var(--mint-700);">O*NET Validated</div>
         </div>
@@ -384,9 +315,9 @@ const snapshot = `
 
     <!-- Navigation Prompt -->
     <div class="js-card" style="display:flex;align-items:center;justify-content:space-between;margin-top:32px;padding-bottom:70px;flex-wrap:wrap;gap:16px;">
-      <div style="font-size:13px;color:var(--ink-soft);max-width:440px;">
-        Ready for the next step? Choose your target role to calculate your custom readiness score and focus areas.
-      </div>
+      <button type="button" class="btn-reset" onclick="showView('story-b')" style="font-size:13.5px;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:6px;cursor:pointer;">
+        <span>&larr;</span> Back to Break
+      </button>
       <button type="button" class="pill-btn primary btn-reset" onclick="showView('gap')">
         <span>Choose target role &amp; see readiness</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -395,12 +326,12 @@ const snapshot = `
   </div>
 </div>`;
 
-// ============ E4 · Role Readiness & Skill Gap (Page 2: Future / Aiming) ============
+// ============ STEP 4: TARGET ROLE READINESS & GAP (E4 · FUTURE / AIMING) ============
 const gap = `
 <div style="min-height:980px;background:var(--grad-soft);">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 56px;">${logo('bfly4')}</div>
   <div style="max-width:880px;margin:0 auto;padding:0 24px;">
-    ${stepper(3, STEP_LABELS, STEP_DESTS)}
+    ${stepper(4, STEP_LABELS, STEP_DESTS)}
     
     <!-- Aiming Reframe Header -->
     ${mask('Where do you want to go next?')}
@@ -520,21 +451,22 @@ const gap = `
       </div>
     </div>
 
-    <!-- Iteration 2 Action Footer -->
+    <!-- Navigation & Iteration 2 Footer -->
     <div class="js-card" style="display:flex;align-items:center;justify-content:space-between;margin-top:30px;padding-bottom:70px;flex-wrap:wrap;gap:16px;">
+      <button type="button" class="btn-reset" onclick="showView('snapshot')" style="font-size:13.5px;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:6px;cursor:pointer;">
+        <span>&larr;</span> Back to Snapshot
+      </button>
       <div style="font-size:12.5px;color:var(--ink-faint);display:flex;align-items:center;gap:8px;">
         <span style="width:8px;height:8px;border-radius:50%;background:var(--violet-400);"></span>
-        <span>Iteration 2 preview: Interactive roadmap &amp; bite-sized learning sprints</span>
+        <span>Iteration 2 preview: Automated personalized learning sprints</span>
       </div>
-      <button type="button" class="pill-btn secondary btn-reset" style="cursor:default;" title="Roadmap generator coming in Iteration 2">
-        <span>Build my plan (Iteration 2)</span>
-      </button>
     </div>
   </div>
 </div>`;
 
-const navItems = ['landing', 'story-a', 'story-b', 'story-c', 'snapshot', 'gap'];
-const views = { landing, 'story-a': storyA, 'story-b': storyB, 'story-c': storyC, snapshot, gap };
+// Only active views in MVP flow: Landing -> Story A (CV) -> Story B (Break) -> Snapshot -> Gap
+const navItems = ['landing', 'story-a', 'story-b', 'snapshot', 'gap'];
+const views = { landing, 'story-a': storyA, 'story-b': storyB, snapshot, gap };
 
 const html = `<!doctype html>
 <html lang="en">
@@ -542,7 +474,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${BRAND} &mdash; Skill Readiness Journey</title>
-<meta name="description" content="Interactive click-through prototype for the ${BRAND} skill-readiness journey (E1\u2013E4).">
+<meta name="description" content="Interactive click-through prototype for the ${BRAND} skill-readiness journey.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 12C18 2 4 4 4 16c0 8 10 10 20 4 10 6 20 4 20-4C44 4 30 2 24 12Z' fill='%23E85D8A'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -558,7 +490,7 @@ html,body{margin:0;}
 .pill-btn,.chip{transition:transform 160ms var(--ease-out),box-shadow 160ms var(--ease-out),background 160ms var(--ease-out);}
 .pill-btn:active,.chip:active{transform:scale(0.97);}
 .btn-reset{font-family:inherit;border:none;background:none;padding:0;cursor:pointer;}
-.pill-btn:focus-visible,.chip:focus-visible,.step-c:focus-visible,#cv-dropzone:focus-visible,.tl-seg:focus-visible,.role-pill:focus-visible{outline:3px solid rgba(74,87,160,.45);outline-offset:2px;}
+.pill-btn:focus-visible,.chip:focus-visible,.step-c:focus-visible,#cv-dropzone:focus-visible,.role-pill:focus-visible{outline:3px solid rgba(74,87,160,.45);outline-offset:2px;}
 .step-c{font-family:inherit;border:none;}
 button.step-c{cursor:pointer;padding:0;-webkit-appearance:none;appearance:none;}
 
@@ -588,7 +520,7 @@ button.step-c{cursor:pointer;padding:0;-webkit-appearance:none;appearance:none;}
 .js-scroll-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:32px;color:var(--ink);}
 
 /* ---- dropzone / file upload ---- */
-.dropzone{border:2px dashed rgba(90,90,140,.3);border-radius:16px;padding:32px 16px;text-align:center;background:rgba(255,255,255,.4);cursor:pointer;transition:border-color 200ms,background 200ms;}
+.dropzone{border:2px dashed rgba(90,90,140,.3);border-radius:16px;padding:32px 16px;text-align:center;background:rgba(255,255,255,.5);cursor:pointer;transition:border-color 200ms,background 200ms;}
 .dropzone.drag{border-color:var(--pink-500);background:rgba(232,93,138,.08);}
 .dropzone:focus-visible{outline:3px solid rgba(74,87,160,.45);outline-offset:2px;}
 .field-error{margin-top:10px;font-size:12.5px;color:#B23A4E;background:rgba(232,93,138,.08);border:1px solid rgba(232,93,138,.25);border-radius:10px;padding:9px 12px;}
@@ -598,30 +530,7 @@ input[type=range].slider{-webkit-appearance:none;appearance:none;height:6px;bord
 input[type=range].slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--pink-500);box-shadow:0 2px 6px rgba(40,40,90,.25);cursor:pointer;}
 input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--pink-500);box-shadow:0 2px 6px rgba(40,40,90,.25);cursor:pointer;}
 
-/* ---- life timeline ---- */
-.tl-track{display:flex;align-items:flex-start;gap:0;position:relative;padding-top:6px;}
-.tl-seg{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:0 4px;position:relative;}
-.tl-seg::before{content:'';position:absolute;top:11px;left:-50%;width:100%;height:2px;background:rgba(90,90,140,.18);z-index:0;}
-.tl-seg:first-child::before{display:none;}
-.tl-dot{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid rgba(90,90,140,.28);z-index:1;transition:all 220ms var(--ease-out);}
-.tl-seg.on .tl-dot{background:var(--grad-btn);border-color:transparent;}
-.tl-label{font-size:11.5px;font-weight:700;color:var(--ink-soft);margin-top:8px;text-align:center;}
-.tl-seg.on .tl-label{color:var(--ink);}
-.tl-badge{position:absolute;top:-6px;right:14px;background:var(--pink-500);color:#fff;font-size:9.5px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;}
-.tl-picker{margin-top:18px;padding:16px;border-radius:14px;background:rgba(255,255,255,.7);border:1px dashed rgba(90,90,140,.25);}
-
-/* ---- accordion ---- */
-.accordion-cat{border-bottom:1px solid rgba(90,90,140,.14);}
-.accordion-cat:last-child{border-bottom:none;}
-.accordion-head{display:flex;align-items:center;justify-content:space-between;padding:16px 0;cursor:pointer;}
-.accordion-count{font-size:10.5px;font-weight:800;color:#fff;background:var(--pink-500);border-radius:999px;padding:2px 8px;}
-.accordion-body{max-height:0;overflow:hidden;transition:max-height 320ms var(--ease-out);}
-.accordion-body.open{max-height:400px;}
-
-/* ---- empty state ---- */
-.empty-state{font-size:13px;color:var(--ink-faint);line-height:1.5;padding:8px 2px;}
-
-/* ---- Role pills (ReactBits interactive feel) ---- */
+/* ---- Role pills ---- */
 .role-pill{
   display:inline-flex;align-items:center;gap:8px;
   padding:12px 18px;border-radius:999px;font-size:13.5px;font-weight:700;
@@ -649,11 +558,6 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .dot-pip{width:11px;height:11px;border-radius:50%;background:rgba(35,42,82,.14);transition:all .3s var(--ease-spring);}
 .dot-pip.have{background:var(--mint-600);box-shadow:0 0 0 2px var(--mint-100);}
 .dot-pip.target{background:var(--pink-500);box-shadow:0 0 0 2px var(--pink-100);}
-
-/* ---- Sub-stepper dots ---- */
-.substep-dot{width:8px;height:8px;border-radius:50%;background:rgba(35,42,82,.16);transition:all 220ms var(--ease-out);flex:none;}
-.substep-dot.done{background:linear-gradient(120deg,#EE86AC,#6E7BC0);}
-.substep-dot.active{background:var(--pink-500);width:20px;border-radius:5px;}
 
 /* ---- Journey stepper ---- */
 .journey-stepper{position:relative;}
@@ -696,9 +600,7 @@ function showView(id) {
     playEntrance(id);
     if (id === 'landing') setTimeout(function () { ScrollTrigger.refresh(); }, 60);
     if (id === 'snapshot') renderSnapshot();
-    if (id === 'gap') {
-      renderRole(currentSelectedRole || 'ux-ui');
-    }
+    if (id === 'gap') renderRole(currentSelectedRole || 'ux-ui');
   }
 
   if (REDUCED || !current) {
@@ -728,16 +630,15 @@ function playEntrance(id) {
   var titleEl = root.querySelectorAll('.js-title, .js-hero-title');
   var subEls = root.querySelectorAll('.js-sub');
   var cardEls = root.querySelectorAll('.js-card');
-  var imgEls = root.querySelectorAll('.js-img');
 
   if (REDUCED) {
-    [stepperEl, titleEl, subEls, cardEls, imgEls].forEach(function (list) {
+    [stepperEl, titleEl, subEls, cardEls].forEach(function (list) {
       if (list.length) gsap.set(list, { clearProps: 'all' });
     });
     return;
   }
 
-  gsap.killTweensOf([stepperEl, titleEl, subEls, cardEls, imgEls]);
+  gsap.killTweensOf([stepperEl, titleEl, subEls, cardEls]);
   var tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
   if (stepperEl.length) {
@@ -748,9 +649,6 @@ function playEntrance(id) {
   }
   if (subEls.length) {
     tl.fromTo(subEls, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.07 }, 0.45);
-  }
-  if (imgEls.length) {
-    tl.fromTo(imgEls, { clipPath: 'inset(0 0 100% 0)', opacity: 0.4 }, { clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 1.0, ease: 'power4.out' }, 0.25);
   }
   if (cardEls.length) {
     tl.fromTo(cardEls, { opacity: 0, y: 28, scale: 0.985 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.09 }, 0.5);
@@ -799,58 +697,37 @@ function initScrollReveals() {
 }
 
 /* =========================================================
-   GUEST SESSION
+   GUEST SESSION & INTAKE STATE
    ========================================================= */
-var GUEST_KEY = 'rerouteher_guest_session';
-function ensureGuestSession() {
-  try {
-    if (!localStorage.getItem(GUEST_KEY)) {
-      var id = (crypto && crypto.randomUUID) ? crypto.randomUUID() : ('guest-' + Date.now() + '-' + Math.random().toString(36).slice(2));
-      localStorage.setItem(GUEST_KEY, JSON.stringify({ guestId: id, createdAt: Date.now() }));
-    }
-  } catch (e) {}
-}
+var GUEST_KEY = 'rerouteher_guest_session_v5';
+var INTAKE_KEY = 'rerouteher_intake_mvp_v1';
+var intake = { cv: null, breakYears: 3, breakText: '' };
+
 function beginIntake() {
-  ensureGuestSession();
   showView('story-a');
 }
 
-/* =========================================================
-   INTAKE STATE (On-device persistence)
-   ========================================================= */
-var INTAKE_KEY = 'rerouteher_intake_v4';
-var intake = { cv: null, jobTitle: '', industry: '', breakYears: 3, timeline: {}, needs: {} };
-
 function saveIntake() {
-  var jt = document.getElementById('job-title-input');
-  var ind = document.getElementById('industry-input');
-  if (jt) intake.jobTitle = jt.value;
-  if (ind) intake.industry = ind.value;
   var by = document.getElementById('break-years');
   if (by) intake.breakYears = by.value;
+  var bt = document.getElementById('break-text-input');
+  if (bt) intake.breakText = bt.value;
   try { localStorage.setItem(INTAKE_KEY, JSON.stringify(intake)); } catch (e) {}
 }
+
 function restoreIntake() {
   try {
     var raw = localStorage.getItem(INTAKE_KEY);
     if (raw) intake = Object.assign(intake, JSON.parse(raw));
   } catch (e) {}
-  var jt = document.getElementById('job-title-input'); if (jt && intake.jobTitle) jt.value = intake.jobTitle;
-  var ind = document.getElementById('industry-input'); if (ind && intake.industry) ind.value = intake.industry;
   var by = document.getElementById('break-years');
   if (by) { by.value = intake.breakYears; var lbl = document.getElementById('break-years-label'); if (lbl) lbl.textContent = intake.breakYears + ' years'; }
+  var bt = document.getElementById('break-text-input');
+  if (bt && intake.breakText) bt.value = intake.breakText;
   if (intake.cv) showCvFileState(intake.cv);
-  AGE_BANDS_JS.forEach(function(_, i){ renderTimelineBadge(i); });
-  Object.keys(NEED_CATEGORIES_JS).forEach(function(cat, ci){
-    NEED_CATEGORIES_JS[cat].forEach(function(tag, ti){
-      var el = document.getElementById('need-' + ci + '-' + ti);
-      if (el && intake.needs[cat] && intake.needs[cat].indexOf(tag) !== -1) el.classList.add('on');
-    });
-    updateAccordionCount(ci, cat);
-  });
 }
 
-/* ---- CV upload ---- */
+/* ---- CV upload handlers ---- */
 function handleCvFile(file) {
   var err = document.getElementById('cv-error');
   err.style.display = 'none';
@@ -859,17 +736,19 @@ function handleCvFile(file) {
   var okSize = file.size <= 10 * 1024 * 1024;
   if (!okType) { err.textContent = 'Please upload a PDF or DOCX file.'; err.style.display = 'block'; return; }
   if (!okSize) { err.textContent = 'That file is over 10MB \u2014 please upload something smaller.'; err.style.display = 'block'; return; }
-  intake.cv = { name: file.name, size: file.size };
+  intake.cv = { name: file.name, size: file.size, role: 'Senior UX/UI Designer' };
   showCvFileState(intake.cv);
   saveIntake();
 }
+
 function showCvFileState(cv) {
   document.getElementById('cv-empty-state').style.display = 'none';
   var fs = document.getElementById('cv-file-state');
   fs.style.display = 'flex';
   document.getElementById('cv-filename').textContent = cv.name;
-  document.getElementById('cv-filesize').textContent = (cv.size / 1024 / 1024).toFixed(1) + ' MB';
+  document.getElementById('cv-filesize').textContent = (cv.size / 1024 / 1024).toFixed(1) + ' MB · Verified';
 }
+
 function removeCvFile() {
   intake.cv = null;
   document.getElementById('cv-empty-state').style.display = 'block';
@@ -877,177 +756,122 @@ function removeCvFile() {
   saveIntake();
 }
 
-/* ---- Life timeline ---- */
-var AGE_BANDS_JS = ${JSON.stringify(AGE_BANDS)};
-var ACTIVITY_TAGS_JS = ${JSON.stringify(ACTIVITY_TAGS)};
-var openTimelineSeg = null;
-function renderTimelinePicker(i) {
-  var band = AGE_BANDS_JS[i];
-  var picker = document.getElementById('tl-picker');
-  picker.style.display = 'block';
-  document.getElementById('tl-picker-title').textContent = 'What filled this time? (' + band + ')';
-  var selected = intake.timeline[band] || [];
-  var container = document.getElementById('tl-picker-tags');
-  container.innerHTML = '';
-  ACTIVITY_TAGS_JS.forEach(function(tag){
-    var chip = document.createElement('div');
-    chip.className = 'chip' + (selected.indexOf(tag) !== -1 ? ' on' : '');
-    chip.textContent = tag;
-    chip.onclick = function(){ toggleTimelineActivity(band, tag, i); };
-    container.appendChild(chip);
-  });
-}
-function toggleTimelineSeg(i) {
-  if (openTimelineSeg === i) {
-    document.getElementById('tl-picker').style.display = 'none';
-    openTimelineSeg = null;
-    return;
-  }
-  openTimelineSeg = i;
-  renderTimelinePicker(i);
-  var picker = document.getElementById('tl-picker');
-  if (!REDUCED) gsap.fromTo(picker, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
-}
-function toggleTimelineActivity(band, tag, segIndex) {
-  if (!intake.timeline[band]) intake.timeline[band] = [];
-  var idx = intake.timeline[band].indexOf(tag);
-  if (idx === -1) intake.timeline[band].push(tag); else intake.timeline[band].splice(idx, 1);
-  renderTimelinePicker(segIndex);
-  renderTimelineBadge(segIndex);
+function loadSampleCv() {
+  intake.cv = { name: 'Sarah_Chen_Resume_2026.pdf', size: 1.8 * 1024 * 1024, role: 'Senior UX/UI Designer' };
+  showCvFileState(intake.cv);
   saveIntake();
-}
-function renderTimelineBadge(i) {
-  var band = AGE_BANDS_JS[i];
-  var count = (intake.timeline[band] || []).length;
-  var seg = document.getElementById('tl-seg-' + i);
-  var badge = document.getElementById('tl-badge-' + i);
-  if (count > 0) { seg.classList.add('on'); badge.style.display = 'flex'; badge.textContent = count; }
-  else { seg.classList.remove('on'); badge.style.display = 'none'; }
 }
 
-/* ---- Needs accordion ---- */
-var NEED_CATEGORIES_JS = ${JSON.stringify(NEED_CATEGORIES)};
-function toggleAccordion(ci) {
-  var body = document.getElementById('accordion-body-' + ci);
-  var chev = document.getElementById('accordion-chevron-' + ci);
-  var willOpen = !body.classList.contains('open');
-  document.querySelectorAll('.accordion-body').forEach(function(b){ b.classList.remove('open'); });
-  document.querySelectorAll('[id^="accordion-chevron-"]').forEach(function(c){ c.style.transform = 'rotate(0deg)'; });
-  if (willOpen) { body.classList.add('open'); chev.style.transform = 'rotate(180deg)'; }
+function validateAndContinueStoryA() {
+  var err = document.getElementById('cv-error');
+  if (!intake.cv) {
+    err.textContent = 'Please upload your CV (or click "Load Sample CV") to proceed with matching.';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  showView('story-b');
 }
-function toggleNeed(ci, ti, cat, tag) {
-  var el = document.getElementById('need-' + ci + '-' + ti);
-  el.classList.toggle('on');
-  if (!intake.needs[cat]) intake.needs[cat] = [];
-  var idx = intake.needs[cat].indexOf(tag);
-  if (idx === -1) intake.needs[cat].push(tag); else intake.needs[cat].splice(idx, 1);
-  updateAccordionCount(ci, cat);
+
+/* ---- Career Break text handlers ---- */
+function appendBreakText(snippet) {
+  var bt = document.getElementById('break-text-input');
+  if (!bt) return;
+  if (bt.value.trim().length > 0) {
+    bt.value = bt.value.trim() + ', ' + snippet;
+  } else {
+    bt.value = snippet;
+  }
+  intake.breakText = bt.value;
   saveIntake();
 }
-function updateAccordionCount(ci, cat) {
-  var n = (intake.needs[cat] || []).length;
-  var badge = document.getElementById('accordion-count-' + ci);
-  if (n > 0) { badge.style.display = 'inline-block'; badge.textContent = n; } else { badge.style.display = 'none'; }
+
+function validateAndContinueStoryB() {
+  var bt = document.getElementById('break-text-input');
+  var err = document.getElementById('break-text-error');
+  var text = (bt ? bt.value : '').trim();
+  if (text.length === 0) {
+    // If empty, supply default descriptive input
+    intake.breakText = 'Cared for 2 children full-time, managed family household budget, scheduled logistics, and self-studied digital design tools';
+    if (bt) bt.value = intake.breakText;
+  } else {
+    intake.breakText = text;
+  }
+  saveIntake();
+  showView('snapshot');
 }
 
 /* =========================================================
-   E3 \u2014 SNAPSHOT (PAGE 1: HISTORY / READ-ONLY)
+   STEP 3: SKILL SNAPSHOT (READ-ONLY HISTORY BASELINE)
    ========================================================= */
-var CAREGIVING_MAP = {
-  'Cared for children': ['Active Listening', 'Social Perceptiveness', 'Crisis Management'],
-  'Ran the household': ['Time Management', 'Coordination & Scheduling', 'Resource Allocation'],
-  'Managed budget': ['Financial Resource Management', 'Cost Optimization'],
-  'Volunteered': ['Community Coordination', 'Stakeholder Outreach'],
-  'Side project': ['Initiative & Ownership', 'Project Planning'],
-  'Self-study & courses': ['Continuous Learning', 'Digital Literacy']
-};
-var PROFESSIONAL_SKILLS = [
+var PROFESSIONAL_SKILLS_CV = [
   'User Research & Synthesis',
   'Wireframing & Interactive Prototyping',
-  'Design Systems & Component Specs',
+  'Design Systems & Component Tokens',
   'Usability Testing & Feedback Loops',
   'Stakeholder Presentation & Alignment'
 ];
 
-function renderSnapshot() {
-  var hasBackground = !!(intake.cv || intake.jobTitle);
-  var allActivities = [];
-  Object.keys(intake.timeline).forEach(function(band){
-    (intake.timeline[band] || []).forEach(function(a){
-      if (allActivities.indexOf(a) === -1) allActivities.push(a);
-    });
-  });
-  var hasBreak = allActivities.length > 0;
-
-  // Headline
-  var headlineEl = document.getElementById('snapshot-headline');
-  if (headlineEl) {
-    var job = intake.jobTitle ? intake.jobTitle : 'Senior UX/UI Designer';
-    headlineEl.innerHTML = 'Based on your story, you&rsquo;re closest to <span style="background:var(--grad-btn);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">' + job + '</span>.';
+function extractReframedSkillsFromText(text) {
+  var lower = (text || '').toLowerCase();
+  var skills = [];
+  
+  if (/child|kid|care|parent|family|baby/.test(lower)) {
+    skills.push('Active Listening', 'Social Perceptiveness', 'Crisis De-escalation');
+  }
+  if (/budget|financ|money|cost|expense|saving|bill/.test(lower)) {
+    skills.push('Financial Resource Management', 'Cost Optimization');
+  }
+  if (/house|home|schedul|organiz|manage|coordinat|plan|logistics/.test(lower)) {
+    skills.push('Time Management', 'Coordination & Scheduling');
+  }
+  if (/volunt|commun|event|school|fundrais|outreach/.test(lower)) {
+    skills.push('Community Coordination', 'Stakeholder Outreach');
+  }
+  if (/stud|learn|course|class|read|tool|figma|certif/.test(lower)) {
+    skills.push('Continuous Learning', 'Digital Literacy');
+  }
+  if (/project|side|freelanc|consult|client/.test(lower)) {
+    skills.push('Initiative & Ownership', 'Project Execution');
   }
 
-  // Professional skills
+  // Fallback defaults
+  if (skills.length === 0) {
+    skills = ['Active Listening', 'Time Management', 'Multi-tasking Coordination', 'Financial Budgeting'];
+  }
+  
+  // Deduplicate
+  return skills.filter(function(item, pos) { return skills.indexOf(item) === pos; });
+}
+
+function renderSnapshot() {
+  // Professional skills from CV
   var haveCol = document.getElementById('skills-have-col');
   if (haveCol) {
-    if (hasBackground) {
-      haveCol.innerHTML = PROFESSIONAL_SKILLS.map(function(s){
-        return '<div class="chip" style="background:rgba(255,255,255,.8);"><span style="color:var(--blue-600);">&#9679;</span> ' + s + '</div>';
-      }).join('');
-    } else {
-      haveCol.innerHTML = '<div class="empty-state">No previous role entered yet. We used a standard design baseline &mdash; you can go back to Step 1 anytime to personalize it.</div>';
-    }
+    haveCol.innerHTML = PROFESSIONAL_SKILLS_CV.map(function(s){
+      return '<div class="chip" style="background:rgba(255,255,255,.8);"><span style="color:var(--blue-600);">&#9679;</span> ' + s + '</div>';
+    }).join('');
   }
 
-  // Reframed break skills
+  // Reframed break skills from user's free text input
+  var reframedSkills = extractReframedSkillsFromText(intake.breakText);
   var reframedCol = document.getElementById('skills-reframed-col');
-  var reframedSkills = [];
-  allActivities.forEach(function(a){
-    (CAREGIVING_MAP[a] || []).forEach(function(s){
-      if (reframedSkills.indexOf(s) === -1) reframedSkills.push(s);
-    });
-  });
-
   if (reframedCol) {
-    if (hasBreak && reframedSkills.length > 0) {
-      reframedCol.innerHTML = reframedSkills.map(function(s){
-        return '<div class="chip mint"><span style="color:var(--mint-600);">&#10003;</span> ' + s + '</div>';
-      }).join('');
-    } else {
-      // Default sample reframed skills
-      var defaults = ['Active Listening', 'Time Management', 'Resource Coordination', 'Financial Planning'];
-      reframedCol.innerHTML = defaults.map(function(s){
-        return '<div class="chip mint" style="opacity:.85;"><span style="color:var(--mint-600);">&#10003;</span> ' + s + '</div>';
-      }).join('');
-    }
+    reframedCol.innerHTML = reframedSkills.map(function(s){
+      return '<div class="chip mint"><span style="color:var(--mint-600);">&#10003;</span> ' + s + '</div>';
+    }).join('');
   }
 
-  // Crosswalk banner text
+  // Crosswalk banner
   var crosswalkText = document.getElementById('crosswalk-text');
   if (crosswalkText) {
-    if (hasBreak && allActivities.length > 0) {
-      var ex = allActivities[0];
-      var mapped = (CAREGIVING_MAP[ex] || ['Coordination', 'Communication']).slice(0, 2).join(' + ');
-      crosswalkText.innerHTML = '<b>' + ex + ' &rarr; ' + mapped + '.</b> Your everyday break activities are systematically mapped to real O*NET workforce competencies.';
-    } else {
-      crosswalkText.innerHTML = '<b>Caregiving &amp; Running a Home &rarr; Time Management &middot; Budgeting &middot; Coordination.</b> Real life experience mapped directly to standard workforce taxonomies.';
-    }
-  }
-
-  // Confidence badge
-  var badge = document.getElementById('confidence-badge');
-  if (badge) {
-    if (hasBackground && hasBreak) {
-      badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:var(--mint-600);box-shadow:0 0 0 2px rgba(46,115,85,.2);"></span> High confidence match';
-      badge.style.background = 'var(--mint-100)'; badge.style.color = 'var(--mint-700)';
-    } else {
-      badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:var(--amber-600);box-shadow:0 0 0 2px rgba(192,112,24,.2);"></span> Exploratory baseline';
-      badge.style.background = 'var(--amber-100)'; badge.style.color = 'var(--amber-700)';
-    }
+    var primaryBreak = reframedSkills.slice(0, 3).join(' &middot; ');
+    crosswalkText.innerHTML = '<b>Natural Language Processing &rarr; ' + primaryBreak + '.</b> Real-world break activities systematically translated into standard O*NET competency taxonomies.';
   }
 }
 
 /* =========================================================
-   E4 \u2014 GAP & TARGET READINESS (PAGE 2: AIMING / FUTURE)
+   STEP 4: TARGET ROLE READINESS & GAP ANALYSIS
    ========================================================= */
 var PRESETS = {
   'ux-ui': {
@@ -1060,11 +884,11 @@ var PRESETS = {
     upliftTotal: 16,
     formulaExpl: 'Because you have foundational core competencies (User Research, Prototyping, Design Systems), you start at <b>78% ready</b>. The count (7 of 10) and % differ because foundational essentials carry heavier weighting in hiring than emerging tool gaps.',
     have: [
-      { name: 'User Research & Persona Synthesis', origin: 'Career' },
-      { name: 'Wireframing & Interactive Prototyping', origin: 'Career' },
-      { name: 'Design Systems & Component Tokens', origin: 'Career' },
-      { name: 'Information Architecture & User Flows', origin: 'Career' },
-      { name: 'Usability Testing & Feedback Loops', origin: 'Career' },
+      { name: 'User Research & Persona Synthesis', origin: 'CV' },
+      { name: 'Wireframing & Interactive Prototyping', origin: 'CV' },
+      { name: 'Design Systems & Component Tokens', origin: 'CV' },
+      { name: 'Information Architecture & User Flows', origin: 'CV' },
+      { name: 'Usability Testing & Feedback Loops', origin: 'CV' },
       { name: 'Active Listening & Stakeholder Empathy', origin: 'Break' },
       { name: 'Time & Multi-project Prioritization', origin: 'Break' }
     ],
@@ -1084,11 +908,11 @@ var PRESETS = {
     upliftTotal: 19,
     formulaExpl: 'Your transferable storytelling, content creation, and project management provide a <b>72% baseline fit</b>. Closing tactical analytics and modern search gaps unlocks <b>91% readiness</b>.',
     have: [
-      { name: 'Content Strategy & Copywriting', origin: 'Career' },
-      { name: 'Social Media Channel Management', origin: 'Career' },
-      { name: 'Campaign Planning & Storytelling', origin: 'Career' },
-      { name: 'Brand Voice & Audience Positioning', origin: 'Career' },
-      { name: 'Stakeholder & Client Communication', origin: 'Career' },
+      { name: 'Content Strategy & Copywriting', origin: 'CV' },
+      { name: 'Social Media Channel Management', origin: 'CV' },
+      { name: 'Campaign Planning & Storytelling', origin: 'CV' },
+      { name: 'Brand Voice & Audience Positioning', origin: 'CV' },
+      { name: 'Stakeholder & Client Communication', origin: 'CV' },
       { name: 'Budget & Resource Allocation', origin: 'Break' },
       { name: 'Community & Event Coordination', origin: 'Break' }
     ],
@@ -1108,11 +932,11 @@ var PRESETS = {
     upliftTotal: 12,
     formulaExpl: 'Strong empathy, clear documentation, and conflict de-escalation give you a remarkable <b>85% starting readiness</b>. Adopting modern helpdesk AI tools pushes you to near-complete <b>97% readiness</b>.',
     have: [
-      { name: 'Empathetic Client Communication', origin: 'Career' },
-      { name: 'Conflict Resolution & De-escalation', origin: 'Career' },
-      { name: 'Multi-channel Ticket Prioritization', origin: 'Career' },
-      { name: 'Knowledge Base Authoring & FAQs', origin: 'Career' },
-      { name: 'Customer Onboarding & Walkthroughs', origin: 'Career' },
+      { name: 'Empathetic Client Communication', origin: 'CV' },
+      { name: 'Conflict Resolution & De-escalation', origin: 'CV' },
+      { name: 'Multi-channel Ticket Prioritization', origin: 'CV' },
+      { name: 'Knowledge Base Authoring & FAQs', origin: 'CV' },
+      { name: 'Customer Onboarding & Walkthroughs', origin: 'CV' },
       { name: 'Patience & Active Listening', origin: 'Break' },
       { name: 'Crisis Coordination & Calm Leadership', origin: 'Break' },
       { name: 'Time & Schedule Organization', origin: 'Break' }
@@ -1133,10 +957,10 @@ var PRESETS = {
     upliftTotal: 27,
     formulaExpl: 'Your budget tracking and spreadsheet diligence provide a <b>64% core foundation</b>. Mastering standard cloud accounting platforms yields a fast +27% readiness jump to <b>91%</b>.',
     have: [
-      { name: 'Spreadsheet Modeling (Excel / Google Sheets)', origin: 'Career' },
-      { name: 'Expense Categorization & Audit Trails', origin: 'Career' },
-      { name: 'Invoice Verification & Payment Scheduling', origin: 'Career' },
-      { name: 'Attention to Detail & Accuracy Verification', origin: 'Career' },
+      { name: 'Spreadsheet Modeling (Excel / Google Sheets)', origin: 'CV' },
+      { name: 'Expense Categorization & Audit Trails', origin: 'CV' },
+      { name: 'Invoice Verification & Payment Scheduling', origin: 'CV' },
+      { name: 'Attention to Detail & Accuracy Verification', origin: 'CV' },
       { name: 'Household Budget & Cash Flow Management', origin: 'Break' },
       { name: 'Vendor & Service Provider Negotiation', origin: 'Break' }
     ],
@@ -1156,7 +980,6 @@ function svgEl(p, t, a) { var n = document.createElementNS(NS, t); for (var k in
 function svgTxt(p, a, s) { var n = svgEl(p, 'text', a); n.textContent = s; return n; }
 function pol(cx, cy, r, deg) { var rad = deg * Math.PI / 180; return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)]; }
 
-/* Lieflat Arc Gauge with target projection glow */
 function renderGauge(pct, targetPct) {
   var svg = document.getElementById('gauge');
   if (!svg) return;
@@ -1170,7 +993,6 @@ function renderGauge(pct, targetPct) {
 
   var cx = 160, cy = 135, R0 = 85, A0 = -195, SW = 210;
 
-  // Background track lines
   for (var k = 0; k < 75; k++) {
     var a = A0 + (k / 74) * SW;
     var fraction = (k / 74) * 100;
@@ -1189,7 +1011,6 @@ function renderGauge(pct, targetPct) {
     });
   }
 
-  // Ticks at 0, 25, 50, 75, 100
   [0, 25, 50, 75, 100].forEach(function(m) {
     var a = A0 + (m / 100) * SW;
     var d = pol(cx, cy, R0 - 6, a);
@@ -1198,12 +1019,10 @@ function renderGauge(pct, targetPct) {
     svgTxt(svg, { x: t[0], y: t[1] + 3, 'font-size': 9, 'font-weight': 700, fill: 'rgba(35,42,82,.4)', 'text-anchor': 'middle', 'font-family': 'inherit' }, m + '%');
   });
 
-  // Indicator bead
   var aCurrent = A0 + (pct / 100) * SW;
   var beadPos = pol(cx, cy, R0 + 20, aCurrent);
   var dot = svgEl(svg, 'circle', { cx: beadPos[0], cy: beadPos[1], r: 4.5, fill: '#1E2243', stroke: '#fff', 'stroke-width': 1.5 });
 
-  // Center Score
   var numText = svgTxt(svg, { x: cx, y: cy - 4, 'font-size': 38, 'font-weight': 800, fill: '#1E2243', 'text-anchor': 'middle', 'font-family': 'Bricolage Grotesque' }, '0%');
   svgTxt(svg, { x: cx, y: cy + 18, 'font-size': 10, 'font-weight': 800, fill: '#7C84AD', 'text-anchor': 'middle', 'letter-spacing': '.08em' }, 'READY TODAY');
 
@@ -1228,62 +1047,53 @@ function renderRole(key) {
 
   renderGauge(p.pct, p.projectedPct);
 
-  // Target role title badge
   var trb = document.getElementById('target-role-badge');
   if (trb) trb.textContent = p.title;
 
-  // Tag pill under gauge
   var projPill = document.getElementById('projected-tag-pill');
   if (projPill) {
     projPill.innerHTML = p.pct + '% today &rarr; ' + p.projectedPct + '% target';
   }
 
-  // Count headline & badge
   var countHead = document.getElementById('skill-count-headline');
   if (countHead) countHead.textContent = 'You already have ' + p.matchedCount + ' of ' + p.totalSkills + ' key skills for this role.';
   var countBadge = document.getElementById('skill-count-badge');
-  if (countBadge) countBadge.textContent = Math.round(p.matchedCount / p.totalSkills * 100) + '% Raw Coverage';
+  if (countBadge) countBadge.textContent = Math.round(p.matchedCount / p.totalSkills * 100) + '% Base Count';
 
-  // Dot meter (10 pips)
   var dotMeter = document.getElementById('skill-dot-meter');
   if (dotMeter) {
     var pips = '';
     for (var i = 0; i < p.totalSkills; i++) {
       if (i < p.matchedCount) {
-        pips += '<div class="dot-pip have" title="Skill ' + (i+1) + ': Matched from your background"></div>';
+        pips += '<div class="dot-pip have" title="Skill ' + (i+1) + ': Matched from your CV / break"></div>';
       } else {
-        pips += '<div class="dot-pip target" title="Skill ' + (i+1) + ': Focus target gap"></div>';
+        pips += '<div class="dot-pip target" title="Skill ' + (i+1) + ': Target gap"></div>';
       }
     }
     dotMeter.innerHTML = pips;
   }
 
-  // Formula explanation text
   var formulaText = document.getElementById('formula-expl-text');
   if (formulaText) formulaText.innerHTML = p.formulaExpl;
 
-  // Projected summary text & uplift
   var projSummary = document.getElementById('projected-summary-text');
   if (projSummary) projSummary.textContent = p.pct + '% today \u2192 ' + p.projectedPct + '% after your 3 focus areas';
   var upliftBadge = document.getElementById('uplift-sum-badge');
   if (upliftBadge) upliftBadge.textContent = '+' + p.upliftTotal + '% Total Uplift';
 
-  // Have list
   var haveEl = document.getElementById('gap-have');
   var haveCount = document.getElementById('gap-have-count');
   if (haveCount) haveCount.textContent = p.matchedCount + ' matched';
   
   var haveHtml = p.have.map(function(s){
-    var originBadge = s.origin === 'Break' ? '<span class="tag" style="background:var(--mint-100);color:var(--mint-700);font-size:10px;">Reframed from break</span>' : '<span class="tag" style="background:rgba(70,83,158,.1);color:var(--blue-600);font-size:10px;">Career</span>';
+    var originBadge = s.origin === 'Break' ? '<span class="tag" style="background:var(--mint-100);color:var(--mint-700);font-size:10px;">Reframed from break</span>' : '<span class="tag" style="background:rgba(70,83,158,.1);color:var(--blue-600);font-size:10px;">CV</span>';
     return '<div class="row-item have-skill"><div style="display:flex;align-items:center;gap:10px;"><span style="color:var(--mint-600);font-weight:800;font-size:13px;">&#10003;</span><div style="font-size:13px;font-weight:600;color:var(--ink);">' + s.name + '</div></div>' + originBadge + '</div>';
   }).join('');
 
-  // Top 3 Focus Build list
   var buildEl = document.getElementById('gap-build');
   var sorted = p.build.slice().sort(function(a,b){ return b.uplift - a.uplift; });
   var buildHtml = sorted.map(function(b, i){
     var tagClass = b.type === 'essential' ? 'essential' : 'uplift';
-    var tagText = b.type === 'essential' ? 'Essential Core' : 'Strategic Boost';
     return '<div class="row-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 16px;">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;width:100%;">' +
         '<div style="display:flex;align-items:center;gap:8px;"><span style="width:20px;height:20px;border-radius:50%;background:var(--grad-btn);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;">' + (i+1) + '</span><span style="font-size:13.5px;font-weight:700;color:var(--ink);">' + b.name + '</span></div>' +
