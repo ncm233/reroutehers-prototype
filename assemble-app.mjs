@@ -61,9 +61,9 @@ const landing = `
     <div class="star" style="top:60px;left:38%;"></div><div class="star" style="top:140px;left:62%;"></div>
     <div class="star" style="top:220px;left:80%;width:2px;height:2px;"></div><div class="star" style="top:90px;left:52%;width:2px;height:2px;"></div>
 
-    <!-- Full-height hero butterfly oil painting artwork attached to the right edge with edge gradient fade & 80% opacity -->
+    <!-- Full-height hero butterfly oil painting artwork attached to the right edge with clean ethereal edge gradient fade & 85% opacity -->
     <div class="hero-artwork-container" style="position:absolute;top:0;right:0;bottom:0;height:100%;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;z-index:1;overflow:hidden;">
-      <img src="hero-butterfly-oil.png" alt="ReRouteHer Ethereal Butterfly Oil Painting" class="hero-butterfly-img" style="height:100%;max-height:100%;width:auto;object-fit:contain;object-position:right center;opacity:0.8;-webkit-mask-image:radial-gradient(ellipse 75% 85% at 52% 48%, rgba(0,0,0,1) 45%, rgba(0,0,0,0.85) 65%, rgba(0,0,0,0) 100%);mask-image:radial-gradient(ellipse 75% 85% at 52% 48%, rgba(0,0,0,1) 45%, rgba(0,0,0,0.85) 65%, rgba(0,0,0,0) 100%);filter:drop-shadow(0 20px 35px rgba(50,45,90,.16));" />
+      <img src="hero-dreamy-butterfly.png" alt="ReRouteHer Ethereal Butterfly Oil Painting" class="hero-butterfly-img" style="height:100%;max-height:100%;width:auto;object-fit:contain;object-position:right center;opacity:0.85;-webkit-mask-image:radial-gradient(ellipse 75% 85% at 52% 48%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 60%, transparent 95%);mask-image:radial-gradient(ellipse 75% 85% at 52% 48%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 60%, transparent 95%);filter:contrast(1.02) brightness(1.03);" />
     </div>
 
     <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;z-index:2;">
