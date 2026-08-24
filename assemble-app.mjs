@@ -54,7 +54,7 @@ const STEP_DESTS = ['story-a', 'story-b', 'snapshot', 'gap'];
 // ============ LANDING (E1) ============
 const landing = `
 <div style="min-height:1150px;background:#FBF8FA;">
-  <div class="hero" style="position:relative;padding-bottom:70px;overflow:hidden;">
+  <div class="hero" style="position:relative;padding-bottom:70px;overflow:hidden;min-height:540px;">
     <div class="grain"></div>
     <div class="blur-orb js-parallax" data-speed="0.15" style="width:420px;height:420px;left:-120px;bottom:-140px;background:#F6DCE6;opacity:.45;"></div>
     <div class="blur-orb js-parallax" data-speed="0.25" style="width:380px;height:380px;right:-100px;top:-120px;background:#BAC7EB;opacity:.4;"></div>
@@ -153,7 +153,7 @@ const storyA = `
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15l3-3 3 3"/></svg>
           </div>
           <div style="font-size:14px;font-weight:700;color:var(--ink);">Drag and drop your CV here, or click to browse</div>
-          <div style="font-size:12px;color:var(--ink-faint);margin-top:4px;">Supports PDF or DOCX (up to 10MB) &middot; Parsed securely</div>
+          <div style="font-size:12px;color:var(--ink-faint);margin-top:4px;">Supports PDF or DOCX (up to 10MB) &middot; Parsed securely on-device</div>
         </div>
 
         <div id="cv-file-state" style="display:none;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.9);padding:14px 18px;border-radius:14px;border:1.5px solid rgba(46,115,85,.3);">
@@ -788,7 +788,6 @@ function validateAndContinueStoryB() {
   var err = document.getElementById('break-text-error');
   var text = (bt ? bt.value : '').trim();
   if (text.length === 0) {
-    // If empty, supply default descriptive input
     intake.breakText = 'Cared for 2 children full-time, managed family household budget, scheduled logistics, and self-studied digital design tools';
     if (bt) bt.value = intake.breakText;
   } else {
