@@ -61,29 +61,26 @@ const landing = `
     <div class="star" style="top:60px;left:38%;"></div><div class="star" style="top:140px;left:62%;"></div>
     <div class="star" style="top:220px;left:80%;width:2px;height:2px;"></div><div class="star" style="top:90px;left:52%;width:2px;height:2px;"></div>
 
+    <!-- Full-height hero butterfly oil painting artwork attached to the right edge -->
+    <div class="hero-artwork-container" style="position:absolute;top:0;right:0;bottom:0;height:100%;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;z-index:1;overflow:hidden;">
+      <img src="hero-butterfly-oil.jpg" alt="ReRouteHer Ethereal Butterfly Oil Painting" class="hero-butterfly-img" style="height:100%;max-height:100%;width:auto;object-fit:contain;object-position:right center;mix-blend-mode:screen;filter:contrast(1.06) brightness(1.03);" />
+    </div>
+
     <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;z-index:2;">
       ${logo('bflyL')}
     </div>
-    <div style="position:relative;display:grid;grid-template-columns:1.08fr 0.92fr;gap:40px;padding:44px 60px 0;align-items:center;z-index:2;min-height:400px;">
-      <div>
+    <div style="position:relative;display:grid;grid-template-columns:1.1fr 0.9fr;gap:30px;padding:44px 60px 0;align-items:center;z-index:2;min-height:420px;">
+      <div style="max-width:540px;">
         ${mask('See what you still<br/>have to offer', 'js-title js-hero-title')}
-        <div class="js-sub" style="font-size:16.5px;line-height:1.6;color:rgba(38,43,74,.75);margin-top:18px;max-width:460px;">Coming back to work after a career break can feel like starting from zero. It isn&rsquo;t. We turn your resume and life experience into an actionable skill readiness plan.</div>
-        <div class="js-sub" style="display:flex;gap:14px;margin-top:26px;">
+        <div class="js-sub" style="font-size:16.5px;line-height:1.6;color:rgba(38,43,74,.78);margin-top:18px;max-width:480px;">Coming back to work after a career break can feel like starting from zero. It isn&rsquo;t. We turn your resume and life experience into an actionable skill readiness plan.</div>
+        <div class="js-sub" style="display:flex;gap:14px;margin-top:28px;">
           <button type="button" class="pill-btn primary btn-reset" id="get-started-btn" onclick="beginIntake()">
             <span>Get started</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
       </div>
-      <div class="js-img" style="position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;">
-        <div class="blur-orb js-parallax" data-speed="0.35" style="width:260px;height:260px;left:14%;top:20%;background:#F2A9C6;opacity:.55;"></div>
-        <div class="blur-orb js-parallax" data-speed="0.2" style="width:230px;height:230px;right:8%;bottom:10%;background:#4E5AA0;opacity:.5;"></div>
-        <svg width="220" height="220" viewBox="0 0 48 48" fill="none" style="position:relative;filter:drop-shadow(0 20px 40px rgba(40,30,80,.28));">
-          <defs><linearGradient id="bflyHero" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FBDCE6"/><stop offset="0.5" stop-color="#D8C6DF"/><stop offset="1" stop-color="#4E5AA0"/></linearGradient></defs>
-          <path d="M24 12 C18 2, 4 4, 4 16 C4 24, 14 26, 24 20 C34 26, 44 24, 44 16 C44 4, 30 2, 24 12 Z" fill="url(#bflyHero)"/>
-          <path d="M24 20 C18 26, 6 30, 8 38 C10 44, 20 40, 24 30 C28 40, 38 44, 40 38 C42 30, 30 26, 24 20 Z" fill="url(#bflyHero)" opacity="0.88"/>
-          <line x1="24" y1="10" x2="24" y2="34" stroke="#2C3568" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
+      <div class="js-img" style="position:relative;min-height:360px;">
       </div>
     </div>
   </div>
