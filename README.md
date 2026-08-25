@@ -2,7 +2,7 @@
 
 A framework-free, single-file HTML/CSS/JS click-through prototype for **ReRouteHer**, a career re-entry platform helping Malaysian mothers returning to work after a career break turn their experience into modern, AI-era workforce readiness.
 
-**Live prototype:** https://comeback-companion-journey.netlify.app/
+**Live prototype:** [ReRouteHer — Skill Readiness Journey](https://prototype.curl.my/)
 
 ## Scope
 
@@ -20,7 +20,7 @@ Highlights:
 ```
 assemble-app.mjs   # Node build script — generates site/index.html from the templates + tokens below
 _merged.css        # Shared design tokens / component styles (colors, type, glass cards, stepper, chips, …)
-site/index.html    # The built, deployable static site (this is what Netlify serves)
+site/index.html    # The built, deployable static site (served via static host or Docker)
 server.mjs         # Zero-dependency Node HTTP server that serves site/ (used by the Docker image)
 Dockerfile         # Multi-stage: builds site/index.html from source, then runs server.mjs
 ```
