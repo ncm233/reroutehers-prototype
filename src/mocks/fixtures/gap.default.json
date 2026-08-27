@@ -1,0 +1,38 @@
+{
+  "readiness": 78,
+  "skills_have": [
+    "User Research & Persona Synthesis",
+    "Wireframing & Interactive Prototyping",
+    "Design Systems & Component Tokens",
+    "Information Architecture & User Flows",
+    "Usability Testing & Feedback Loops",
+    "Active Listening & Stakeholder Empathy",
+    "Time & Multi-project Prioritisation"
+  ],
+  "gaps": [
+    {
+      "skill": "AI Design Tools (Figma AI, Midjourney)",
+      "band": "ai_digital",
+      "importance": 0.81,
+      "uplift": 9
+    },
+    {
+      "skill": "Scalable Design Systems (Tokens & Multi-brand)",
+      "band": "role",
+      "importance": 0.74,
+      "uplift": 7
+    },
+    {
+      "skill": "Prompt Engineering for UX Workflows",
+      "band": "ai_digital",
+      "importance": 0.66,
+      "uplift": 5
+    },
+    {
+      "skill": "Design Ops & Handoff Automation",
+      "band": "role",
+      "importance": 0.52,
+      "uplift": 3
+    }
+  ]
+}

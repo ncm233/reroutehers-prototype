@@ -1,17 +1,60 @@
 {
-  "name": "reroutehers-prototype",
+  "name": "rerouteher-ui",
   "version": "1.0.0",
   "private": true,
-  "description": "ReRouteHer — Iteration 1 interactive click-through prototype (E1-E4)",
+  "description": "ReRouteHer \u2014 career re-entry readiness diagnostic for returning mothers",
   "type": "module",
-  "scripts": {
-    "build": "node assemble-app.mjs",
-    "start": "node server.mjs"
-  },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:live": "VITE_USE_MOCKS=0 vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test:unit": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "gate": "npm run lint && npm run test:unit && npm run build && npm run test:e2e && node scripts/record-run.mjs"
   },
   "dependencies": {
-    "sharp": "^0.35.3"
+    "@fontsource-variable/familjen-grotesk": "^5.3.0",
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.62.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.6",
+    "@vitejs/plugin-react": "^6.1.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.5",
+    "fast-xml-parser": "^5.11.0",
+    "globals": "^17.11.0",
+    "jsdom": "^30.0.1",
+    "msw": "^2.15.0",
+    "prettier": "^3.9.6",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

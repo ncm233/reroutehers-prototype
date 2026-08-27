@@ -1,0 +1,28 @@
+{
+  "cv": {
+    "raw_text": "Nurul Aisyah — Senior Product Designer. Led design systems and usability research for a Kuala Lumpur fintech.",
+    "experiences": [
+      {
+        "title": "Senior Product Designer",
+        "organisation": "Wira Digital",
+        "start": "2015-03",
+        "end": "2019-11",
+        "description": "Owned the design system, ran usability testing, and led information architecture for the mobile app."
+      },
+      {
+        "title": "UI Designer",
+        "organisation": "Studio Lima",
+        "start": "2012-06",
+        "end": "2015-02",
+        "description": "Wireframing, interactive prototyping and visual design for client web products."
+      }
+    ],
+    "skill_mentions": [
+      "design systems",
+      "usability testing",
+      "information architecture",
+      "wireframing",
+      "prototyping"
+    ]
+  }
+}

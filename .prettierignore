@@ -1,11 +1,9 @@
-node_modules/
+_prototype/
 dist/
 results/
 playwright-report/
-test-results/
-_prototype/
-figma-plugin/
+package-lock.json
+
+*.md
 docs/
-tests/
-.git/
 public/mockServiceWorker.js
