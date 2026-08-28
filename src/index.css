@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
+@import '@fontsource-variable/familjen-grotesk/wght.css';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Familjen Grotesk Variable', 'Segoe UI', system-ui, sans-serif;
+
+  --color-ink: #232a52;
+  /* Design specifies 0.64; raised to clear AA for 16px body on grad-soft. */
+  --color-ink-soft: rgb(35 42 82 / 0.68);
+  --color-ink-faint: rgb(35 42 82 / 0.4);
+
+  --color-pink-100: #fbf0f4;
+  --color-pink-500: #e85d8a;
+  --color-pink-600: #be3f6c;
+
+  --color-violet-400: #a99fd0;
+  --color-violet-600: #8e80b8;
+
+  --color-blue-600: #4a57a0;
+
+  --color-mint-100: #e6f5ed;
+  --color-mint-600: #337857;
+  --color-mint-700: #235c41;
+
+  --color-amber-50: #fff9f0;
+  --color-amber-100: #fef0da;
+  --color-amber-600: #c07018;
+  --color-amber-700: #96540d;
+
+  /* Soft page tint behind the diagnostic screens. */
+  --background-image-grad-page: linear-gradient(
+    135deg,
+    #fbf0f4 0%,
+    #f5e4ed 24%,
+    #ebe3f4 52%,
+    #dee4f5 78%,
+    #c9d5f0 100%
+  );
+  --background-image-grad-hero: linear-gradient(
+    135deg,
+    #fbdce6 0%,
+    #f0c7da 20%,
+    #cec3e2 45%,
+    #9faad6 68%,
+    #5661a6 100%
+  );
+  --background-image-grad-btn: linear-gradient(120deg, #ee86ac 0%, #b98fc9 50%, #6e7bc0 100%);
+  --background-image-grad-btn-hover: linear-gradient(120deg, #f296b8 0%, #c49dd3 50%, #838eca 100%);
+  --background-image-grad-soft: linear-gradient(160deg, #fcf8fa 0%, #f8f4fa 45%, #f3f6fc 100%);
+  --background-image-grad-card: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.86) 0%,
+    rgb(255 255 255 / 0.6) 100%
+  );
+  --background-image-grad-glow: linear-gradient(
+    135deg,
+    rgb(226 155 183 / 0.2) 0%,
+    rgb(126 146 202 / 0.2) 100%
+  );
+
+  --shadow-soft: 0 16px 36px -14px rgb(46 42 94 / 0.12), inset 0 0 1px 1px rgb(255 255 255 / 0.7);
+  --shadow-lift: 0 24px 50px -18px rgb(46 42 94 / 0.2), inset 0 0 1px 1px rgb(255 255 255 / 0.85);
+  --shadow-card: 0 12px 28px -10px rgb(35 42 82 / 0.08), 0 1px 2px rgb(35 42 82 / 0.04);
+  --shadow-card-hover: 0 20px 40px -12px rgb(35 42 82 / 0.14), 0 2px 6px rgb(35 42 82 / 0.06);
+
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  body {
+    @apply bg-grad-soft font-sans text-ink antialiased;
+    min-height: 100vh;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

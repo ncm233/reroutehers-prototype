@@ -1,0 +1,58 @@
+{
+  "professional_skills": [
+    {
+      "skill": "User Research & Persona Synthesis",
+      "source": "experience",
+      "evidence": "Ran usability testing at Wira Digital"
+    },
+    {
+      "skill": "Wireframing & Interactive Prototyping",
+      "source": "experience",
+      "evidence": "Wireframing and interactive prototyping at Studio Lima"
+    },
+    {
+      "skill": "Design Systems & Component Tokens",
+      "source": "experience",
+      "evidence": "Owned the design system at Wira Digital"
+    },
+    {
+      "skill": "Information Architecture & User Flows",
+      "source": "experience",
+      "evidence": "Led information architecture for the mobile app"
+    },
+    {
+      "skill": "Usability Testing & Feedback Loops",
+      "source": "experience",
+      "evidence": "Ran usability testing at Wira Digital"
+    }
+  ],
+  "reframed_skills": [
+    {
+      "skill": "Active Listening",
+      "source": "break",
+      "from_activity": "cared_for_children"
+    },
+    {
+      "skill": "Social Perceptiveness",
+      "source": "break",
+      "from_activity": "cared_for_children"
+    },
+    {
+      "skill": "Time Management",
+      "source": "break",
+      "from_activity": "managed_multiple_schedules"
+    },
+    {
+      "skill": "Coordination",
+      "source": "break",
+      "from_activity": "organised_family_logistics"
+    },
+    {
+      "skill": "Management of Financial Resources",
+      "source": "break",
+      "from_activity": "managed_budget_finances"
+    }
+  ],
+  "previous_occupation": null,
+  "recommended_roles": []
+}
