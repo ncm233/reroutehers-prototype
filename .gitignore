@@ -1,4 +1,31 @@
+# Dependencies
 node_modules/
+
+# Build output
+dist/
 .netlify/
+
+# Test runs and reports
+results/
+test-results/
+playwright-report/
+blob-report/
+coverage/
+
+# Local environment overrides. .env.development is committed so `npm run dev`
+# serves the API from mocks without any setup.
+.env.local
+.env.*.local
+
+# Editor and OS
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Logs
 *.log
+
+# Working notes, not part of the app.
+PLAN.md

@@ -1,0 +1,49 @@
+{
+  "professional_skills": [],
+  "reframed_skills": [
+    {
+      "skill": "Active Listening",
+      "source": "break",
+      "from_activity": "cared_for_children"
+    },
+    {
+      "skill": "Social Perceptiveness",
+      "source": "break",
+      "from_activity": "cared_for_children"
+    },
+    {
+      "skill": "Time Management",
+      "source": "break",
+      "from_activity": "managed_multiple_schedules"
+    },
+    {
+      "skill": "Coordination",
+      "source": "break",
+      "from_activity": "organised_family_logistics"
+    },
+    {
+      "skill": "Management of Financial Resources",
+      "source": "break",
+      "from_activity": "managed_budget_finances"
+    }
+  ],
+  "previous_occupation": {
+    "role": "Senior UX/UI Designer",
+    "confidence": 0.84,
+    "method": "classifier"
+  },
+  "recommended_roles": [
+    {
+      "role": "Senior UX/UI Designer",
+      "similarity": 1
+    },
+    {
+      "role": "Digital Marketing",
+      "similarity": 0.71
+    },
+    {
+      "role": "Customer Support",
+      "similarity": 0.63
+    }
+  ]
+}

@@ -1,23 +1,22 @@
-# ---- build stage: generate site/index.html from source at image-build time ----
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY assemble-app.mjs _merged.css ./
-RUN node assemble-app.mjs
 
-# ---- runtime stage: serve the built site via a small dynamic Node server ----
-FROM node:20-alpine
-WORKDIR /app
-ENV NODE_ENV=production
-ENV PORT=3000
+COPY package*.json ./
+RUN npm ci
 
-COPY server.mjs package.json ./
-COPY --from=build /app/site ./site
+COPY . .
 
-RUN addgroup -S app && adduser -S app -G app && chown -R app:app /app
-USER app
+# Vite inlines env values at build time, so each environment needs its own image.
+ARG VITE_API_BASE_URL=""
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+RUN npm run build
 
-EXPOSE 3000
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
-  CMD node -e "fetch('http://localhost:'+(process.env.PORT||3000)).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+  CMD wget -qO- http://localhost/ >/dev/null || exit 1
 
-CMD ["node", "server.mjs"]
+CMD ["nginx", "-g", "daemon off;"]
