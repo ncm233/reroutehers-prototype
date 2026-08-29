@@ -17,11 +17,11 @@ describe('intake store', () => {
   });
 
   it('toggles activities without duplicating them', () => {
-    store().toggleActivity('cared_for_children');
-    store().toggleActivity('ran_the_household');
-    store().toggleActivity('cared_for_children');
+    store().toggleActivity('care_household.cared_for_children');
+    store().toggleActivity('care_household.ran_household');
+    store().toggleActivity('care_household.cared_for_children');
 
-    expect(store().break.activities).toEqual(['ran_the_household']);
+    expect(store().break.activities).toEqual(['care_household.ran_household']);
   });
 
   it('requires at least one activity before generating a snapshot (duration 0 is valid)', () => {
@@ -30,7 +30,7 @@ describe('intake store', () => {
     store().setBreakDuration(3);
     expect(store().canGenerateSnapshot()).toBe(false); // a duration alone is not enough
 
-    store().toggleActivity('cared_for_children');
+    store().toggleActivity('care_household.cared_for_children');
     expect(store().canGenerateSnapshot()).toBe(true);
 
     // "Less than a year" (duration 0) with an activity is still valid

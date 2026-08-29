@@ -30,27 +30,27 @@
     {
       "skill": "Active Listening",
       "source": "break",
-      "from_activity": "cared_for_children"
+      "from_activity": "care_household.cared_for_children"
     },
     {
       "skill": "Social Perceptiveness",
       "source": "break",
-      "from_activity": "cared_for_children"
+      "from_activity": "care_household.cared_for_children"
     },
     {
       "skill": "Time Management",
       "source": "break",
-      "from_activity": "managed_multiple_schedules"
+      "from_activity": "planning.managed_multiple_schedules"
     },
     {
       "skill": "Coordination",
       "source": "break",
-      "from_activity": "organised_family_logistics"
+      "from_activity": "planning.organised_family_logistics"
     },
     {
       "skill": "Management of Financial Resources",
       "source": "break",
-      "from_activity": "managed_budget_finances"
+      "from_activity": "finance.managed_budget_finances"
     }
   ],
   "previous_occupation": {
