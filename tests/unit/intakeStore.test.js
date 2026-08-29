@@ -24,13 +24,17 @@ describe('intake store', () => {
     expect(store().break.activities).toEqual(['ran_the_household']);
   });
 
-  it('requires a duration and at least one activity before generating a snapshot', () => {
+  it('requires at least one activity before generating a snapshot (duration 0 is valid)', () => {
     expect(store().canGenerateSnapshot()).toBe(false);
 
     store().setBreakDuration(3);
-    expect(store().canGenerateSnapshot()).toBe(false);
+    expect(store().canGenerateSnapshot()).toBe(false); // a duration alone is not enough
 
     store().toggleActivity('cared_for_children');
+    expect(store().canGenerateSnapshot()).toBe(true);
+
+    // "Less than a year" (duration 0) with an activity is still valid
+    store().setBreakDuration(0);
     expect(store().canGenerateSnapshot()).toBe(true);
   });
 

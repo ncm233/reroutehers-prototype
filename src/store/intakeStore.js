@@ -53,10 +53,10 @@ export const useIntakeStore = create(
       setGapResult: (gapResult) => set({ gapResult }),
       setCurrentStepIndex: (currentStepIndex) => set({ currentStepIndex }),
 
-      /** True once a duration and at least one activity are recorded. */
+      /** True once at least one activity is recorded. Duration 0 ("less than a year") is valid. */
       canGenerateSnapshot: () => {
         const { break: careerBreak } = get();
-        return careerBreak.duration_years > 0 && careerBreak.activities.length > 0;
+        return careerBreak.activities.length > 0;
       },
 
       reset: () => set(initialState),
