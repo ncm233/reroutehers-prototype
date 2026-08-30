@@ -132,7 +132,7 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
 
     // 7 met + 3 focus areas + 1 also-missing must reconcile with "7 of 11".
     await expect(page.getByRole('button', { name: /You meet 7 of 11 requirements/ })).toBeVisible();
-    await expect(page.getByText('Design Ops & Handoff Automation')).toBeVisible();
+    await expect(page.getByText('Prompt Engineering for UX Workflows')).toBeVisible();
   });
 
   test('US4.2 — no more than three focus areas are shown', async ({ page }) => {
@@ -184,15 +184,15 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
 
     await expect(page.getByText('+9% if learned')).toBeVisible();
     await expect(page.getByText('+7% if learned')).toBeVisible();
-    await expect(page.getByText('+5% if learned')).toBeVisible();
+    await expect(page.getByText('+3% if learned')).toBeVisible();
   });
 
-  test('US4.3 — the highest-uplift gap appears first', async ({ page }) => {
+  test('US4.3 — role skills lead the focus areas, AI-literacy comes last', async ({ page }) => {
     await mockApi(page);
     await reachGap(page);
 
-    await expect(focusAreas(page).first()).toContainText('+9% if learned');
-    await expect(focusAreas(page).last()).toContainText('+5% if learned');
+    await expect(focusAreas(page).first()).toContainText('Role skill');
+    await expect(focusAreas(page).last()).toContainText('AI literacy');
   });
 
   test('US4.3 — the estimate disclaimer is shown', async ({ page }) => {

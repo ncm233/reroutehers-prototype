@@ -1,5 +1,6 @@
 import GlassCard from '../ui/GlassCard.jsx';
 import { formatUplift } from '../../lib/formatters.js';
+import { pickFocusAreas } from '../../lib/focusAreas.js';
 
 export const MAX_FOCUS_AREAS = 3;
 
@@ -16,8 +17,8 @@ const GROUP_LABEL = 'text-[0.6875rem] font-semibold uppercase tracking-[0.08em] 
  * displayed as returned by the backend, never recomputed here.
  */
 export default function FocusAreaList({ gaps }) {
-  const focusAreas = gaps.slice(0, MAX_FOCUS_AREAS);
-  const alsoMissing = gaps.slice(MAX_FOCUS_AREAS);
+  const focusAreas = pickFocusAreas(gaps, MAX_FOCUS_AREAS);
+  const alsoMissing = gaps.filter((gap) => !focusAreas.includes(gap));
 
   return (
     <GlassCard className="p-6">

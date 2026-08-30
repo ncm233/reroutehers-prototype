@@ -8,6 +8,7 @@ import ReadinessGauge from '../components/gap/ReadinessGauge.jsx';
 import RoleSelector from '../components/gap/RoleSelector.jsx';
 import MetRequirements from '../components/gap/MetRequirements.jsx';
 import FocusAreaList, { MAX_FOCUS_AREAS } from '../components/gap/FocusAreaList.jsx';
+import { pickFocusAreas } from '../lib/focusAreas.js';
 import { computeGap } from '../api/gap.js';
 import { useIntakeStore } from '../store/intakeStore.js';
 
@@ -44,7 +45,7 @@ export default function Gap() {
     gapResult &&
     Math.round(
       (gapResult.readiness +
-        gapResult.gaps.slice(0, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0)) *
+        pickFocusAreas(gapResult.gaps, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0)) *
         100
     ) / 100;
 
