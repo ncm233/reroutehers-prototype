@@ -19,6 +19,7 @@
 /**
  * @typedef {Object} ProfessionalSkill
  * @property {string} skill
+ * @property {string | null} [skill_id]
  * @property {'experience'} source
  * @property {string} evidence
  */

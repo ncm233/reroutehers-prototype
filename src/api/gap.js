@@ -7,7 +7,7 @@ import { postJson } from './client.js';
  */
 export function computeGap(snapshot, targetRole) {
   const skills = [...snapshot.professional_skills, ...snapshot.reframed_skills].map(
-    ({ skill, source }) => ({ skill, source })
+    ({ skill, skill_id, source }) => ({ skill, skill_id, source })
   );
 
   return postJson('/api/gap/compute', { skills, target_role: targetRole });
