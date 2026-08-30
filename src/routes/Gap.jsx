@@ -43,8 +43,10 @@ export default function Gap() {
 
   const projected =
     gapResult &&
-    gapResult.readiness +
-      gapResult.gaps.slice(0, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0);
+    Math.round(
+      (gapResult.readiness +
+        gapResult.gaps.slice(0, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0)) * 100,
+    ) / 100;
 
   return (
     <div className="flex min-h-screen flex-col bg-grad-page">
