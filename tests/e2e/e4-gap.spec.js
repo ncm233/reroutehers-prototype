@@ -149,11 +149,11 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
     await expect(focusAreas(page)).toHaveCount(2);
   });
 
-  test('US4.2 — the focus list can contain both role and AI/digital gaps', async ({ page }) => {
+  test('US4.2 — the focus list can contain both role and AI-literacy gaps', async ({ page }) => {
     await mockApi(page);
     await reachGap(page);
 
-    await expect(page.getByText('AI & digital').first()).toBeVisible();
+    await expect(page.getByText('AI literacy').first()).toBeVisible();
     await expect(page.getByText('Role skill').first()).toBeVisible();
   });
 

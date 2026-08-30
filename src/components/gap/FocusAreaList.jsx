@@ -5,7 +5,7 @@ export const MAX_FOCUS_AREAS = 3;
 
 const BAND_LABELS = {
   role: 'Role skill',
-  ai_digital: 'AI & digital',
+  ai_usage: 'AI literacy',
 };
 
 const GROUP_LABEL = 'text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-ink-soft';

@@ -12,7 +12,7 @@
   "gaps": [
     {
       "skill": "AI Design Tools (Figma AI, Midjourney)",
-      "band": "ai_digital",
+      "band": "ai_usage",
       "importance": 0.81,
       "uplift": 9
     },
@@ -24,7 +24,7 @@
     },
     {
       "skill": "Prompt Engineering for UX Workflows",
-      "band": "ai_digital",
+      "band": "ai_usage",
       "importance": 0.66,
       "uplift": 5
     },

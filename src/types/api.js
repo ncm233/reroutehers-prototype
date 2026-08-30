@@ -58,7 +58,7 @@
 /**
  * @typedef {Object} Gap
  * @property {string} skill
- * @property {'role' | 'ai_digital'} band
+ * @property {'role' | 'ai_usage'} band
  * @property {number} importance
  * @property {number} uplift
  */
