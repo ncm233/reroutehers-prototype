@@ -47,6 +47,8 @@ export const useIntakeStore = create(
           snapshot,
           // Index 0 is her previous occupation and the default target role.
           selectedRole: snapshot?.recommended_roles?.[0]?.role ?? null,
+          // Drop any gap from a previous snapshot so it is recomputed for the new role.
+          gapResult: null,
         }),
 
       setSelectedRole: (role) => set({ selectedRole: role, gapResult: null }),

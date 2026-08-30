@@ -21,13 +21,12 @@ export default function Gap() {
   const [error, setError] = useState(null);
   const [computing, setComputing] = useState(false);
 
-  // Skips the request when a result for this role is already in the store.
-  const hasResult = Boolean(gapResult);
   const requestedRole = useRef(null);
 
   useEffect(() => {
-    if (!snapshot || !selectedRole || hasResult) return;
-    if (requestedRole.current === selectedRole) return;
+    if (!snapshot || !selectedRole) return;
+    if (gapResult) return; // already computed for the current role (store clears it on any change)
+    if (requestedRole.current === selectedRole) return; // request already in flight for this role
 
     requestedRole.current = selectedRole;
     setError(null);
@@ -37,7 +36,7 @@ export default function Gap() {
       .then(setGapResult)
       .catch((cause) => setError(cause.message))
       .finally(() => setComputing(false));
-  }, [snapshot, selectedRole, hasResult, setGapResult]);
+  }, [snapshot, selectedRole, gapResult, setGapResult]);
 
   if (!snapshot) return <Navigate to="/diagnostic/background" replace />;
 
