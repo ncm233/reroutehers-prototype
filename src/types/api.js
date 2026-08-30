@@ -27,6 +27,7 @@
 /**
  * @typedef {Object} ReframedSkill
  * @property {string} skill
+ * @property {string | null} [skill_id]
  * @property {'break'} source
  * @property {string} from_activity
  */
