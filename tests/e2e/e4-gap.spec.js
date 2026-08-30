@@ -60,7 +60,7 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
     await reachGap(page);
 
     await expect(page.getByRole('radio')).toHaveCount(3);
-    await expect(page.getByRole('radio', { checked: true })).toHaveValue('Senior UX/UI Designer');
+    await expect(page.getByRole('radio', { checked: true })).toHaveValue('role_ux');
     await expect(page.getByText('Closest match', { exact: true })).toBeVisible();
   });
 
@@ -94,7 +94,7 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
     await page.reload();
 
     await expect(page.getByRole('img', { name: '78% Ready today' })).toBeVisible();
-    await expect(page.getByRole('radio', { checked: true })).toHaveValue('Senior UX/UI Designer');
+    await expect(page.getByRole('radio', { checked: true })).toHaveValue('role_ux');
     expect(recomputed).toBe(false);
   });
 

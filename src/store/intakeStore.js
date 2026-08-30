@@ -45,8 +45,9 @@ export const useIntakeStore = create(
       setSnapshot: (snapshot) =>
         set({
           snapshot,
-          // Index 0 is her previous occupation and the default target role.
-          selectedRole: snapshot?.recommended_roles?.[0]?.role ?? null,
+          // Index 0 is her previous occupation and the default target role. Held as the
+          // full role object ({ role, role_id, similarity }) so the gap resolves by id.
+          selectedRole: snapshot?.recommended_roles?.[0] ?? null,
           // Drop any gap from a previous snapshot so it is recomputed for the new role.
           gapResult: null,
         }),
@@ -63,6 +64,7 @@ export const useIntakeStore = create(
 
       reset: () => set(initialState),
     }),
-    { name: STORAGE_KEY, version: 1 }
+    // v2: selectedRole changed from a role-title string to the full role object.
+    { name: STORAGE_KEY, version: 2 }
   )
 );

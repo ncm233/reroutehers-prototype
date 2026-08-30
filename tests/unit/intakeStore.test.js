@@ -40,7 +40,8 @@ describe('intake store', () => {
 
   it('defaults the target role to the first recommended role', () => {
     store().setSnapshot(snapshot);
-    expect(store().selectedRole).toBe('Senior UX/UI Designer');
+    expect(store().selectedRole).toEqual(snapshot.recommended_roles[0]);
+    expect(store().selectedRole.role_id).toBe('role_ux');
   });
 
   it('leaves the target role unset when nothing matched', () => {
@@ -50,7 +51,11 @@ describe('intake store', () => {
 
   it('drops a stale gap result when the target role changes', () => {
     store().setGapResult({ readiness: 78, skills_have: [], gaps: [] });
-    store().setSelectedRole('Digital Marketing');
+    store().setSelectedRole({
+      role: 'Digital Marketing',
+      role_id: 'role_marketing',
+      similarity: 0.71,
+    });
 
     expect(store().gapResult).toBeNull();
   });

@@ -55,20 +55,24 @@
   ],
   "previous_occupation": {
     "role": "Senior UX/UI Designer",
+    "role_id": "role_ux",
     "confidence": 0.62,
     "method": "embedding"
   },
   "recommended_roles": [
     {
       "role": "Senior UX/UI Designer",
+      "role_id": "role_ux",
       "similarity": 1
     },
     {
       "role": "Digital Marketing",
+      "role_id": "role_marketing",
       "similarity": 0.71
     },
     {
       "role": "Customer Support",
+      "role_id": "role_support",
       "similarity": 0.63
     }
   ]

@@ -34,6 +34,7 @@
 /**
  * @typedef {Object} PreviousOccupation
  * @property {string} role
+ * @property {string} role_id
  * @property {number} confidence
  * @property {'classifier' | 'embedding'} method
  */
@@ -41,6 +42,7 @@
 /**
  * @typedef {Object} RecommendedRole
  * @property {string} role
+ * @property {string} role_id
  * @property {number} similarity
  */
 

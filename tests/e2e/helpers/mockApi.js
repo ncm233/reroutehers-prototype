@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 
 const FIXTURE_DIR = new URL('../../../src/mocks/fixtures/', import.meta.url);
 
-const CLOSEST_ROLE = 'Senior UX/UI Designer';
+const CLOSEST_ROLE_ID = 'role_ux';
 
 async function fixture(name) {
   return JSON.parse(await readFile(new URL(`${name}.json`, FIXTURE_DIR), 'utf8'));
@@ -41,8 +41,8 @@ export async function mockApi(page, scenario = {}) {
   ]);
 
   await page.route('**/api/gap/compute', (route) => {
-    const { target_role: targetRole } = route.request().postDataJSON();
+    const { target_role_id: targetRoleId } = route.request().postDataJSON();
 
-    return route.fulfill({ json: targetRole === CLOSEST_ROLE ? gapDefault : gapAltRole });
+    return route.fulfill({ json: targetRoleId === CLOSEST_ROLE_ID ? gapDefault : gapAltRole });
   });
 }

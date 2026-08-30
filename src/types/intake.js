@@ -4,6 +4,7 @@
  * @typedef {import('./api.js').StructuredCv} StructuredCv
  * @typedef {import('./api.js').Snapshot} Snapshot
  * @typedef {import('./api.js').GapResult} GapResult
+ * @typedef {import('./api.js').RecommendedRole} RecommendedRole
  */
 
 /**
@@ -19,7 +20,7 @@
  * @property {{ duration_years: number, activities: string[] }} break
  * @property {Record<string, string[]>} preferences
  * @property {Snapshot | null} snapshot
- * @property {string | null} selectedRole
+ * @property {RecommendedRole | null} selectedRole
  * @property {GapResult | null} gapResult
  * @property {number} currentStepIndex
  */

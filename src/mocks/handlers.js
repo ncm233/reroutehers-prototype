@@ -5,7 +5,7 @@ import gapDefault from './fixtures/gap.default.json';
 import gapAltRole from './fixtures/gap.alt-role.json';
 import { validateCvFile } from '../api/cv.js';
 
-const DEFAULT_ROLE = 'Senior UX/UI Designer';
+const DEFAULT_ROLE_ID = 'role_ux';
 
 export const handlers = [
   http.post('*/api/cv/parse', async ({ request }) => {
@@ -21,7 +21,7 @@ export const handlers = [
   http.post('*/api/snapshot/generate', () => HttpResponse.json(snapshotHighConfidence)),
 
   http.post('*/api/gap/compute', async ({ request }) => {
-    const { target_role: targetRole } = await request.json();
-    return HttpResponse.json(targetRole === DEFAULT_ROLE ? gapDefault : gapAltRole);
+    const { target_role_id: targetRoleId } = await request.json();
+    return HttpResponse.json(targetRoleId === DEFAULT_ROLE_ID ? gapDefault : gapAltRole);
   }),
 ];

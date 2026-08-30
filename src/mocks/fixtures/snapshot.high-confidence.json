@@ -27,7 +27,11 @@
     }
   ],
   "reframed_skills": [
-    { "skill": "Active Listening", "source": "break", "from_activity": "care_household.cared_for_children" },
+    {
+      "skill": "Active Listening",
+      "source": "break",
+      "from_activity": "care_household.cared_for_children"
+    },
     {
       "skill": "Social Perceptiveness",
       "source": "break",
@@ -51,12 +55,13 @@
   ],
   "previous_occupation": {
     "role": "Senior UX/UI Designer",
+    "role_id": "role_ux",
     "confidence": 0.84,
     "method": "classifier"
   },
   "recommended_roles": [
-    { "role": "Senior UX/UI Designer", "similarity": 1 },
-    { "role": "Digital Marketing", "similarity": 0.71 },
-    { "role": "Customer Support", "similarity": 0.63 }
+    { "role": "Senior UX/UI Designer", "role_id": "role_ux", "similarity": 1 },
+    { "role": "Digital Marketing", "role_id": "role_marketing", "similarity": 0.71 },
+    { "role": "Customer Support", "role_id": "role_support", "similarity": 0.63 }
   ]
 }

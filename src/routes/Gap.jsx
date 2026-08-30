@@ -26,9 +26,9 @@ export default function Gap() {
   useEffect(() => {
     if (!snapshot || !selectedRole) return;
     if (gapResult) return; // already computed for the current role (store clears it on any change)
-    if (requestedRole.current === selectedRole) return; // request already in flight for this role
+    if (requestedRole.current === selectedRole.role_id) return; // request already in flight for this role
 
-    requestedRole.current = selectedRole;
+    requestedRole.current = selectedRole.role_id;
     setError(null);
     setComputing(true);
 
@@ -44,7 +44,8 @@ export default function Gap() {
     gapResult &&
     Math.round(
       (gapResult.readiness +
-        gapResult.gaps.slice(0, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0)) * 100,
+        gapResult.gaps.slice(0, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0)) *
+        100
     ) / 100;
 
   return (
@@ -82,7 +83,7 @@ export default function Gap() {
              they take the dominant column. */
           <div className="mt-5 grid items-start gap-5 md:grid-cols-[19rem_1fr]">
             <GlassCard className="p-6">
-              <h2 className="font-display text-lg font-bold text-ink">{selectedRole}</h2>
+              <h2 className="font-display text-lg font-bold text-ink">{selectedRole.role}</h2>
 
               <div className="mt-3">
                 <ReadinessGauge value={gapResult.readiness} />
