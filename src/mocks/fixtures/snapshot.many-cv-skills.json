@@ -1,0 +1,92 @@
+{
+  "professional_skills": [
+    {
+      "skill": "User Research & Persona Synthesis",
+      "source": "experience",
+      "evidence": "Ran usability testing at Wira Digital"
+    },
+    {
+      "skill": "Wireframing & Interactive Prototyping",
+      "source": "experience",
+      "evidence": "Wireframing at Studio Lima"
+    },
+    {
+      "skill": "Design Systems & Component Tokens",
+      "source": "experience",
+      "evidence": "Owned the design system at Wira Digital"
+    },
+    {
+      "skill": "Information Architecture & User Flows",
+      "source": "experience",
+      "evidence": "Led information architecture for the mobile app"
+    },
+    {
+      "skill": "Usability Testing & Feedback Loops",
+      "source": "experience",
+      "evidence": "Ran usability testing at Wira Digital"
+    },
+    {
+      "skill": "Accessibility & Inclusive Design",
+      "source": "experience",
+      "evidence": "Met WCAG AA across the product"
+    },
+    {
+      "skill": "Design Handoff & Developer Collaboration",
+      "source": "experience",
+      "evidence": "Paired with engineers on handoff"
+    },
+    {
+      "skill": "Journey Mapping & Service Blueprints",
+      "source": "experience",
+      "evidence": "Mapped the onboarding journey"
+    },
+    {
+      "skill": "Design Ops & Workflow",
+      "source": "experience",
+      "evidence": "Set up the design ops workflow"
+    },
+    {
+      "skill": "Visual Design & Typography",
+      "source": "experience",
+      "evidence": "Refreshed the visual language"
+    },
+    {
+      "skill": "Stakeholder Facilitation & Workshops",
+      "source": "experience",
+      "evidence": "Ran discovery workshops"
+    },
+    {
+      "skill": "Data-Informed Design & Analytics",
+      "source": "experience",
+      "evidence": "Used analytics to guide design"
+    },
+    {
+      "skill": "Responsive & Mobile-First Layouts",
+      "source": "experience",
+      "evidence": "Shipped responsive layouts"
+    }
+  ],
+  "reframed_skills": [
+    {
+      "skill": "Active Listening",
+      "source": "break",
+      "from_activity": "care_household.cared_for_children"
+    },
+    {
+      "skill": "Coordination",
+      "source": "break",
+      "from_activity": "planning.organised_family_logistics"
+    }
+  ],
+  "previous_occupation": {
+    "role": "Senior UX/UI Designer",
+    "role_id": "role_ux",
+    "confidence": 0.84,
+    "method": "reranker"
+  },
+  "recommended_roles": [
+    { "role": "Senior UX/UI Designer", "role_id": "role_ux", "similarity": 1 },
+    { "role": "Digital Marketing", "role_id": "role_marketing", "similarity": 0.71 },
+    { "role": "Customer Support", "role_id": "role_support", "similarity": 0.63 }
+  ]
+}

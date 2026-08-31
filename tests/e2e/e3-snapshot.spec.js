@@ -3,8 +3,9 @@ import { mockApi } from './helpers/mockApi.js';
 
 const VALID_CV = 'tests/fixtures/cv/valid-cv.pdf';
 
-/** The card wrapping a skill section, located by its heading. */
-const section = (page, name) => page.getByRole('heading', { name }).locator('..');
+/** The chip list of a skill section, located from its heading (robust across layouts). */
+const sectionList = (page, name) =>
+  page.getByRole('heading', { name }).locator('xpath=../following-sibling::ul');
 
 /** Walks the intake so the snapshot is generated the way a guest generates it. */
 async function reachSnapshot(page) {
@@ -19,7 +20,9 @@ async function reachSnapshot(page) {
 }
 
 test.describe('E3 — Skill Snapshot & Career Reframing', () => {
-  test('US3.1 — the stepper shows Story completed and Snapshot current', async ({ page }) => {
+  test('AC 3.1.1 — the stepper shows Upload CV and Career Break completed and Skill Snapshot current', async ({
+    page,
+  }) => {
     await mockApi(page);
     await reachSnapshot(page);
 
@@ -28,7 +31,7 @@ test.describe('E3 — Skill Snapshot & Career Reframing', () => {
     await expect(page.locator('[data-state="current"]')).toContainText('Skill Snapshot');
   });
 
-  test('US3.1 — professional and break-reframed skills sit in separate sections @smoke', async ({
+  test('AC 3.1.2 — professional and break-reframed skills sit in separate sections @smoke', async ({
     page,
   }) => {
     await mockApi(page);
@@ -38,7 +41,26 @@ test.describe('E3 — Skill Snapshot & Career Reframing', () => {
     await expect(page.getByRole('heading', { name: 'From your career break' })).toBeVisible();
   });
 
-  test('US3.1 — the break step can be reopened with its answers intact', async ({ page }) => {
+  test('AC 3.1.3 — a long CV skill list expands with Show all and collapses with Show fewer', async ({
+    page,
+  }) => {
+    await mockApi(page, { snapshot: 'snapshot.many-cv-skills' });
+    await reachSnapshot(page);
+
+    const cv = sectionList(page, 'From your CV');
+    const collapsed = await cv.getByRole('listitem').count();
+
+    await page.getByRole('button', { name: /show all/i }).click();
+    const expanded = await cv.getByRole('listitem').count();
+    expect(expanded).toBeGreaterThan(collapsed);
+
+    await page.getByRole('button', { name: /show fewer/i }).click();
+    await expect(page.getByRole('button', { name: /show all/i })).toBeVisible();
+  });
+
+  test('AC 3.1.4 — Back to Career Break reopens the step with its answers intact', async ({
+    page,
+  }) => {
     await mockApi(page);
     await reachSnapshot(page);
 
@@ -50,33 +72,9 @@ test.describe('E3 — Skill Snapshot & Career Reframing', () => {
     await expect(page.getByRole('heading', { name: 'Your skill snapshot' })).toBeVisible();
   });
 
-  test('US3.1 — each skill displays its source', async ({ page }) => {
-    await mockApi(page);
-    await reachSnapshot(page);
-
-    // Source is carried by the section a skill sits in, not repeated on every row.
-    await expect(section(page, 'From your CV')).toContainText('User Research & Persona Synthesis');
-    await expect(section(page, 'From your career break')).toContainText('Active Listening');
-  });
-
-  test('US3.1 — a professional skill shows the evidence behind it', async ({ page }) => {
-    await mockApi(page);
-    await reachSnapshot(page);
-
-    await expect(page.getByText('Ran usability testing at Wira Digital').first()).toBeVisible();
-  });
-
-  test('US3.1 — a section with no qualifying skills shows an empty state, not placeholders', async ({
+  test('AC 3.1.5 — returning to the snapshot restores it without regenerating', async ({
     page,
   }) => {
-    await mockApi(page, { snapshot: 'snapshot.empty-professional' });
-    await reachSnapshot(page);
-
-    await expect(page.getByText(/No professional skills matched/i)).toBeVisible();
-    await expect(section(page, 'From your CV').getByRole('listitem')).toHaveCount(0);
-  });
-
-  test('US3.1 — returning to the snapshot restores it without regenerating', async ({ page }) => {
     await mockApi(page);
     await reachSnapshot(page);
 
@@ -92,47 +90,61 @@ test.describe('E3 — Skill Snapshot & Career Reframing', () => {
     expect(regenerated).toBe(false);
   });
 
-  test('US3.3 — each reframed skill names the activity it came from', async ({ page }) => {
+  test('AC 3.2.1 — a matched CV skill is shown under "From your CV" with its recognised name', async ({
+    page,
+  }) => {
     await mockApi(page);
     await reachSnapshot(page);
 
-    await expect(page.getByText('from Childcare').first()).toBeVisible();
+    await expect(sectionList(page, 'From your CV')).toContainText(
+      'User Research & Persona Synthesis'
+    );
   });
 
-  test('US3.3 — the reframed section explains where those skills come from', async ({ page }) => {
+  // Backend behaviour (dedupe by skill_id) verified in the rerouteher-system test suite;
+  // not observable through the UI without a purpose-built duplicate fixture.
+  test.fixme('AC 3.2.2 — a professional skill repeated in the CV appears only once', async () => {});
+
+  test('AC 3.2.3 — a CV with no supported match shows an empty state, not invented skills', async ({
+    page,
+  }) => {
+    await mockApi(page, { snapshot: 'snapshot.empty-professional' });
+    await reachSnapshot(page);
+
+    await expect(page.getByText(/No professional skills matched/i)).toBeVisible();
+    await expect(sectionList(page, 'From your CV').getByRole('listitem')).toHaveCount(0);
+  });
+
+  test('AC 3.3.1 — a reframed break skill is shown under "From your career break"', async ({
+    page,
+  }) => {
     await mockApi(page);
     await reachSnapshot(page);
 
-    await expect(
-      page.getByText(/come from the activities you did during your career break/i)
-    ).toBeVisible();
+    await expect(sectionList(page, 'From your career break')).toContainText('Active Listening');
   });
 
-  test('US3.4 — the skills are attributed to her previous occupation', async ({ page }) => {
+  test('AC 3.3.2 — each reframed skill names the activity it came from', async ({ page }) => {
+    await mockApi(page);
+    await reachSnapshot(page);
+
+    await expect(page.locator('li[title="from Childcare"]').first()).toBeVisible();
+  });
+
+  // Backend behaviour verified in the rerouteher-system test suite; not observable via the UI.
+  test.fixme('AC 3.3.3 — a skill mapped from two activities appears only once', async () => {});
+  test.fixme('AC 3.3.4 — an activity with no mapping produces no skill', async () => {});
+
+  test('AC 3.4.1 — the occupation is shown in the "based on your CV as a …" sentence', async ({
+    page,
+  }) => {
     await mockApi(page);
     await reachSnapshot(page);
 
     await expect(page.getByText(/based on your CV as a/i)).toContainText('Senior UX/UI Designer');
   });
 
-  test('US3.4 — a confident match is stated plainly, with no caveat badge', async ({ page }) => {
-    await mockApi(page);
-    await reachSnapshot(page);
-
-    await expect(page.getByText('Senior UX/UI Designer').first()).toBeVisible();
-    await expect(page.getByText('Exploratory match')).toHaveCount(0);
-    await expect(page.getByText(/starting point rather than a verdict/i)).toHaveCount(0);
-  });
-
-  test('US3.4 — confidence below 70% shows "Exploratory match" with guidance', async ({ page }) => {
-    await mockApi(page, { snapshot: 'snapshot.low-confidence' });
-    await reachSnapshot(page);
-
-    await expect(page.getByText('Exploratory match')).toBeVisible();
-    await expect(page.getByText(/starting point rather than a verdict/i)).toBeVisible();
-  });
-
-  test('US3.4 — an unmatchable profile shows the no-match state, not a random role', async ({
+  test('AC 3.4.2 — an unmatchable profile shows the no-match state, not a random role', async ({
     page,
   }) => {
     await mockApi(page, { snapshot: 'snapshot.no-match' });
@@ -142,7 +154,7 @@ test.describe('E3 — Skill Snapshot & Career Reframing', () => {
     await expect(page.getByText('Exploratory match')).toHaveCount(0);
   });
 
-  test('US3.4 — "See my readiness & gaps" opens E4 with the previous occupation selected', async ({
+  test('AC 3.4.3 — "See my readiness & gaps" opens E4 with the closest occupation selected', async ({
     page,
   }) => {
     await mockApi(page);
@@ -151,5 +163,47 @@ test.describe('E3 — Skill Snapshot & Career Reframing', () => {
     await page.getByRole('button', { name: 'See my readiness & gaps' }).click();
 
     await expect(page).toHaveURL(/\/diagnostic\/gap$/);
+    await expect(page.getByRole('heading', { name: 'Senior UX/UI Designer' })).toBeVisible();
+  });
+
+  test('@regression — a professional skill shows the evidence behind it', async ({ page }) => {
+    await mockApi(page);
+    await reachSnapshot(page);
+
+    await expect(
+      page.locator('li[title="Ran usability testing at Wira Digital"]').first()
+    ).toBeVisible();
+  });
+
+  test('@regression — the reframed section explains where those skills come from', async ({
+    page,
+  }) => {
+    await mockApi(page);
+    await reachSnapshot(page);
+
+    await expect(
+      page.getByText(/come from the activities you did during your career break/i)
+    ).toBeVisible();
+  });
+
+  test('@regression — a confident occupation match is stated plainly, with no caveat badge', async ({
+    page,
+  }) => {
+    await mockApi(page);
+    await reachSnapshot(page);
+
+    await expect(page.getByText('Senior UX/UI Designer').first()).toBeVisible();
+    await expect(page.getByText('Exploratory match')).toHaveCount(0);
+    await expect(page.getByText(/starting point rather than a verdict/i)).toHaveCount(0);
+  });
+
+  test('@regression — confidence below 70% shows "Exploratory match" with guidance', async ({
+    page,
+  }) => {
+    await mockApi(page, { snapshot: 'snapshot.low-confidence' });
+    await reachSnapshot(page);
+
+    await expect(page.getByText('Exploratory match')).toBeVisible();
+    await expect(page.getByText(/starting point rather than a verdict/i)).toBeVisible();
   });
 });

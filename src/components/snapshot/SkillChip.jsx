@@ -10,7 +10,9 @@ export default function SkillChip({ skill }) {
     ? (ACTIVITY_LABELS[skill.from_activity] ?? skill.from_activity)
     : null;
   const title = fromBreak
-    ? (activityLabel ? `from ${activityLabel}` : undefined)
+    ? activityLabel
+      ? `from ${activityLabel}`
+      : undefined
     : skill.evidence || undefined;
 
   return (

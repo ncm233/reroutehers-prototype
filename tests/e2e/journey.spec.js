@@ -3,7 +3,9 @@ import { mockApi } from './helpers/mockApi.js';
 
 const VALID_CV = 'tests/fixtures/cv/valid-cv.pdf';
 
-test('It1 — a guest goes from landing to readiness without signing up @smoke', async ({ page }) => {
+test('@journey — a guest goes from landing to readiness without signing up @smoke', async ({
+  page,
+}) => {
   await mockApi(page);
 
   await page.goto('/');

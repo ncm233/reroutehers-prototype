@@ -32,7 +32,11 @@ describe('pickFocusAreas', () => {
 
     const picked = pickFocusAreas(gaps, 3);
 
-    expect(picked.map((g) => g.skill)).toEqual(['Campaign Analytics', 'Marketing Automation', 'SEO']);
+    expect(picked.map((g) => g.skill)).toEqual([
+      'Campaign Analytics',
+      'Marketing Automation',
+      'SEO',
+    ]);
     expect(picked.every((g) => g.band === 'role')).toBe(true);
   });
 

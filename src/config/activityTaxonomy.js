@@ -12,7 +12,10 @@ export const ACTIVITY_TAXONOMY = [
     activities: [
       { id: 'care_household.cared_for_children', label: 'Childcare' },
       { id: 'care_household.ran_household', label: 'Running the household' },
-      { id: 'care_household.cared_for_elderly_sick_family', label: 'Cared for elderly / sick family' },
+      {
+        id: 'care_household.cared_for_elderly_sick_family',
+        label: 'Cared for elderly / sick family',
+      },
     ],
   },
   {
