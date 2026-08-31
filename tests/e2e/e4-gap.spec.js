@@ -212,4 +212,20 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
     await expect(page.getByText('+14% if learned')).toBeVisible();
     await expect(page.getByText('+9% if learned')).toHaveCount(0);
   });
+
+  test('US4.1 — a readiness result is available when the gap is opened from the snapshot', async ({ page }) => {
+    await mockApi(page);
+    await reachGap(page); // computes the gap once
+    await expect(focusAreas(page).first()).toBeVisible();
+
+    await page.getByRole('button', { name: 'Back to Skill Snapshot' }).click();
+    await expect(page).toHaveURL(/\/diagnostic\/snapshot$/);
+
+    // A fresh compute must fire on the Snapshot -> Gap transition, even though a
+    // gap result already exists in the store from the first visit.
+    const compute = page.waitForRequest('**/api/gap/compute');
+    await page.getByRole('button', { name: 'See my readiness & gaps' }).click();
+    await compute;
+    await expect(page).toHaveURL(/\/diagnostic\/gap$/);
+  });
 });
