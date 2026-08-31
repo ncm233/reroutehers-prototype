@@ -4,7 +4,7 @@ import { pickFocusAreas } from '../../src/lib/focusAreas.js';
 const gap = (skill, band, uplift) => ({ skill, band, importance: 1, uplift });
 
 describe('pickFocusAreas', () => {
-  it('reserves one slot for AI-literacy, role skills first and the AI one last', () => {
+  it('keeps one AI-literacy slot but presents the focus areas by uplift (highest first)', () => {
     const gaps = [
       gap('AI Design Tools', 'ai_usage', 9),
       gap('Scalable Design Systems', 'role', 7),
@@ -15,11 +15,12 @@ describe('pickFocusAreas', () => {
     const picked = pickFocusAreas(gaps, 3);
 
     expect(picked.map((g) => g.skill)).toEqual([
+      'AI Design Tools',
       'Scalable Design Systems',
       'Design Ops',
-      'AI Design Tools',
     ]);
-    expect(picked.at(-1).band).toBe('ai_usage');
+    // exactly one AI-literacy gap, so role (technical) skills still surface
+    expect(picked.filter((g) => g.band === 'ai_usage')).toHaveLength(1);
   });
 
   it('fills every slot with role skills when there is no AI-literacy gap', () => {

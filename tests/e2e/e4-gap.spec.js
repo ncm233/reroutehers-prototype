@@ -195,12 +195,7 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
     await expect(page.getByText('+3% if learned')).toBeVisible();
   });
 
-  // AC 4.3.2 ("highest improvement appears first") conflicts with the shipped design:
-  // pickFocusAreas reserves the last slot for the top AI-literacy gap, so the highest
-  // uplift (an AI-literacy gap in the default fixture) is shown LAST, not first. See the
-  // "@regression — role skills lead, AI-literacy comes last" test. Needs reconciling:
-  // reword AC 4.3.2 to the actual rule, or change the ordering.
-  test.fixme('AC 4.3.2 — the highest-improvement gap appears first', async ({ page }) => {
+  test('AC 4.3.2 — the highest-improvement gap appears first', async ({ page }) => {
     await mockApi(page);
     await reachGap(page);
 
@@ -254,13 +249,13 @@ test.describe('E4 — Role Readiness & Skill Gap', () => {
     await expect(focusAreas(page)).toHaveCount(2);
   });
 
-  test('@regression — role skills lead the focus areas, AI-literacy comes last', async ({
+  test('@regression — exactly one AI-literacy gap is kept so role skills still surface', async ({
     page,
   }) => {
     await mockApi(page);
     await reachGap(page);
 
-    await expect(focusAreas(page).first()).toContainText('Role skill');
-    await expect(focusAreas(page).last()).toContainText('AI literacy');
+    await expect(focusAreas(page).filter({ hasText: 'AI literacy' })).toHaveCount(1);
+    await expect(focusAreas(page).filter({ hasText: 'Role skill' })).toHaveCount(2);
   });
 });

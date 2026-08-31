@@ -3,10 +3,13 @@
 /**
  * Compose the focus areas from the backend's uplift-ranked gaps.
  *
- * One slot is reserved for the highest-uplift AI-literacy gap so AI upskilling
- * stays visible even when its uplift is small; the remaining slots go to the
- * highest-uplift role gaps, shown first (AI-literacy last). If there is no
- * AI-literacy gap, every slot is filled with role gaps.
+ * Most returners have no AI skills on their CV, so AI-literacy gaps would other-
+ * wise flood the list and crowd out role skills. To keep role (technical) skills
+ * visible, only one slot is reserved for the highest-uplift AI-literacy gap and
+ * the remaining slots go to the highest-uplift role gaps. If role gaps run out,
+ * the leftover slots are backfilled from the remaining gaps (including more AI)
+ * rather than left empty. The result is then presented in uplift order (highest
+ * first); the reserved AI gap keeps its slot but is not forced last.
  *
  * @param {import('../types/api.js').Gap[]} gaps  ranked by uplift (backend order)
  * @param {number} max  how many focus areas to surface
@@ -28,5 +31,5 @@ export function pickFocusAreas(gaps, max) {
     }
   }
 
-  return chosen;
+  return chosen.sort((a, b) => b.uplift - a.uplift);
 }
