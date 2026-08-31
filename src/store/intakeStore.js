@@ -15,16 +15,26 @@ const initialState = {
   currentStepIndex: 0,
 };
 
+const emptyBreak = () => ({ duration_years: 0, activities: [] });
+
+// State owned by pages after the changed one, cleared in the mutators so a stale
+// result never survives an upstream edit (journey order lives in config/flowSteps.js).
+const resetAfterBreak = () => ({ snapshot: null, selectedRole: null, gapResult: null });
+const resetAfterCv = () => ({ break: emptyBreak(), ...resetAfterBreak() });
+
 export const useIntakeStore = create(
   persist(
     (set, get) => ({
       ...initialState,
 
-      setCv: (cv) => set({ cv, cvParsed: true }),
-      clearCv: () => set({ cv: null, cvParsed: false }),
+      setCv: (cv) => set({ cv, cvParsed: true, ...resetAfterCv() }),
+      clearCv: () => set({ cv: null, cvParsed: false, ...resetAfterCv() }),
 
       setBreakDuration: (years) =>
-        set((state) => ({ break: { ...state.break, duration_years: years } })),
+        set((state) => ({
+          break: { ...state.break, duration_years: years },
+          ...resetAfterBreak(),
+        })),
 
       toggleActivity: (id) =>
         set((state) => {
@@ -36,6 +46,7 @@ export const useIntakeStore = create(
                 ? selected.filter((a) => a !== id)
                 : [...selected, id],
             },
+            ...resetAfterBreak(),
           };
         }),
 

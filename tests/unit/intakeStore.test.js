@@ -65,3 +65,62 @@ describe('intake store', () => {
     expect(localStorage.getItem('rerouteher.guestSession')).toContain('"duration_years":5');
   });
 });
+
+describe('resetting downstream state when an upstream input changes', () => {
+  it('clears the break and all results when a new CV is set', () => {
+    store().setBreakDuration(4);
+    store().toggleActivity('care_household.ran_household');
+    store().setSnapshot(snapshot);
+    store().setGapResult({ readiness: 80, skills_have: [], gaps: [] });
+
+    store().setCv({ fileName: 'new.pdf', raw_text: '', experiences: [], skill_mentions: [] });
+
+    expect(store().cvParsed).toBe(true);
+    expect(store().break).toEqual({ duration_years: 0, activities: [] });
+    expect(store().snapshot).toBeNull();
+    expect(store().selectedRole).toBeNull();
+    expect(store().gapResult).toBeNull();
+  });
+
+  it('clears the break and all results when the CV is removed', () => {
+    store().setBreakDuration(4);
+    store().toggleActivity('care_household.ran_household');
+    store().setSnapshot(snapshot);
+
+    store().clearCv();
+
+    expect(store().cv).toBeNull();
+    expect(store().cvParsed).toBe(false);
+    expect(store().break).toEqual({ duration_years: 0, activities: [] });
+    expect(store().snapshot).toBeNull();
+    expect(store().selectedRole).toBeNull();
+    expect(store().gapResult).toBeNull();
+  });
+
+  it('clears the snapshot, role and gap when the break duration changes (keeps the CV)', () => {
+    store().setCv({ fileName: 'cv.pdf', raw_text: '', experiences: [], skill_mentions: [] });
+    store().setSnapshot(snapshot);
+    store().setGapResult({ readiness: 80, skills_have: [], gaps: [] });
+
+    store().setBreakDuration(2);
+
+    expect(store().break.duration_years).toBe(2);
+    expect(store().cvParsed).toBe(true); // CV survives an upstream break edit
+    expect(store().snapshot).toBeNull();
+    expect(store().selectedRole).toBeNull();
+    expect(store().gapResult).toBeNull();
+  });
+
+  it('clears the snapshot, role and gap when an activity is toggled', () => {
+    store().setCv({ fileName: 'cv.pdf', raw_text: '', experiences: [], skill_mentions: [] });
+    store().setSnapshot(snapshot);
+    store().setGapResult({ readiness: 80, skills_have: [], gaps: [] });
+
+    store().toggleActivity('care_household.cared_for_children');
+
+    expect(store().break.activities).toEqual(['care_household.cared_for_children']);
+    expect(store().snapshot).toBeNull();
+    expect(store().selectedRole).toBeNull();
+    expect(store().gapResult).toBeNull();
+  });
+});
