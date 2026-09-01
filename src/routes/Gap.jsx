@@ -8,6 +8,7 @@ import ReadinessGauge from '../components/gap/ReadinessGauge.jsx';
 import RoleSelector from '../components/gap/RoleSelector.jsx';
 import MetRequirements from '../components/gap/MetRequirements.jsx';
 import FocusAreaList, { MAX_FOCUS_AREAS } from '../components/gap/FocusAreaList.jsx';
+import { pickFocusAreas } from '../lib/focusAreas.js';
 import { computeGap } from '../api/gap.js';
 import { useIntakeStore } from '../store/intakeStore.js';
 
@@ -21,15 +22,14 @@ export default function Gap() {
   const [error, setError] = useState(null);
   const [computing, setComputing] = useState(false);
 
-  // Skips the request when a result for this role is already in the store.
-  const hasResult = Boolean(gapResult);
   const requestedRole = useRef(null);
 
   useEffect(() => {
-    if (!snapshot || !selectedRole || hasResult) return;
-    if (requestedRole.current === selectedRole) return;
+    if (!snapshot || !selectedRole) return;
+    if (gapResult) return; // already computed for the current role (store clears it on any change)
+    if (requestedRole.current === selectedRole.role_id) return; // request already in flight for this role
 
-    requestedRole.current = selectedRole;
+    requestedRole.current = selectedRole.role_id;
     setError(null);
     setComputing(true);
 
@@ -37,14 +37,17 @@ export default function Gap() {
       .then(setGapResult)
       .catch((cause) => setError(cause.message))
       .finally(() => setComputing(false));
-  }, [snapshot, selectedRole, hasResult, setGapResult]);
+  }, [snapshot, selectedRole, gapResult, setGapResult]);
 
   if (!snapshot) return <Navigate to="/diagnostic/background" replace />;
 
   const projected =
     gapResult &&
-    gapResult.readiness +
-      gapResult.gaps.slice(0, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0);
+    Math.round(
+      (gapResult.readiness +
+        pickFocusAreas(gapResult.gaps, MAX_FOCUS_AREAS).reduce((sum, gap) => sum + gap.uplift, 0)) *
+        100
+    ) / 100;
 
   return (
     <div className="flex min-h-screen flex-col bg-grad-page">
@@ -81,7 +84,7 @@ export default function Gap() {
              they take the dominant column. */
           <div className="mt-5 grid items-start gap-5 md:grid-cols-[19rem_1fr]">
             <GlassCard className="p-6">
-              <h2 className="font-display text-lg font-bold text-ink">{selectedRole}</h2>
+              <h2 className="font-display text-lg font-bold text-ink">{selectedRole.role}</h2>
 
               <div className="mt-3">
                 <ReadinessGauge value={gapResult.readiness} />

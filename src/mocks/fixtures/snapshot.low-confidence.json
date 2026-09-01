@@ -30,45 +30,49 @@
     {
       "skill": "Active Listening",
       "source": "break",
-      "from_activity": "cared_for_children"
+      "from_activity": "care_household.cared_for_children"
     },
     {
       "skill": "Social Perceptiveness",
       "source": "break",
-      "from_activity": "cared_for_children"
+      "from_activity": "care_household.cared_for_children"
     },
     {
       "skill": "Time Management",
       "source": "break",
-      "from_activity": "managed_multiple_schedules"
+      "from_activity": "planning.managed_multiple_schedules"
     },
     {
       "skill": "Coordination",
       "source": "break",
-      "from_activity": "organised_family_logistics"
+      "from_activity": "planning.organised_family_logistics"
     },
     {
       "skill": "Management of Financial Resources",
       "source": "break",
-      "from_activity": "managed_budget_finances"
+      "from_activity": "finance.managed_budget_finances"
     }
   ],
   "previous_occupation": {
     "role": "Senior UX/UI Designer",
+    "role_id": "role_ux",
     "confidence": 0.62,
     "method": "embedding"
   },
   "recommended_roles": [
     {
       "role": "Senior UX/UI Designer",
+      "role_id": "role_ux",
       "similarity": 1
     },
     {
       "role": "Digital Marketing",
+      "role_id": "role_marketing",
       "similarity": 0.71
     },
     {
       "role": "Customer Support",
+      "role_id": "role_support",
       "similarity": 0.63
     }
   ]

@@ -15,16 +15,26 @@ const initialState = {
   currentStepIndex: 0,
 };
 
+const emptyBreak = () => ({ duration_years: 0, activities: [] });
+
+// State owned by pages after the changed one, cleared in the mutators so a stale
+// result never survives an upstream edit (journey order lives in config/flowSteps.js).
+const resetAfterBreak = () => ({ snapshot: null, selectedRole: null, gapResult: null });
+const resetAfterCv = () => ({ break: emptyBreak(), ...resetAfterBreak() });
+
 export const useIntakeStore = create(
   persist(
     (set, get) => ({
       ...initialState,
 
-      setCv: (cv) => set({ cv, cvParsed: true }),
-      clearCv: () => set({ cv: null, cvParsed: false }),
+      setCv: (cv) => set({ cv, cvParsed: true, ...resetAfterCv() }),
+      clearCv: () => set({ cv: null, cvParsed: false, ...resetAfterCv() }),
 
       setBreakDuration: (years) =>
-        set((state) => ({ break: { ...state.break, duration_years: years } })),
+        set((state) => ({
+          break: { ...state.break, duration_years: years },
+          ...resetAfterBreak(),
+        })),
 
       toggleActivity: (id) =>
         set((state) => {
@@ -36,6 +46,7 @@ export const useIntakeStore = create(
                 ? selected.filter((a) => a !== id)
                 : [...selected, id],
             },
+            ...resetAfterBreak(),
           };
         }),
 
@@ -45,22 +56,26 @@ export const useIntakeStore = create(
       setSnapshot: (snapshot) =>
         set({
           snapshot,
-          // Index 0 is her previous occupation and the default target role.
-          selectedRole: snapshot?.recommended_roles?.[0]?.role ?? null,
+          // Index 0 is her previous occupation and the default target role. Held as the
+          // full role object ({ role, role_id, similarity }) so the gap resolves by id.
+          selectedRole: snapshot?.recommended_roles?.[0] ?? null,
+          // Drop any gap from a previous snapshot so it is recomputed for the new role.
+          gapResult: null,
         }),
 
       setSelectedRole: (role) => set({ selectedRole: role, gapResult: null }),
       setGapResult: (gapResult) => set({ gapResult }),
       setCurrentStepIndex: (currentStepIndex) => set({ currentStepIndex }),
 
-      /** True once a duration and at least one activity are recorded. */
+      /** True once at least one activity is recorded. Duration 0 ("less than a year") is valid. */
       canGenerateSnapshot: () => {
         const { break: careerBreak } = get();
-        return careerBreak.duration_years > 0 && careerBreak.activities.length > 0;
+        return careerBreak.activities.length > 0;
       },
 
       reset: () => set(initialState),
     }),
-    { name: STORAGE_KEY, version: 1 }
+    // v2: selectedRole changed from a role-title string to the full role object.
+    { name: STORAGE_KEY, version: 2 }
   )
 );

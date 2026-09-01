@@ -19,6 +19,7 @@
 /**
  * @typedef {Object} ProfessionalSkill
  * @property {string} skill
+ * @property {string | null} [skill_id]
  * @property {'experience'} source
  * @property {string} evidence
  */
@@ -26,6 +27,7 @@
 /**
  * @typedef {Object} ReframedSkill
  * @property {string} skill
+ * @property {string | null} [skill_id]
  * @property {'break'} source
  * @property {string} from_activity
  */
@@ -33,6 +35,7 @@
 /**
  * @typedef {Object} PreviousOccupation
  * @property {string} role
+ * @property {string} role_id
  * @property {number} confidence
  * @property {'classifier' | 'embedding'} method
  */
@@ -40,6 +43,7 @@
 /**
  * @typedef {Object} RecommendedRole
  * @property {string} role
+ * @property {string} role_id
  * @property {number} similarity
  */
 
@@ -54,7 +58,7 @@
 /**
  * @typedef {Object} Gap
  * @property {string} skill
- * @property {'role' | 'ai_digital'} band
+ * @property {'role' | 'ai_usage'} band
  * @property {number} importance
  * @property {number} uplift
  */

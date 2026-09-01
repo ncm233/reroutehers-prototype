@@ -15,12 +15,18 @@ export default defineConfig({
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
   },
+  // WebKit ships a frozen build that crashes on some macOS versions, so the Safari
+  // projects are opt-in. Set PLAYWRIGHT_WEBKIT=1 (e.g. on CI/Linux) to include them.
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
     { name: 'mobile-chrome', use: { ...devices['Pixel 5'] } },
-    { name: 'mobile-safari', use: { ...devices['iPhone 13'] } },
+    ...(process.env.PLAYWRIGHT_WEBKIT === '1'
+      ? [
+          { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+          { name: 'mobile-safari', use: { ...devices['iPhone 13'] } },
+        ]
+      : []),
   ],
   // Skipped when E2E_BASE_URL points at a deployed environment.
   webServer: process.env.E2E_BASE_URL

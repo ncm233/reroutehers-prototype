@@ -4,7 +4,20 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: { port: 5173 },
+  server: {
+    port: 5173,
+    // Mirrors production, where nginx proxies /api/ to the backend service.
+    // Same-origin /api in dev too, so no CORS and the same relative URLs work everywhere.
+    // The path is not rewritten, so /api/... reaches the backend's /api/... endpoints.
+    // Run `npm run dev:live` to disable mocks and hit the real backend.
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_PROXY_TARGET || 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   preview: { port: 4173 },
   test: {
     environment: 'jsdom',

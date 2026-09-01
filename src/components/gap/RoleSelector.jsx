@@ -13,11 +13,11 @@ export default function RoleSelector({ roles, selected, onSelect, disabled = fal
 
       <div className="flex flex-wrap gap-2">
         {roles.map((role, index) => {
-          const checked = role.role === selected;
+          const checked = role.role_id === selected?.role_id;
 
           return (
             <label
-              key={role.role}
+              key={role.role_id}
               className={[
                 'cursor-pointer rounded-full border px-4 py-2 text-sm transition duration-200 ease-spring',
                 'has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-600',
@@ -29,9 +29,9 @@ export default function RoleSelector({ roles, selected, onSelect, disabled = fal
               <input
                 type="radio"
                 name="target-role"
-                value={role.role}
+                value={role.role_id}
                 checked={checked}
-                onChange={() => onSelect(role.role)}
+                onChange={() => onSelect(role)}
                 className="sr-only"
               />
               {role.role}

@@ -21,14 +21,20 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2 — Career Break (US2.2)', () => {
-  test('US2.2 — the step shows a duration slider and the grouped activity section', async ({
+  test('AC 2.2.1 — the step shows a Back to CV button, a duration slider and the activity list', async ({
     page,
   }) => {
+    await expect(page.getByRole('button', { name: /back to cv/i })).toBeVisible();
     await expect(slider(page)).toBeVisible();
     await expect(page.getByText('2. What did you do during this time? *')).toBeVisible();
   });
 
-  test('US2.2 — moving the slider updates the duration shown in years', async ({ page }) => {
+  test('AC 2.2.2 — Back to CV returns to the CV upload page', async ({ page }) => {
+    await page.getByRole('button', { name: /back to cv/i }).click();
+    await expect(page).toHaveURL(/\/diagnostic\/background$/);
+  });
+
+  test('AC 2.2.3 — moving the slider updates the duration shown in years', async ({ page }) => {
     await slider(page).fill('7');
     await expect(page.getByText('7 years', { exact: true })).toBeVisible();
 
@@ -36,7 +42,7 @@ test.describe('E2 — Career Break (US2.2)', () => {
     await expect(page.getByText('1 year', { exact: true })).toBeVisible();
   });
 
-  test('US2.2 — activities appear grouped under the four categories', async ({ page }) => {
+  test('AC 2.2.4 — activities appear grouped under the four categories', async ({ page }) => {
     for (const category of ACTIVITY_TAXONOMY) {
       await expect(page.getByText(category.label, { exact: true })).toBeVisible();
     }
@@ -45,29 +51,53 @@ test.describe('E2 — Career Break (US2.2)', () => {
     await expect(activity(page, first.label)).toBeVisible();
   });
 
-  test('US2.2 — selecting several activities keeps all of them selected', async ({ page }) => {
-    await activity(page, 'Childcare').click();
-    await activity(page, 'Budgeting').click();
-    await activity(page, 'Volunteering').click();
+  test('AC 2.2.5 — selecting an activity highlights it with a green background and white text', async ({
+    page,
+  }) => {
+    const chip = activity(page, 'Childcare');
+    const restingBg = await chip.evaluate((node) => getComputedStyle(node).backgroundColor);
 
-    await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(3);
+    await chip.click();
+
+    await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(1);
+    await expect
+      .poll(() => chip.evaluate((node) => getComputedStyle(node).color))
+      .toBe('rgb(255, 255, 255)'); // white text
+    const selectedBg = await chip.evaluate((node) => getComputedStyle(node).backgroundColor);
+    expect(selectedBg).not.toBe(restingBg); // filled (green) background
   });
 
-  test('US2.2 — every activity is offered up front, with no free-text entry', async ({ page }) => {
-    const count = ACTIVITY_TAXONOMY.reduce((total, c) => total + c.activities.length, 0);
+  test('AC 2.2.6 — clicking a selected activity unselects it and restores its appearance', async ({
+    page,
+  }) => {
+    const chip = activity(page, 'Childcare');
 
-    await expect(page.getByRole('checkbox')).toHaveCount(count);
-    await expect(page.getByRole('searchbox')).toHaveCount(0);
-    await expect(page.getByRole('textbox')).toHaveCount(0);
+    await chip.click();
+    await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(1);
+
+    await chip.click();
+    await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(0);
+    await expect
+      .poll(() => chip.evaluate((node) => getComputedStyle(node).color))
+      .not.toBe('rgb(255, 255, 255)'); // reverted from the selected (white) text
   });
 
-  test('US2.2 — continuing needs a duration and at least one activity @smoke', async ({ page }) => {
+  test('AC 2.2.7 — Continue to Skill Snapshot is disabled while no activity is selected', async ({
+    page,
+  }) => {
     const cta = page.getByRole('button', { name: 'Continue to Skill Snapshot' });
     await expect(cta).toBeDisabled();
 
     await slider(page).fill('5');
-    await expect(cta).toBeDisabled();
+    await expect(cta).toBeDisabled(); // a duration alone is not enough
+  });
 
+  test('AC 2.2.8 — with an activity selected, Continue generates the snapshot @smoke', async ({
+    page,
+  }) => {
+    const cta = page.getByRole('button', { name: 'Continue to Skill Snapshot' });
+
+    await slider(page).fill('5');
     await activity(page, 'Childcare').click();
     await expect(cta).toBeEnabled();
 
@@ -75,7 +105,9 @@ test.describe('E2 — Career Break (US2.2)', () => {
     await expect(page).toHaveURL(/\/diagnostic\/snapshot$/);
   });
 
-  test('US2.2 — a reload restores the duration and the selected activities', async ({ page }) => {
+  test('AC 2.2.9 — a reload restores the duration and the selected activities', async ({
+    page,
+  }) => {
     await slider(page).fill('9');
     await activity(page, 'Childcare').click();
     await activity(page, 'Running the household').click();
@@ -84,5 +116,23 @@ test.describe('E2 — Career Break (US2.2)', () => {
 
     await expect(page.getByText('9 years', { exact: true })).toBeVisible();
     await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(2);
+  });
+
+  test('@regression — selecting several activities keeps all of them selected', async ({
+    page,
+  }) => {
+    await activity(page, 'Childcare').click();
+    await activity(page, 'Budgeting').click();
+    await activity(page, 'Volunteering').click();
+
+    await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(3);
+  });
+
+  test('@regression — activities are a fixed set with no free-text entry', async ({ page }) => {
+    const count = ACTIVITY_TAXONOMY.reduce((total, c) => total + c.activities.length, 0);
+
+    await expect(page.getByRole('checkbox')).toHaveCount(count);
+    await expect(page.getByRole('searchbox')).toHaveCount(0);
+    await expect(page.getByRole('textbox')).toHaveCount(0);
   });
 });

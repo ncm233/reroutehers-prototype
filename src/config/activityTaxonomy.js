@@ -10,36 +10,39 @@ export const ACTIVITY_TAXONOMY = [
     id: 'care_household',
     label: 'Care & Household',
     activities: [
-      { id: 'cared_for_children', label: 'Childcare' },
-      { id: 'ran_the_household', label: 'Running the household' },
-      { id: 'cared_for_elderly_or_sick', label: 'Cared for elderly / sick family' },
+      { id: 'care_household.cared_for_children', label: 'Childcare' },
+      { id: 'care_household.ran_household', label: 'Running the household' },
+      {
+        id: 'care_household.cared_for_elderly_sick_family',
+        label: 'Cared for elderly / sick family',
+      },
     ],
   },
   {
     id: 'planning_organisation',
     label: 'Planning & Organisation',
     activities: [
-      { id: 'organised_family_logistics', label: 'Day-to-day coordination' },
-      { id: 'managed_multiple_schedules', label: 'Managing schedules' },
-      { id: 'planned_events_gatherings', label: 'Event planning' },
-      { id: 'kept_household_records', label: 'Paperwork and records' },
+      { id: 'planning.organised_family_logistics', label: 'Day-to-day coordination' },
+      { id: 'planning.managed_multiple_schedules', label: 'Managing schedules' },
+      { id: 'planning.planned_events_gatherings', label: 'Event planning' },
+      { id: 'planning.kept_household_records', label: 'Paperwork and records' },
     ],
   },
   {
     id: 'finance_coordination',
     label: 'Finance & Negotiation',
     activities: [
-      { id: 'managed_budget_finances', label: 'Budgeting' },
-      { id: 'managed_home_repairs_vendors', label: 'Home repairs and contractors' },
-      { id: 'handled_disputes_negotiations', label: 'Negotiation' },
+      { id: 'finance.managed_budget_finances', label: 'Budgeting' },
+      { id: 'finance.managed_home_repairs_vendors', label: 'Home repairs and contractors' },
+      { id: 'finance.handled_disputes_negotiations', label: 'Negotiation' },
     ],
   },
   {
     id: 'learning_community',
     label: 'Learning & Community',
     activities: [
-      { id: 'taught_or_tutored_children', label: 'Teaching or tutoring' },
-      { id: 'volunteered_community_roles', label: 'Volunteering' },
+      { id: 'learning.taught_tutored_children', label: 'Teaching or tutoring' },
+      { id: 'learning.volunteered_community_roles', label: 'Volunteering' },
     ],
   },
 ];

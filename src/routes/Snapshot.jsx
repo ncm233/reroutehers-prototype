@@ -10,6 +10,7 @@ import { useIntakeStore } from '../store/intakeStore.js';
 export default function Snapshot() {
   const navigate = useNavigate();
   const snapshot = useIntakeStore((state) => state.snapshot);
+  const setGapResult = useIntakeStore((state) => state.setGapResult);
 
   // Reached without a generated snapshot: send her back to the start of the intake.
   if (!snapshot) return <Navigate to="/diagnostic/background" replace />;
@@ -46,7 +47,12 @@ export default function Snapshot() {
         </div>
 
         <div className="mt-8 flex justify-end">
-          <GradientButton onClick={() => navigate('/diagnostic/gap')}>
+          <GradientButton
+            onClick={() => {
+              setGapResult(null); // force a fresh compute when entering the gap from the snapshot
+              navigate('/diagnostic/gap');
+            }}
+          >
             See my readiness &amp; gaps
           </GradientButton>
         </div>
