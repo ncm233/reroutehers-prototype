@@ -28,12 +28,10 @@ flowchart LR
 ## 2. Low-Fidelity (Lo-Fi) Prototypes & Wireframe Architecture
 
 ### 2.1 Design Rationale & Information Hierarchy
-The initial low-fidelity wireframes established the foundational four-step sequential journey, deliberately stripping away aesthetic styling to validate:
-1. **Zero-Friction Intake**: Eliminating multi-page tedious forms in favor of an automated two-step input (CV document parsing + natural language career break description).
-2. **Reflective vs. Exploratory Separation**: Separating the *historical baseline* (Skill Snapshot — where she is coming from) from the *aspirational target* (Target Role & Gap — where she wants to aim).
-3. **Anti-Overwhelm Focus**: Guaranteeing a maximum cap of **3 actionable focus areas**, replacing demoralizing comprehensive requirement checklists.
-
-![ReRouteHer Lo-Fi Wireframes Architecture](lofi_prototypes_overview.jpg)
+The initial low-fidelity wireframes established the foundational four-step sequential journey, deliberately stripping away visual embellishments to validate three core design hypotheses:
+1. **Zero-Friction Intake**: Eliminating multi-page tedious questionnaires in favor of an automated 2-step input (CV document parsing + natural language career break description).
+2. **Reflective vs. Exploratory Separation**: Separating the historical baseline (Skill Snapshot — where she is coming from) from the aspirational target (Target Role & Gap — where she wants to aim).
+3. **Anti-Overwhelm Focus**: Guaranteeing a strict maximum cap of **3 actionable focus areas**, replacing demoralizing comprehensive requirement checklists.
 
 ### 2.2 Screen-by-Screen Lo-Fi Breakdown
 
@@ -41,88 +39,84 @@ The initial low-fidelity wireframes established the foundational four-step seque
 | :--- | :--- | :--- | :--- |
 | **01** | **Landing Page** | • Minimalist top navigation with brand mark<br>• Hero header with bold value proposition<br>• Prominent primary CTA button (`Start Your Journey`)<br>• 3-column value cards (Break Experience, Weighted Score, Top 3 Focus) | Instills immediate confidence and sets clear expectations of zero manual friction. |
 | **02** | **Profile & Experience Intake** | • Drag-and-drop CV upload dropzone (PDF/DOCX)<br>• Duration selector (0.5 to 15 years)<br>• Free-text multi-line textarea with example suggestion chips | Bypasses repetitive form fields, allowing returners to express real-world experiences in their own words. |
-| **03** | **Baseline Skill Snapshot** | • Non-locking "Background Baseline" header<br>• Two-column skill container: *Extracted CV Skills* vs. *Reframed Break Skills*<br>• O*NET crosswalk indicator badge | Validates both professional achievements and caregiving competencies on an equal footing. |
-| **04** | **Target Role & Gap Analysis** | • Interactive target role selector tabs<br>• Semicircular readiness gauge displaying current baseline %<br>• Capped Top 3 focus areas with projected readiness boost tags<br>• "Explore Upskilling Paths" CTA | Replaces failure anxiety with an actionable, bite-sized growth plan. |
+| **03** | **Baseline Skill Snapshot** | • Non-locking 'Background Baseline' header<br>• Two-column skill container: Extracted CV Skills vs. Reframed Break Skills<br>• O*NET crosswalk indicator badge | Validates both professional achievements and caregiving competencies on an equal footing. |
+| **04** | **Target Role & Gap Analysis** | • Interactive target role selector tabs<br>• Semicircular readiness gauge displaying current baseline %<br>• Capped Top 3 focus areas with projected readiness boost tags<br>• 'Explore Upskilling Paths' CTA | Replaces failure anxiety with an actionable, bite-sized growth plan. |
 
 ---
 
-## 3. High-Fidelity (Hi-Fi) Interactive Prototype
+## 3. High-Fidelity (Hi-Fi) Interactive Prototype (Screen-by-Screen Direct Capture)
 
-The high-fidelity prototype transforms the validated wireframes into a soothing, empowering, state-of-the-art interactive web application.
+The high-fidelity prototype transforms the validated wireframes into a soothing, empowering, state-of-the-art interactive web application. Below are direct, unedited high-resolution captures of the live prototype implementation.
 
-![ReRouteHer Hi-Fi Prototype Showcase](hifi_prototypes_showcase.jpg)
+### 3.1 Design System & Visual Tokens
 
-### 3.1 Design System & Visual Language
-
-#### **A. Color Palette & Emotional Tone**
-The color palette was meticulously chosen to evoke warmth, empowerment, and cognitive clarity, avoiding clinical or aggressive job-portal aesthetics.
-
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ ReRouteHer Design Tokens & Color Palette                                               │
-├───────────────────┬──────────────┬──────────────┬──────────────────────────────────────┤
-│ Token Name        │ Hex Code     │ Tailwind / CSS│ Semantics & Psychological Function   │
-├───────────────────┼──────────────┼──────────────┼──────────────────────────────────────┤
-│ Primary Blush Pink│ `#DE8BA8`    │ `--pink-500` │ Metamorphosis, empathy, primary CTA  │
-│ Soft Lavender     │ `#B4A2D4`    │ `--violet-400│ Transmutation, cognitive calming     │
-│ Periwinkle Blue   │ `#7E92CA`    │ `--blue-600` │ Trust, professional stability        │
-│ Mint Green        │ `#337857`    │ `--mint-600` │ O*NET validated break achievements   │
-│ Amber Gold        │ `#96540D`    │ `--amber-700`│ Priority uplift badges (+% gain)     │
-│ Midnight Ink      │ `#262B4A`    │ `--ink`      │ High-contrast primary typography     │
-│ Frosted Canvas    │ `#FCF8FA`    │ `--grad-soft`│ Multi-stop ethereal page background  │
-└───────────────────┴──────────────┴──────────────┴──────────────────────────────────────┘
-```
-
-#### **B. Typography**
-- **Headings & Accents**: `Bricolage Grotesque` / `Familjen Grotesk` — Expressive, humanistic, and approachable display type.
-- **Body & Data Displays**: `Plus Jakarta Sans` — Crisp, legible geometric sans-serif engineered for digital interfaces.
-
-#### **C. Frosted Glassmorphism Components**
-All primary containers leverage frosted glassmorphism (`backdrop-filter: blur(24px); background: rgba(255,255,255,0.75);`) with multi-layered subtle specular borders, creating depth while keeping the overall layout airy and lightweight.
+| Token Name | Hex Code | Tailwind / CSS Var | Semantics & Psychological Function |
+| :--- | :--- | :--- | :--- |
+| **Primary Blush Pink** | `#DE8BA8` | `--pink-500` | Metamorphosis, empathy, primary gradient CTA button |
+| **Soft Lavender** | `#B4A2D4` | `--violet-400` | Transmutation, cognitive calming, ethereal depth |
+| **Periwinkle Blue** | `#7E92CA` | `--blue-600` | Trust, professional stability, technical skill tags |
+| **Mint Green** | `#337857` | `--mint-600` | O*NET validated break achievements, high confidence badge |
+| **Amber Gold** | `#96540D` | `--amber-700` | Priority focus area uplift badges (+% gain) |
+| **Midnight Ink** | `#262B4A` | `--ink` | High-contrast primary typography & UI structure |
+| **Frosted Canvas** | `#FCF8FA` | `--grad-soft` | Multi-stop ethereal soft gradient page background |
 
 ---
 
-### 3.2 Detailed Hi-Fi Screen Specifications
+### 3.2 Direct Screen Captures & Specifications
 
-```carousel
-![01 Landing Page Hero](lofi_prototypes_overview.jpg)
-<!-- slide -->
-![02 Hi-Fi Prototype Showcase](hifi_prototypes_showcase.jpg)
-```
-
-#### **Screen 1 · Landing & Value Proposition (`/`)**
-- **Hero Artwork**: Ethereal multi-layered butterfly oil painting artwork with radial alpha-mask gradient blending.
-- **Journey Stepper**: 3-step interactive visual road (`1. Upload CV` ➔ `2. Describe break` ➔ `3. See fit & top gaps`).
-- **Parallax Scroll Effects**: Dynamic background light orbs and staggered reveal animations built with GSAP and ScrollTrigger.
-
-#### **Screen 2 · 2-Stage Intake (`/diagnostic/background` & `/diagnostic/break`)**
-- **Stage 1 (CV Dropzone)**: Mandatory client-side verified drag-and-drop supporting `.pdf` and `.docx` up to 10MB, plus 1-click sample CV loaders for instant evaluation.
-- **Stage 2 (Career Break NLP)**: Dual-input system featuring a smooth duration range slider (0.5 to 15 years) and a natural language textarea with one-tap suggestion chips (`+ Childcare`, `+ Budgeting`, `+ Volunteering`, `+ Self-study`).
-
-#### **Screen 3 · Read-Only Skill Snapshot (`/diagnostic/snapshot`)**
-- **Occupation Baseline Card**: Displays the classifier-matched role (e.g. *Operation Research Analyst* or *Senior UX/UI Designer*) with a `High confidence match` mint badge, emphasizing that this is a read-only historical reflection, not a locked constraint.
-- **Two-Column Skill Inventory**:
-  - **From your CV**: Extracted competencies displayed as compact pill chips (`SkillChip`) with hover tooltips revealing exact source evidence; collapsible with `Show all` toggle when exceeding 12 items.
-  - **From your career break**: O*NET-reframed competencies highlighted in soft mint tones (`Active Listening`, `Social Perceptiveness`, `Time Management`, `Coordination`, `Management of Financial Resources`).
-- **O*NET Crosswalk Bridge**: Banner explaining how real-world domestic and community tasks map directly into federal competency databases.
-
-#### **Screen 4 · Target Role & Readiness Gap Diagnostic Engine (`/diagnostic/gap`)**
-- **Interactive Role Selector**: Pill selector tabs allowing instant switching between target roles:
-  1. `Operation Research Analyst` (`Closest match` — 62.6% Baseline ➔ 84.3% Target)
-  2. `Data Analyst` (71.4% Baseline ➔ 88.9% Target)
-  3. `Management Information Systems (MIS) Analyst` (68.0% Baseline ➔ 86.5% Target)
-- **210° Arc Readiness Gauge**: Animated SVG sweep gauge indicating `62.6% READY TODAY`, paired with a high-visibility projected summary banner: `62.6% today → 84.3% after your focus areas`.
-- **Ranked Top 3 Focus Areas**:
-  1. `Mathematics (O*NET Skill)` — `Role skill` — `+6.7% if learned`
-  2. `Use AI Assistants for Everyday Work Tasks` — `AI literacy` — `+7.5% if learned`
-  3. `Check and Verify AI Output` — `AI literacy` — `+7.5% if learned`
-- **Transparent Formula Card**: Educates the returner that scores are **importance-weighted**, rewarding foundational core skills while maintaining realistic growth expectations.
+#### **Screen 1 · Landing Page (E1)**
+![01 Landing Page](screenshots/01_landing_page.png)
+* **Hero Artwork**: Ethereal multi-layered butterfly oil painting with radial alpha-mask gradient blending (85% opacity).
+* **Journey Rail**: 3-step interactive visual progress stepper (`1. Upload CV` ➔ `2. Describe break` ➔ `3. See fit & top gaps`).
+* **Parallax Dynamics**: Smooth GSAP & ScrollTrigger orbital physics and soft floating star highlights.
 
 ---
 
-## 4. Technical Prototype Architecture & Verification
+#### **Screen 2a · Step 1: Upload CV (E2a)**
+![02 CV Upload](screenshots/02_cv_upload.png)
+* **File Dropzone**: Drag-and-drop file upload supporting `.pdf` and `.docx` (up to 10MB) with instant client-side verification.
+* **1-Click Sample CV Loaders**: Pre-configured analyst and designer sample resumes for immediate friction-free evaluation.
 
-The prototype was constructed using modern industry-grade web frameworks to ensure rapid iteration, accessibility compliance, and production fidelity.
+---
+
+#### **Screen 2b · Step 2: Career Break Intake (E2b)**
+![03 Career Break Intake](screenshots/03_career_break.png)
+* **Question 1 (Duration Slider)**: Intuitive range slider (0.5 to 15 years) with dynamic mint tag preview.
+* **Question 2 (Natural Language Textarea)**: Free-text input capturing caregiving, budgeting, volunteering, and self-study, accompanied by 4 one-tap example tags (`+ Childcare`, `+ Budgeting`, `+ Volunteering`, `+ Self-study`).
+
+---
+
+#### **Screen 3 · Step 3: Skill Snapshot Baseline (E3)**
+![04 Skill Snapshot](screenshots/04_skill_snapshot.png)
+* **Occupation Baseline Line**: Features an explicit headline based on the backend reranker: *“Based on your story, you're closest to **Operation Research Analyst**”* with a `High confidence match` mint badge.
+* **From your CV**: Extracted career competencies rendered as compact pill chips (`SkillChip`) with hover evidence tooltips and a `Show all / Show fewer` collapse toggle.
+* **From your career break**: O*NET-reframed domestic and community skills (`Active Listening`, `Social Perceptiveness`, `Time Management`, `Coordination`, `Management of Financial Resources`).
+* **O*NET Crosswalk Bridge**: Informational banner illustrating automated NLP translation from everyday tasks to US Dept. of Labor taxonomies.
+
+---
+
+#### **Screen 4 · Step 4: Target Role & Gap Analysis (E4)**
+![05 Target Role & Gap](screenshots/05_target_role_gap.png)
+* **Interactive Role Selector Pills**:
+  - `Operation Research Analyst` (`Closest match` — active by default)
+  - `Data Analyst`
+  - `Management Information Systems (MIS) Analyst`
+* **210° Arc Readiness Gauge**: Dynamic SVG sweep gauge indicating **`62.6% READY TODAY`** paired with a projected readiness card: **`62.6% today → 84.3% after your focus areas`**.
+* **Missing for this role (Capped Top 3 Focus Areas)**:
+  1. `Mathematics (O*NET Skill)` — `Role skill` — `+6.7% if learned` (Amber badge)
+  2. `Use AI Assistants for Everyday Work Tasks` — `AI literacy` — `+7.5% if learned` (Amber badge)
+  3. `Check and Verify AI Output` — `AI literacy` — `+7.5% if learned` (Amber badge)
+* **Importance-Weighted Formula Card**: Transparently explains the scoring mechanism to demystify readiness percentages.
+
+---
+
+#### **Screen 4 (Variant) · Target Role Switching (Data Analyst)**
+![06 Target Role Variant: Data Analyst](screenshots/06_role_data_analyst.png)
+* Demonstrates instant live recalculation when switching to **Data Analyst**: readiness shifts to **71.4% Baseline ➔ 88.9% Target**, with tailored focus areas (*SQL Query Optimization*, *AI Assistants*, *Interactive Business Dashboards*).
+
+---
+
+## 4. Technical Prototype Architecture & Quality Assurance
 
 ```mermaid
 graph TD
@@ -153,10 +147,10 @@ graph TD
 
 | Iteration Phase | Identified User Pain Point / Feedback | Implemented Design Solution in Hi-Fi Prototype |
 | :--- | :--- | :--- |
-| **Lo-Fi Wireframe** | Generic role selection felt restrictive and forced returners into boxes. | Introduced the **Read-Only Skill Snapshot** step as a reflective baseline before prompting role selection. |
-| **Initial Hi-Fi (v1.0)** | AI literacy skills flooded the focus list, crowding out domain technical requirements. | Implemented the **`pickFocusAreas` algorithm**: guarantees 1 AI-literacy slot and reserves remaining slots for core domain role skills. |
-| **User Feedback (v1.1)** | Long CV skill lists created vertical scrolling clutter. | Created compact pill chips (`SkillChip`) with hover evidence tooltips and a `Show all / Show fewer` collapse toggle. |
-| **Team Review (v2.0)** | Disconnect between raw skill count (e.g. 7 of 10) and percentage score (62.6%). | Added the **Importance-Weighted Formula Card**, clearly explaining weighting factors and O*NET skill benchmarks. |
+| **Lo-Fi Wireframe** | Generic role selection felt restrictive and forced returners into boxes prematurely. | Introduced the **Read-Only Skill Snapshot** step as a reflective baseline before prompting role selection. |
+| **Initial Hi-Fi (v1.0)** | AI literacy skills flooded the focus list, crowding out essential domain technical skills. | Engineered the **`pickFocusAreas` algorithm**: guarantees 1 AI-literacy slot and reserves remaining slots for core domain role skills. |
+| **User Feedback (v1.1)** | Long CV skill lists created vertical scrolling clutter and cognitive fatigue. | Created compact pill chips (`SkillChip`) with hover evidence tooltips and a `Show all / Show fewer` collapse toggle. |
+| **Team Review (v2.0)** | Perceived disconnect between raw skill count (e.g. 7 of 10) and percentage readiness (62.6%). | Added the **Importance-Weighted Formula Card**, clearly explaining weighting factors and O*NET skill benchmarks. |
 
 ---
 

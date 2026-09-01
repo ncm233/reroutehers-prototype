@@ -3,21 +3,16 @@ import docx
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement, parse_xml
-from docx.oxml.ns import qn, nsdecls
-
-def create_element(name):
-    return OxmlElement(name)
+from docx.oxml.ns import nsdecls
 
 def set_cell_background(cell, hex_color):
-    """Set background color of a table cell."""
     tcPr = cell._tc.get_or_add_tcPr()
     shd = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{hex_color}"/>')
     tcPr.append(shd)
 
-def set_cell_margins(cell, top=120, bottom=120, left=160, right=160):
-    """Set padding for a cell in dxa (1 pt = 20 dxa)."""
+def set_cell_margins(cell, top=100, bottom=100, left=140, right=140):
     tcPr = cell._tc.get_or_add_tcPr()
     tcMar = parse_xml(f'<w:tcMar {nsdecls("w")}>'
                       f'<w:top w:w="{top}" w:type="dxa"/>'
@@ -27,8 +22,7 @@ def set_cell_margins(cell, top=120, bottom=120, left=160, right=160):
                       f'</w:tcMar>')
     tcPr.append(tcMar)
 
-def set_cell_left_border(cell, hex_color="DE8BA8", size="24"):
-    """Set thick left border on a cell for callout card."""
+def set_cell_left_border(cell, hex_color="DE8BA8", size="28"):
     tcPr = cell._tc.get_or_add_tcPr()
     borders = parse_xml(f'<w:tcBorders {nsdecls("w")}>'
                         f'<w:left w:val="single" w:sz="{size}" w:space="0" w:color="{hex_color}"/>'
@@ -39,7 +33,6 @@ def set_cell_left_border(cell, hex_color="DE8BA8", size="24"):
     tcPr.append(borders)
 
 def set_table_borders(table, hex_color="D6D2E0"):
-    """Apply clean, subtle table borders."""
     tblPr = table._tbl.tblPr
     borders = parse_xml(f'<w:tblBorders {nsdecls("w")}>'
                         f'<w:top w:val="single" w:sz="6" w:space="0" w:color="{hex_color}"/>'
@@ -50,6 +43,24 @@ def set_table_borders(table, hex_color="D6D2E0"):
                         f'<w:right w:val="none"/>'
                         f'</w:tblBorders>')
     tblPr.append(borders)
+
+def add_screenshot_figure(doc, img_path, caption_text, width_in=6.2):
+    if os.path.exists(img_path):
+        p_img = doc.add_paragraph()
+        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img.paragraph_format.space_before = Pt(6)
+        p_img.paragraph_format.space_after = Pt(3)
+        run_img = p_img.add_run()
+        run_img.add_picture(img_path, width=Inches(width_in))
+
+        p_cap = doc.add_paragraph()
+        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_cap.paragraph_format.space_after = Pt(10)
+        r_cap = p_cap.add_run(caption_text)
+        r_cap.font.name = 'Plus Jakarta Sans'
+        r_cap.font.size = Pt(9)
+        r_cap.font.italic = True
+        r_cap.font.color.rgb = RGBColor(0x5A, 0x60, 0x86)
 
 def build_word_document():
     doc = Document()
@@ -71,7 +82,7 @@ def build_word_document():
     normal_style.paragraph_format.line_spacing = 1.25
     normal_style.paragraph_format.space_after = Pt(4)
 
-    # Colors
+    # Palette
     C_NAVY = RGBColor(0x26, 0x2B, 0x4A)      # #262B4A
     C_BLUE = RGBColor(0x3B, 0x4B, 0x7C)      # #3B4B7C
     C_PINK = RGBColor(0xDE, 0x8B, 0xA8)      # #DE8BA8
@@ -90,7 +101,7 @@ def build_word_document():
     run_title.font.color.rgb = C_NAVY
 
     sub_p = doc.add_paragraph()
-    sub_p.paragraph_format.space_after = Pt(14)
+    sub_p.paragraph_format.space_after = Pt(12)
     run_sub = sub_p.add_run("ReRouteHer — AI-Powered Skill Readiness & Career Re-entry Platform")
     run_sub.font.name = 'Plus Jakarta Sans'
     run_sub.font.size = Pt(12)
@@ -106,7 +117,7 @@ def build_word_document():
     cell = meta_table.cell(0, 0)
     set_cell_background(cell, "FBF0F4")
     set_cell_left_border(cell, "DE8BA8", "32")
-    set_cell_margins(cell, top=140, bottom=140, left=200, right=200)
+    set_cell_margins(cell, top=120, bottom=120, left=180, right=180)
     
     mp = cell.paragraphs[0]
     mp.paragraph_format.space_after = Pt(2)
@@ -131,7 +142,7 @@ def build_word_document():
     r.font.color.rgb = C_NAVY
     mp.add_run("ryus0006/rerouteher-ui & ncm233/reroutehers-prototype")
 
-    doc.add_paragraph().paragraph_format.space_after = Pt(6)
+    doc.add_paragraph().paragraph_format.space_after = Pt(4)
 
     # ==================== SECTION 1: EXECUTIVE SUMMARY ====================
     h1 = doc.add_paragraph()
@@ -199,24 +210,6 @@ def build_word_document():
         r.font.color.rgb = C_NAVY
         bp.add_run(b_desc)
 
-    # Embed Lo-Fi Image if present
-    lofi_img_path = "lofi_prototypes_overview.jpg"
-    if os.path.exists(lofi_img_path):
-        doc.add_paragraph().paragraph_format.space_after = Pt(4)
-        p_img = doc.add_paragraph()
-        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_img.paragraph_format.space_after = Pt(4)
-        run_img = p_img.add_run()
-        run_img.add_picture(lofi_img_path, width=Inches(6.3))
-
-        p_cap = doc.add_paragraph()
-        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_cap.paragraph_format.space_after = Pt(10)
-        r_cap = p_cap.add_run("Figure 1: ReRouteHer Low-Fidelity (Lo-Fi) Wireframe Architecture Board (4-Step Sequential UX Flow)")
-        r_cap.font.size = Pt(9)
-        r_cap.font.italic = True
-        r_cap.font.color.rgb = C_MUTED
-
     # Table: Lo-Fi Breakdown
     h2 = doc.add_paragraph()
     h2.paragraph_format.space_before = Pt(8)
@@ -246,7 +239,7 @@ def build_word_document():
         for col_idx, text in enumerate(row_data):
             c = row.cells[col_idx]
             c.width = col_widths[col_idx]
-            set_cell_margins(c, top=100, bottom=100, left=120, right=120)
+            set_cell_margins(c, top=90, bottom=90, left=110, right=110)
             cp = c.paragraphs[0]
             cp.paragraph_format.space_after = Pt(0)
             
@@ -265,42 +258,24 @@ def build_word_document():
                 r.font.size = Pt(9)
                 r.font.color.rgb = C_NAVY
 
-    doc.add_paragraph().paragraph_format.space_after = Pt(8)
+    doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
-    # ==================== SECTION 3: HIGH-FIDELITY PROTOTYPE ====================
+    # ==================== SECTION 3: HIGH-FIDELITY PROTOTYPE (DIRECT SCREENSHOTS) ====================
     h1 = doc.add_paragraph()
     h1.paragraph_format.space_before = Pt(16)
     h1.paragraph_format.space_after = Pt(6)
-    r = h1.add_run("3. High-Fidelity (Hi-Fi) Interactive Prototype")
+    r = h1.add_run("3. High-Fidelity (Hi-Fi) Interactive Prototype (Direct Prototype Captures)")
     r.font.size = Pt(15)
     r.font.bold = True
     r.font.color.rgb = C_NAVY
 
     p = doc.add_paragraph()
-    p.add_run("The high-fidelity prototype transforms the validated wireframes into a soothing, empowering, state-of-the-art interactive web application built with modern glassmorphism aesthetics and data-backed O*NET taxonomic mapping.")
-
-    # Embed Hi-Fi Image if present
-    hifi_img_path = "hifi_prototypes_showcase.jpg"
-    if os.path.exists(hifi_img_path):
-        doc.add_paragraph().paragraph_format.space_after = Pt(4)
-        p_img = doc.add_paragraph()
-        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_img.paragraph_format.space_after = Pt(4)
-        run_img = p_img.add_run()
-        run_img.add_picture(hifi_img_path, width=Inches(6.3))
-
-        p_cap = doc.add_paragraph()
-        p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_cap.paragraph_format.space_after = Pt(10)
-        r_cap = p_cap.add_run("Figure 2: ReRouteHer High-Fidelity (Hi-Fi) UI Showcase (Ethereal Butterfly Theme & Glassmorphism System)")
-        r_cap.font.size = Pt(9)
-        r_cap.font.italic = True
-        r_cap.font.color.rgb = C_MUTED
+    p.add_run("The high-fidelity prototype transforms the validated wireframes into a soothing, empowering, state-of-the-art interactive web application. Below are direct, unedited high-resolution captures of the live prototype implementation.")
 
     h2 = doc.add_paragraph()
     h2.paragraph_format.space_before = Pt(8)
     h2.paragraph_format.space_after = Pt(4)
-    r = h2.add_run("3.1 Design System & Visual Language")
+    r = h2.add_run("3.1 Design System & Visual Tokens")
     r.font.size = Pt(12.5)
     r.font.bold = True
     r.font.color.rgb = C_BLUE
@@ -348,54 +323,160 @@ def build_word_document():
 
     doc.add_paragraph().paragraph_format.space_after = Pt(8)
 
-    # Screen Specifications Breakdown
+    # Direct Screen Captures & Specifications
     h2 = doc.add_paragraph()
-    h2.paragraph_format.space_before = Pt(8)
+    h2.paragraph_format.space_before = Pt(10)
     h2.paragraph_format.space_after = Pt(4)
-    r = h2.add_run("3.2 Detailed Screen-by-Screen Hi-Fi Specifications")
+    r = h2.add_run("3.2 Direct Screen Captures & Interactive Specifications")
     r.font.size = Pt(12.5)
     r.font.bold = True
     r.font.color.rgb = C_BLUE
 
-    screens = [
-        ("Screen 1 · Landing Page (E1)", [
-            ("Hero Artwork: ", "Ethereal multi-layered butterfly oil painting with radial alpha-mask gradient blending (85% opacity)."),
-            ("Journey Rail: ", "3-step interactive visual progress stepper (Upload CV ➔ Describe Break ➔ See Fit & Top Gaps)."),
-            ("Parallax Dynamics: ", "Smooth GSAP & ScrollTrigger orbital physics and soft floating star highlights.")
-        ]),
-        ("Screen 2 · Two-Stage Intake Flow (E2a & E2b)", [
-            ("Stage 1 (CV Dropzone): ", "Client-side validated file dropzone (.pdf/.docx, <=10MB) with sample resume fast-loaders."),
-            ("Stage 2 (Career Break NLP): ", "Dual-input system featuring a duration slider (0.5 to 15 years) and a natural language textarea with instant suggestion chips (+Childcare, +Budgeting, +Volunteering, +Self-study).")
-        ]),
-        ("Screen 3 · Read-Only Skill Snapshot (E3)", [
-            ("Occupation Baseline Card: ", "Displays classifier-matched role (e.g. 'Operation Research Analyst') with a 'High confidence match' mint badge, emphasizing a non-binding historical reflection."),
-            ("Two-Column Skill Inventory: ", "Compact pill chips ('SkillChip') displaying Extracted CV Skills (with hover evidence tooltips and >12 collapse toggle) alongside Reframed Break Skills (mint green O*NET verified tags)."),
-            ("Crosswalk Bridge Banner: ", "Interactive banner detailing how natural language break inputs map directly into standard O*NET competency taxonomies.")
-        ]),
-        ("Screen 4 · Target Role & Readiness Gap Diagnostic Engine (E4)", [
-            ("Interactive Role Selector: ", "Pill tabs enabling instantaneous switching between target roles (Operation Research Analyst, Data Analyst, MIS Analyst, UX/UI)."),
-            ("210° Arc Readiness Gauge: ", "Animated SVG sweep gauge indicating '62.6% READY TODAY' paired with a high-visibility summary: '62.6% today → 84.3% after your focus areas'."),
-            ("Prioritized Top 3 Focus Areas: ", "Ranked high-impact requirements (e.g. 1. Mathematics +6.7%, 2. AI Assistants +7.5%, 3. Verify AI Output +7.5%) with guaranteed role-skill vs AI-literacy balancing."),
-            ("Transparent Weighting Card: ", "Explains why the percentage score is importance-weighted rather than a raw ratio count, building genuine trust.")
-        ])
-    ]
+    # 1. Landing Page
+    h3 = doc.add_paragraph()
+    h3.paragraph_format.space_before = Pt(8)
+    h3.paragraph_format.space_after = Pt(2)
+    r = h3.add_run("Screen 1 · Landing Page (E1)")
+    r.bold = True
+    r.font.color.rgb = C_BLUE
+    r.font.size = Pt(11)
 
-    for s_title, s_points in screens:
-        p_st = doc.add_paragraph()
-        p_st.paragraph_format.space_before = Pt(6)
-        p_st.paragraph_format.space_after = Pt(2)
-        r = p_st.add_run(s_title)
-        r.bold = True
-        r.font.color.rgb = C_BLUE
-        r.font.size = Pt(11)
+    add_screenshot_figure(doc, "screenshots/01_landing_page.png", "Figure 1: Direct Capture — ReRouteHer Landing Page (E1) with Hero Butterfly Artwork & 3-Step Journey Rail")
 
-        for pt_title, pt_desc in s_points:
-            bp = doc.add_paragraph(style='List Bullet')
-            bp.paragraph_format.space_after = Pt(2)
-            r = bp.add_run(pt_title)
-            r.bold = True
-            r.font.color.rgb = C_NAVY
-            bp.add_run(pt_desc)
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Hero Artwork: ")
+    r.bold = True
+    p.add_run("Ethereal multi-layered butterfly oil painting with radial alpha-mask gradient blending (85% opacity).")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Journey Rail: ")
+    r.bold = True
+    p.add_run("3-step interactive visual progress stepper (Upload CV ➔ Describe Break ➔ See Fit & Top Gaps).")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Parallax Dynamics: ")
+    r.bold = True
+    p.add_run("Smooth GSAP orbital physics and soft floating star highlights.")
+
+    # 2a. Step 1: Upload CV
+    h3 = doc.add_paragraph()
+    h3.paragraph_format.space_before = Pt(12)
+    h3.paragraph_format.space_after = Pt(2)
+    r = h3.add_run("Screen 2a · Step 1: Upload CV (E2a)")
+    r.bold = True
+    r.font.color.rgb = C_BLUE
+    r.font.size = Pt(11)
+
+    add_screenshot_figure(doc, "screenshots/02_cv_upload.png", "Figure 2: Direct Capture — Step 1: Upload CV (E2a) Drag-and-Drop Dropzone & Sample Resumes")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("File Dropzone: ")
+    r.bold = True
+    p.add_run("Drag-and-drop file upload supporting .pdf and .docx (up to 10MB) with instant client-side verification.")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("1-Click Sample CV Loaders: ")
+    r.bold = True
+    p.add_run("Pre-configured analyst and designer sample resumes for immediate friction-free evaluation.")
+
+    # 2b. Step 2: Career Break Intake
+    h3 = doc.add_paragraph()
+    h3.paragraph_format.space_before = Pt(12)
+    h3.paragraph_format.space_after = Pt(2)
+    r = h3.add_run("Screen 2b · Step 2: Career Break Intake (E2b)")
+    r.bold = True
+    r.font.color.rgb = C_BLUE
+    r.font.size = Pt(11)
+
+    add_screenshot_figure(doc, "screenshots/03_career_break.png", "Figure 3: Direct Capture — Step 2: Career Break Intake (E2b) Duration Slider & Natural Language Textarea")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Duration Slider: ")
+    r.bold = True
+    p.add_run("Intuitive range slider (0.5 to 15 years) with dynamic mint tag preview.")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Natural Language Textarea: ")
+    r.bold = True
+    p.add_run("Free-text input capturing caregiving, budgeting, volunteering, and self-study, accompanied by 4 one-tap example tags (+Childcare, +Budgeting, +Volunteering, +Self-study).")
+
+    # 3. Step 3: Skill Snapshot Baseline
+    h3 = doc.add_paragraph()
+    h3.paragraph_format.space_before = Pt(12)
+    h3.paragraph_format.space_after = Pt(2)
+    r = h3.add_run("Screen 3 · Step 3: Skill Snapshot Baseline (E3)")
+    r.bold = True
+    r.font.color.rgb = C_BLUE
+    r.font.size = Pt(11)
+
+    add_screenshot_figure(doc, "screenshots/04_skill_snapshot.png", "Figure 4: Direct Capture — Step 3: Skill Snapshot Baseline (E3) Occupation Baseline & Two-Column Skill Inventory")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Occupation Baseline Line: ")
+    r.bold = True
+    p.add_run("Features an explicit headline based on the backend reranker: 'Based on your story, you're closest to Operation Research Analyst' with a 'High confidence match' mint badge.")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("From your CV: ")
+    r.bold = True
+    p.add_run("Extracted career competencies rendered as compact pill chips ('SkillChip') with hover evidence tooltips and a 'Show all / Show fewer' collapse toggle.")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("From your career break: ")
+    r.bold = True
+    p.add_run("O*NET-reframed domestic and community skills (Active Listening, Social Perceptiveness, Time Management, Coordination, Management of Financial Resources).")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("O*NET Crosswalk Bridge: ")
+    r.bold = True
+    p.add_run("Informational banner illustrating automated NLP translation from everyday tasks to US Dept. of Labor taxonomies.")
+
+    # 4. Step 4: Target Role & Gap Analysis
+    h3 = doc.add_paragraph()
+    h3.paragraph_format.space_before = Pt(12)
+    h3.paragraph_format.space_after = Pt(2)
+    r = h3.add_run("Screen 4 · Step 4: Target Role & Gap Analysis (E4)")
+    r.bold = True
+    r.font.color.rgb = C_BLUE
+    r.font.size = Pt(11)
+
+    add_screenshot_figure(doc, "screenshots/05_target_role_gap.png", "Figure 5: Direct Capture — Step 4: Target Role & Gap Analysis (E4) 62.6% Readiness Gauge & Top 3 Priority Focus Areas")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Interactive Role Selector Pills: ")
+    r.bold = True
+    p.add_run("Operation Research Analyst (Closest match — active), Data Analyst, Management Information Systems (MIS) Analyst.")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("210° Arc Readiness Gauge: ")
+    r.bold = True
+    p.add_run("Dynamic SVG sweep gauge indicating '62.6% READY TODAY' paired with a projected readiness card: '62.6% today → 84.3% after your focus areas'.")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Missing for this role (Capped Top 3 Focus Areas): ")
+    r.bold = True
+    p.add_run("1. Mathematics (O*NET Skill) [+6.7%], 2. Use AI Assistants for Everyday Work Tasks [+7.5%], 3. Check and Verify AI Output [+7.5%].")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Importance-Weighted Formula Card: ")
+    r.bold = True
+    p.add_run("Transparently explains the scoring mechanism to demystify readiness percentages.")
+
+    # 4b. Role Variant: Data Analyst
+    h3 = doc.add_paragraph()
+    h3.paragraph_format.space_before = Pt(12)
+    h3.paragraph_format.space_after = Pt(2)
+    r = h3.add_run("Screen 4 (Variant) · Target Role Switching (Data Analyst)")
+    r.bold = True
+    r.font.color.rgb = C_BLUE
+    r.font.size = Pt(11)
+
+    add_screenshot_figure(doc, "screenshots/06_role_data_analyst.png", "Figure 6: Direct Capture — Target Role Variant Switching to Data Analyst (71.4% Baseline ➔ 88.9% Target)")
+
+    p = doc.add_paragraph(style='List Bullet')
+    r = p.add_run("Dynamic Live Recalculation: ")
+    r.bold = True
+    p.add_run("Demonstrates instant recalculation when switching to Data Analyst (71.4% Baseline ➔ 88.9% Target) with tailored focus areas (SQL Optimization, AI Assistants, Tableau/Power BI).")
 
     doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
@@ -464,7 +545,7 @@ def build_word_document():
     cell = final_box.cell(0, 0)
     set_cell_background(cell, "DEF3E7")
     set_cell_left_border(cell, "235C41", "32")
-    set_cell_margins(cell, top=140, bottom=140, left=200, right=200)
+    set_cell_margins(cell, top=120, bottom=120, left=180, right=180)
     
     fp = cell.paragraphs[0]
     fp.paragraph_format.space_after = Pt(4)
